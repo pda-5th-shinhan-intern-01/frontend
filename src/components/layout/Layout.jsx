@@ -9,7 +9,7 @@ export default function Layout() {
       <header className="fixed top-0 w-full z-10 bg-gray-light h-16">
         <Header />
       </header>
-      <main className="flex-col flex-grow max-w-[1200px] w-full min-h-screen mt-16 py-12 px-12">
+      <main className="flex flex-col flex-grow max-w-[1200px] w-full min-h-screen mt-16 py-12 px-12">
         <Outlet />
       </main>
       <footer className="bg-gray-light h-16 w-full">
