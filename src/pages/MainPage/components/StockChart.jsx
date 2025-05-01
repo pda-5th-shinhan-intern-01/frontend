@@ -38,6 +38,10 @@ const eventMarkers = Object.entries(groupedEvents).map(
 );
 
 export default function StockChart() {
+  // TODO: 차트 API 연동 추가
+  // TODO: 날짜 형식 수정(백엔드에서 날짜 형태 확인 후)
+  // TODO: 이벤트 마커 개선
+
   //색상 계산
   const seriesDataWithColor = seriesDataLinear.map((volumeData) => {
     const priceData = seriesData.find((d) => d.x === volumeData.x);
@@ -225,7 +229,7 @@ export default function StockChart() {
             options={state.options}
             series={state.series}
             type="candlestick"
-            height={290}
+            height={350}
           />
         </div>
         <div id="chart-bar">
@@ -233,7 +237,7 @@ export default function StockChart() {
             options={state.optionsBar}
             series={state.seriesBar}
             type="bar"
-            height={160}
+            height={150}
           />
         </div>
       </div>
