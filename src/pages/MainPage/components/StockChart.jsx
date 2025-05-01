@@ -2,6 +2,40 @@ import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { seriesData, seriesDataLinear } from "../dummies/stockChartData";
 import { formatNumberForMoney } from "../../../utils/formatNumber";
+import { economicEvents } from "../dummies/economicEventData";
+
+// 날짜별 그룹핑
+const groupedEvents = economicEvents.reduce((acc, event) => {
+  const key = new Date(event.date).getTime();
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(event);
+  return acc;
+}, {});
+
+// 날짜별 마커 생성
+const eventMarkers = Object.entries(groupedEvents).map(
+  ([timestamp, events]) => ({
+    x: Number(timestamp),
+    marker: {
+      size: 6,
+      fillColor: "#F14452",
+      strokeColor: "#fff",
+      strokeWidth: 2,
+      shape: "circle",
+    },
+    label: {
+      borderColor: "#F14452",
+      offsetY: 0,
+      style: {
+        color: "#fff",
+        background: "#F14452",
+        fontSize: "10px",
+        whiteSpace: "pre-line", // 줄바꿈 허용
+      },
+      text: events.map((e) => e.label).join("\n"), // 라벨 여러 줄로 표시
+    },
+  })
+);
 
 export default function StockChart() {
   //색상 계산
@@ -19,6 +53,8 @@ export default function StockChart() {
 
     return { ...volumeData, color };
   });
+
+  //차트 설정
   const [state, setState] = useState({
     series: [
       {
@@ -26,6 +62,9 @@ export default function StockChart() {
       },
     ],
     options: {
+      annotations: {
+        xaxis: eventMarkers,
+      },
       chart: {
         type: "candlestick",
         height: 290,
@@ -54,26 +93,36 @@ export default function StockChart() {
         custom: function ({ seriesIndex, dataPointIndex, w }) {
           const ohlc =
             w.globals.initialSeries[seriesIndex].data[dataPointIndex].y;
+          const timestamp =
+            w.globals.initialSeries[seriesIndex].data[dataPointIndex].x;
+
+          const matchedEvents = economicEvents.filter(
+            (e) => new Date(e.date).getTime() === timestamp
+          );
+
+          const eventsHtml = matchedEvents
+            .map(
+              (e) =>
+                `<div><strong>📌 ${e.label}</strong>: ${e.description}</div>`
+            )
+            .join("");
+
           return `
-            <div style="
-                padding: 4px 8px;
-                font-size: 12px;
-                line-height: 1.6;
-                color: #333;
-              ">
-                <div><strong style="margin-right:4px">시가</strong> ${formatNumberForMoney(
-                  ohlc[0]
-                )}원</div>
-                <div><strong style="margin-right:4px">고가</strong> ${formatNumberForMoney(
-                  ohlc[1]
-                )}원</div>
-                <div><strong style="margin-right:4px">저가</strong> ${formatNumberForMoney(
-                  ohlc[2]
-                )}원</div>
-                <div><strong style="margin-right:4px">종가</strong> ${formatNumberForMoney(
-                  ohlc[3]
-                )}원</div>
-              </div>
+            <div style="padding: 4px 8px; font-size: 12px; line-height: 1.6; color: #333;">
+              <div><strong style="margin-right:4px">시가</strong> ${formatNumberForMoney(
+                ohlc[0]
+              )}원</div>
+              <div><strong style="margin-right:4px">고가</strong> ${formatNumberForMoney(
+                ohlc[1]
+              )}원</div>
+              <div><strong style="margin-right:4px">저가</strong> ${formatNumberForMoney(
+                ohlc[2]
+              )}원</div>
+              <div><strong style="margin-right:4px">종가</strong> ${formatNumberForMoney(
+                ohlc[3]
+              )}원</div>
+              ${eventsHtml ? `<hr style="margin: 4px 0;">${eventsHtml}` : ""}
+            </div>
           `;
         },
       },
@@ -85,6 +134,28 @@ export default function StockChart() {
       },
     ],
     optionsBar: {
+      tooltip: {
+        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+          const volume = series[seriesIndex][dataPointIndex];
+          const timestamp =
+            w.globals.initialSeries[seriesIndex].data[dataPointIndex].x;
+
+          const dateStr = new Date(timestamp).toLocaleDateString("ko-KR", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+          return `
+            <div style="padding: 6px 10px; font-size: 12px; line-height: 1.6; color: #333;">
+              <div><strong>거래량</strong>: ${formatNumberForMoney(
+                volume
+              )}주</div>
+              <div><strong>날짜</strong>: ${dateStr}</div>
+            </div>
+          `;
+        },
+      },
       chart: {
         height: 160,
         type: "bar",
