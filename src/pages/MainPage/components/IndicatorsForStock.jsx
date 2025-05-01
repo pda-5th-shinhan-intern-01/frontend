@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
+import IndicatorChangeChart from "../../../components/IndicatorChangeChart";
 
 const economicCategories = [
   "CPI",
@@ -27,12 +28,11 @@ export default function IndicatorsForStock() {
   const options = {
     chart: {
       type: "bar",
-      height: 300,
       events: {
         //바 클릭 시 호출
         click: function (_event, chartContext, config) {
           const index = config.dataPointIndex;
-          if (index !== -1) {
+          if (index !== -1 && economicCategories[index]) {
             const selectedLabel = economicCategories[index];
             if (selectedLabel == selected) {
               if (isEconomicChartVisible) {
@@ -44,6 +44,14 @@ export default function IndicatorsForStock() {
             }
           }
         },
+      },
+    },
+    grid: {
+      padding: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
       },
     },
     plotOptions: {
@@ -77,9 +85,6 @@ export default function IndicatorsForStock() {
       labels: {
         formatter: (val) => val.toFixed(1),
       },
-      title: {
-        text: "민감도",
-      },
     },
     yaxis: {
       categories: economicCategories,
@@ -107,13 +112,29 @@ export default function IndicatorsForStock() {
   return (
     <div className="flex w-full gap-4">
       <div className="w-full">
-        <div className="flex w-full justify-between">
+        <div className="flex w-full justify-between   mb-2">
           <h3 className="text-lg font-semibold">경제 지표별 민감도</h3>
-          <div className="text-xs bg-gray-light py-1 px-4 rounded-lg">
+
+          <div className="flex items-center text-xs bg-gray-light py-1 px-4 rounded-lg">
             민감도순
           </div>
         </div>
-
+        <p className="h-16 flex-col flex justify-between">
+          <p className="text-sm">
+            경제 지표가 상승하거나 하락할 때, 해당 종목이 얼마나 민감하게
+            반응하는지 확인하세요
+          </p>
+          <div className="flex w-full justify-end gap-4 text-xs">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-red-md rounded-full"></div>
+              <p>양(+): 지표 상승 시 주가 상승</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-blue-md rounded-full"></div>
+              <p>음(-): 지표 상승 시 주가 하락</p>
+            </div>
+          </div>
+        </p>
         <ReactApexChart
           options={options}
           series={series}
@@ -121,14 +142,15 @@ export default function IndicatorsForStock() {
           height={350}
         />
       </div>
-      {isEconomicChartVisible ? (
+      {isEconomicChartVisible && economicIndicatorMap[selected] ? (
         <div className="w-1/2">
           <h3 className="text-lg font-semibold mb-2">
-            {economicIndicatorMap[selected].name}({selected}) 변화 추세
+            {economicIndicatorMap[selected].name} ({selected}) 변화
           </h3>
-          <p className="text-sm">
+          <p className="text-sm h-16">
             {economicIndicatorMap[selected].description}
           </p>
+          <IndicatorChangeChart indicator={selected} />
         </div>
       ) : null}
     </div>
