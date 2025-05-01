@@ -18,7 +18,7 @@ export default function MainPage() {
         <StockChart />
       </div>
       {/* 종목 별 지표 그래프 */}
-      <div className="bg-gray-100">
+      <div className="">
         <IndicatorsForStock />
       </div>
       {/* 지표별 주가 변화 */}

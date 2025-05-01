@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
+import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 
 const economicCategories = [
   "CPI",
@@ -21,11 +22,29 @@ const series = [
 
 export default function IndicatorsForStock() {
   const [isEconomicChartVisible, setIsEconomicChartVisible] = useState(false);
+  const [selected, setSelected] = useState();
 
   const options = {
     chart: {
       type: "bar",
       height: 300,
+      events: {
+        //바 클릭 시 호출
+        click: function (_event, chartContext, config) {
+          const index = config.dataPointIndex;
+          if (index !== -1) {
+            const selectedLabel = economicCategories[index];
+            if (selectedLabel == selected) {
+              if (isEconomicChartVisible) {
+                setIsEconomicChartVisible(false);
+              } else setIsEconomicChartVisible(true);
+            } else {
+              setIsEconomicChartVisible(true);
+              setSelected(selectedLabel);
+            }
+          }
+        },
+      },
     },
     plotOptions: {
       bar: {
@@ -86,9 +105,15 @@ export default function IndicatorsForStock() {
   };
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full gap-4">
       <div className="w-full">
-        <h3 style={{ marginBottom: "10px" }}>경제 지표 민감도</h3>
+        <div className="flex w-full justify-between">
+          <h3 className="text-lg font-semibold">경제 지표별 민감도</h3>
+          <div className="text-xs bg-gray-light py-1 px-4 rounded-lg">
+            민감도순
+          </div>
+        </div>
+
         <ReactApexChart
           options={options}
           series={series}
@@ -97,7 +122,14 @@ export default function IndicatorsForStock() {
         />
       </div>
       {isEconomicChartVisible ? (
-        <div className="w-full bg-gray-md"></div>
+        <div className="w-1/2">
+          <h3 className="text-lg font-semibold mb-2">
+            {economicIndicatorMap[selected].name}({selected}) 변화 추세
+          </h3>
+          <p className="text-sm">
+            {economicIndicatorMap[selected].description}
+          </p>
+        </div>
       ) : null}
     </div>
   );
