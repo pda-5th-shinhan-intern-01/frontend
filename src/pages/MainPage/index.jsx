@@ -10,7 +10,7 @@ export default function MainPage() {
   return (
     <div className="flex flex-col gap-4">
       {/* 종목 기본 정보 */}
-      <div className="bg-gray-100">
+      <div className="">
         <StockInfo ticker="AAPL" />
       </div>
       {/* 주가 차트 */}
