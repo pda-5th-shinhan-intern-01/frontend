@@ -5,14 +5,14 @@ import Footer from "./Footer";
 
 export default function Layout() {
   return (
-    <div className="flex-col min-h-screen w-full">
+    <div className="flex flex-col items-center min-h-screen w-full font-medium">
       <header className="fixed top-0 w-full z-10 bg-gray-light h-16">
         <Header />
       </header>
-      <main className="flex-col flex-grow w-full min-h-screen mt-16">
+      <main className="flex flex-col flex-grow max-w-[1280px] w-full min-h-screen mt-16 py-12 px-12">
         <Outlet />
       </main>
-      <footer className="bg-gray-light h-16">
+      <footer className="bg-gray-light h-16 w-full">
         <Footer />
       </footer>
     </div>
