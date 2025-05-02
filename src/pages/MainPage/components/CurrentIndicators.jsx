@@ -36,11 +36,11 @@ export default function CurrentIndicators() {
         </div>
       </div>
       {/* 카드 목록 */}
-      <div className="flex gap-2 overflow-x-auto">
+      <div className="flex gap-2 overflow-x-auto p-2">
         {events.map((event, id) => (
           <div
             key={id}
-            className="flex flex-col gap-2 bg-white p-4 rounded-lg min-w-[350px] shadow-md"
+            className="flex flex-col gap-2 bg-white p-4 rounded-lg min-w-[350px] shadow-lg"
           >
             <div className="flex justify-between items-center">
               <h4 className="text-lg font-semibold">{event.name}</h4>

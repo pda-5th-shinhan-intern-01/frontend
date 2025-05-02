@@ -26,7 +26,7 @@ export default function MainPage() {
         <CurrentIndicators />
       </div>
       {/* 미래 지표 이벤트 */}
-      <div className="bg-gray-100">
+      <div className="">
         <NxtIndicators />
       </div>
     </div>
