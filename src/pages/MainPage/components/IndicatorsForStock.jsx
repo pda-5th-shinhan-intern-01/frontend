@@ -121,9 +121,10 @@ export default function IndicatorsForStock() {
         </div>
         <p className="h-16 flex-col flex justify-between">
           <p className="text-sm">
-            경제 지표가 상승하거나 하락할 때, 해당 종목이 얼마나 민감하게
-            반응하는지 확인하세요
+            💡 지표 바를 클릭하면 오른쪽에 해당 지표의 변화 추이를 확인할 수
+            있어요.
           </p>
+
           <div className="flex w-full justify-end gap-4 text-xs">
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-red-md rounded-full"></div>
