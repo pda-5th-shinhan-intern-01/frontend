@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { nxtIndicatorsData } from "../dummies/nxtIndicatorData";
 import { IoIosCalendar } from "react-icons/io";
 import { FaArrowRight } from "react-icons/fa";
+import Tooltip from "../../../components/Tooltip";
+import { introduceService } from "../../../data/IntroduceOfService";
 
 export default function NxtIndicators() {
   const [events, setEvents] = useState([]);
@@ -80,6 +82,7 @@ export default function NxtIndicators() {
             <div>
               <p className="flex items-center text-sm">
                 민감도 x 변화율 = 예상 퍼포먼스 점수
+                <Tooltip content={introduceService.예상퍼포먼스} />
               </p>
               <h2 className="flex items-end text-sm font-semibold gap-1">
                 {event.beta} x {event.nxtData - event.prevData} =

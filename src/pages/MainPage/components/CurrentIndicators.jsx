@@ -78,21 +78,21 @@ export default function CurrentIndicators() {
             <div>
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-md">주가반응</div>
-                {event.chartData[event.chartData.length - 1].price >
-                event.chartData[0].price ? (
+                {event.chartData[event.chartData.length - 1].y >
+                event.chartData[0].y ? (
                   <div className="flex gap-1 items-center text-red-md">
                     <FaArrowTrendUp />
-                    {event.chartData[event.chartData.length - 1].price -
-                      event.chartData[0].price}
+                    {event.chartData[event.chartData.length - 1].y -
+                      event.chartData[0].y}
                   </div>
-                ) : event.chartData[event.chartData.length - 1].price ==
-                  event.chartData[0].price ? (
+                ) : event.chartData[event.chartData.length - 1].y ==
+                  event.chartData[0].y ? (
                   <div className="flex gap-1 items-center">-</div>
                 ) : (
                   <div className="flex gap-1 items-center text-blue-md">
                     <FaArrowTrendDown />
-                    {event.chartData[event.chartData.length - 1].price -
-                      event.chartData[0].price}
+                    {event.chartData[event.chartData.length - 1].y -
+                      event.chartData[0].y}
                   </div>
                 )}
               </div>

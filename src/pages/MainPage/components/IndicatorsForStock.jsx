@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 import IndicatorChangeChart from "../../../components/IndicatorChangeChart";
+import Tooltip from "../../../components/Tooltip";
+import { introduceService } from "../../../data/IntroduceOfService";
 
 const economicCategories = [
   "CPI",
@@ -113,7 +115,10 @@ export default function IndicatorsForStock() {
     <div className="flex w-full gap-4">
       <div className="w-full">
         <div className="flex w-full justify-between   mb-2">
-          <h3 className="text-lg font-semibold">경제 지표별 민감도</h3>
+          <h3 className="text-lg font-semibold flex gap-1 items-center">
+            경제 지표별 민감도
+            <Tooltip content={introduceService.민감도} />
+          </h3>
 
           <div className="flex items-center text-xs bg-gray-light py-1 px-4 rounded-lg">
             민감도순
