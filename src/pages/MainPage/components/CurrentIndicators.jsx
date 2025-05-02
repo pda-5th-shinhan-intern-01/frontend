@@ -36,7 +36,7 @@ export default function CurrentIndicators() {
         </div>
       </div>
       {/* 카드 목록 */}
-      <div className="flex gap-2 overflow-x-auto p-2">
+      <div className="flex gap-2 overflow-x-auto p-2 scrollbar-hide">
         {events.map((event, id) => (
           <div
             key={id}

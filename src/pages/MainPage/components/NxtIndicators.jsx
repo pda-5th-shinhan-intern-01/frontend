@@ -39,7 +39,7 @@ export default function NxtIndicators() {
         </div>
       </div>
       {/* 카드 목록 */}
-      <div className="flex gap-2 overflow-x-auto p-2">
+      <div className="flex gap-2 overflow-x-auto p-2 scrollbar-hide">
         {events.map((event, id) => (
           <div
             key={id}
@@ -85,7 +85,7 @@ export default function NxtIndicators() {
                 <Tooltip content={introduceService.예상퍼포먼스} />
               </p>
               <h2 className="flex items-end text-sm font-semibold gap-1">
-                {event.beta} x {event.nxtData - event.prevData} =
+                {event.beta} x {event.nxtData - event.prevData}% =
                 <span
                   className={`text-lg ${
                     event.beta * (event.nxtData - event.prevData) > 0
