@@ -1,18 +1,7 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-const stockMiniData = [
-  { x: "2023-05-01", y: 110 },
-  { x: "2023-05-02", y: 112 },
-  { x: "2023-05-03", y: 108 },
-  { x: "2023-05-04", y: 115 },
-  { x: "2023-05-05", y: 117 },
-  { x: "2023-05-06", y: 113 },
-  { x: "2023-05-07", y: 118 },
-  { x: "2023-05-08", y: 120 },
-];
-
-export default function StockMiniChart({ indicator }) {
+export default function StockMiniChart({ indicator, chartData }) {
   const options = {
     chart: {
       type: "area",
@@ -62,12 +51,13 @@ export default function StockMiniChart({ indicator }) {
   };
 
   return (
-    <div style={{ width: 350 }}>
+    <div className="w-0.5">
       <ReactApexChart
-        series={[{ name: indicator, data: stockMiniData }]}
+        series={[{ name: indicator, data: chartData }]}
         options={options}
         type="area"
         height={80}
+        width={300}
       />
     </div>
   );
