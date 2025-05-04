@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import SectorOverview from "./SectorOverview";
+import StocksInSector from "./StocksInSector";
 
-//섹터 목록 페이지
 export default function SectorListPage() {
-  return <div>SectorListPage</div>;
+  const [selectedSector, setSelectedSector] = useState(null);
+
+  const handleSelectSector = (sectorName) => {
+    setSelectedSector((prev) => (prev === sectorName ? null : sectorName));
+  };
+
+  return (
+    <>
+      <SectorOverview onSelectSector={handleSelectSector} />
+      {selectedSector && <StocksInSector sectorName={selectedSector} />}
+    </>
+  );
 }
