@@ -94,7 +94,7 @@ export default function SectorOverview({ onSelectSector }) {
                                 {sector.name} <span className="text-red-600">{sector.change}</span>
                             </h2>
                             <button
-                                className="text-sm text-blue-500"
+                                className="text-sm text-blue-500 hover:cursor-pointer"
                                 onClick={() => onSelectSector(sector.name)}
                             >
                                 종목 보기
