@@ -75,7 +75,7 @@ export default function StockChart() {
         id: "candles",
         toolbar: {
           autoSelected: "pan",
-          show: true,
+          show: false,
         },
         zoom: {
           enabled: true,
@@ -166,6 +166,10 @@ export default function StockChart() {
         brush: {
           enabled: false,
           target: "candles",
+        },
+        toolbar: {
+          autoSelected: "pan",
+          show: false,
         },
         selection: {
           enabled: true,
