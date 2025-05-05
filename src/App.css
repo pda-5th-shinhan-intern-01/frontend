@@ -7,7 +7,9 @@
   --color-gray-light: #d9d9d9;
   --color-gray-md: #979797;
   --color-red-md: #f14452;
+  --color-red-light: #fca5a5;
   --color-blue-md: #3083f6;
+  --color-blue-light: #93c5fd;
 }
 @layer utilities {
   @keyframes spin-slow {

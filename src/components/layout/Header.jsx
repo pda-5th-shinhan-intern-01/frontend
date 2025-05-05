@@ -6,7 +6,7 @@ const navigates = [
   { id: "/main/sectors", title: "종목섹터" },
   { id: "/main/fomcs", title: "FOMC회의" },
   { id: "/main/introduce-indicators", title: "경제지표 알아보기" },
-  { id: "/main/hitmap", title: "섹터X경제지표" },
+  { id: "/main/heatmap", title: "섹터X경제지표" },
 ];
 
 export default function Header() {
