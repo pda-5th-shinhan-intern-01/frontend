@@ -4,7 +4,7 @@ import Layout from "../components/layout/Layout";
 import LandingPage from "../pages/LandingPage";
 import FOMCListPage from "../pages/FOMCListPage";
 import FOMCDetailPage from "../pages/FOMCDetailPage";
-import HitmapPage from "../pages/HitmapPage";
+import HeatmapPage from "../pages/HeatmapPage";
 import IntroductionIndicatorPage from "../pages/IntroduceIndicatorPage";
 import MainPage from "../pages/MainPage";
 import SectorListPage from "../pages/SectorListPage";
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
       { path: "", element: <LandingPage /> },
       { path: "fomcs", element: <FOMCListPage /> },
       { path: "fomcs/:id", element: <FOMCDetailPage /> },
-      { path: "hitmap", element: <HitmapPage /> },
+      { path: "heatmap", element: <HeatmapPage /> },
       { path: "sectors", element: <SectorListPage /> },
       { path: "sectors/:id", element: <MainPage /> },
       { path: "introduce-indicators", element: <IntroductionIndicatorPage /> },
