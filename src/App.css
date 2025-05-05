@@ -9,3 +9,17 @@
   --color-red-md: #f14452;
   --color-blue-md: #3083f6;
 }
+@layer utilities {
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 60s linear infinite;
+  }
+}
