@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HeatmapControlPanel from "./HeatmapControlPanel";
-import Heatmap from './Heatmap';
+import Heatmap from "./Heatmap";
 
 export default function HeatmapPage() {
   const [threshold, setThreshold] = useState(0.3);
@@ -12,8 +12,9 @@ export default function HeatmapPage() {
   return (
     <div className="p-6">
       <h1 className="font-bold text-xl mb-2">경제 지표와 섹터 상관관계 분석</h1>
-      <h3 className="text-gray-700 mb-6">
-        미국 주요 경제 지표와 11개 시장 섹터 간의 상관관계를 시각화한 히트맵입니다.
+      <h3 className="mb-6">
+        미국 주요 경제 지표와 11개 시장 섹터 간의 상관관계를 시각화한
+        히트맵입니다.
       </h3>
 
       <HeatmapControlPanel
