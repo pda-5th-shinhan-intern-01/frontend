@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import HeatmapControlPanel from "./HeatmapControlPanel";
+import Heatmap from './Heatmap';
 
 export default function HeatmapPage() {
   const [threshold, setThreshold] = useState(0.3);
@@ -27,6 +28,9 @@ export default function HeatmapPage() {
         returnWindow={returnWindow}
         onReturnWindowChange={setReturnWindow}
       />
+      <div className="mt-5">
+        <Heatmap />
+      </div>
     </div>
   );
 }

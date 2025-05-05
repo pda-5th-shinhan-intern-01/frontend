@@ -23,7 +23,7 @@ export default function HeatmapControlPanel({
         <div className="flex gap-4 bg-gray-100 p-4 rounded-lg flex-wrap">
             {/* 1. 기간 선택 */}
             <div className="flex flex-col justify-between bg-white px-4 py-3 rounded shadow-sm w-[300px] h-[80px]">
-                <span className="text-sm text-gray-600 font-medium">기간 선택</span>
+                <span className="text-sm text-gray-600 font-medium">지표 반응 기간</span>
                 <div className="flex gap-2 items-center">
                     <input
                         type="date"
