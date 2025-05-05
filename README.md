@@ -5,7 +5,7 @@
 3. 커밋 메시지 (feat, fix, style, merge...)(#이슈번호): 커밋메세지
    <br/>ex) feat(#1): 주식 차트 생성
 4. pull request 시, 최소 두 명 reviewer 설정 및 확인 후 merge하기
-5. main 브랜치 X, develop 브랜치에 merge하기기
+5. main 브랜치 X, develop 브랜치에 merge하기
 
 ## 폴더 구조
 
@@ -17,6 +17,7 @@ frontend
 │  ├─ assets         # 이미지, 아이콘 등 정적 자산
 │  ├─ components     # 재사용 가능한 전역 컴포넌트
 │  │  ├─ layout      # Header, Footer 등 레이아웃 구성 요소
+│  ├─ context        # 전역 상태 관리를 위한 React Context 모듈
 │  ├─ data           # 서비스/지표 소개 등 정적인 텍스트 데이터
 │  ├─ hooks          # 커스텀 React 훅
 │  ├─ pages          # 각 라우트별 페이지 컴포넌트
