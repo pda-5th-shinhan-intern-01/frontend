@@ -20,7 +20,7 @@ export default function LandingPage() {
           <IndicatorSummary />
         </div>
 
-        <aside className="w-80 flex flex-col gap-6">
+        <aside className="hidden xl:flex w-80 flex-col gap-6">
           <TopMovers />
           <NewsList />
         </aside>
