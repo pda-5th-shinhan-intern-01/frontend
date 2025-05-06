@@ -52,7 +52,7 @@ const sectors = [
   },
   {
     name: "산업재",
-    change: "+5.55%",
+    change: "-5.55%",
     description: "항공우주, 방위산업, 건설, 기계, 운송 등을 포함하는 섹터",
     stocks: ["JNJ", "PFE", "MRK", "MRK"],
     more: 8,
@@ -80,6 +80,7 @@ const sectors = [
     more: 8,
   },
 ];
+
 export default function SectorOverview({ onSelectSector }) {
   return (
     <div className="bg-gray-light p-5">
@@ -94,7 +95,14 @@ export default function SectorOverview({ onSelectSector }) {
             <div className="flex justify-between items-center mb-2">
               <h2 className="text-lg font-semibold">
                 {sector.name}{" "}
-                <span className="text-red-md">{sector.change}</span>
+                <span
+                  className={`${sector.change.startsWith("-")
+                    ? "text-blue-md"
+                    : "text-red-md"
+                    }`}
+                >
+                  {sector.change}
+                </span>
               </h2>
               <button
                 className="text-sm text-blue-md hover:cursor-pointer"
