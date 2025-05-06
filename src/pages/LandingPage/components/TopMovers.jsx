@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { topMoversData } from "../dummies/topMoversData";
+import { useNavigate } from "react-router-dom";
 
 export default function TopMovers() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("actual");
   const data = topMoversData[activeTab];
 
@@ -11,7 +13,12 @@ export default function TopMovers() {
         <h3 className="font-semibold text-lg text-[color:var(--color-black)]">
           Top Movers
         </h3>
-        <button className="text-[color:var(--color-gray-md)] hover:cursor-pointer text-xs">
+        <button
+          onClick={() => {
+            navigate("sectors");
+          }}
+          className="text-[color:var(--color-gray-md)] hover:cursor-pointer text-xs"
+        >
           더보기 &gt;
         </button>
       </div>
@@ -46,7 +53,10 @@ export default function TopMovers() {
       <ul className="flex flex-col gap-4">
         {data.map((item, idx) => (
           <li key={idx} className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-[color:var(--color-gray-light)] rounded-full" />
+            <img
+              src={`${import.meta.env.VITE_STOCK_LOGO_URL}${item.ticker}.png`}
+              className="w-12 h-12 bg-[color:var(--color-gray-light)] rounded-full"
+            />
             <div className="flex-1">
               <div className="font-medium text-[color:var(--color-black)]">
                 {item.name}
