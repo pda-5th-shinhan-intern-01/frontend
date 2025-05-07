@@ -50,9 +50,8 @@ export default function StocksInSector({ sectorName }) {
             <tr key={idx} className="border-t border-gray-200 text-sm">
               <td className="py-4">
                 <img
-                  src={`${import.meta.env.VITE_STOCK_LOGO_URL}${
-                    stock.ticker
-                  }.png`}
+                  src={`${import.meta.env.VITE_STOCK_LOGO_URL}${stock.ticker
+                    }.png`}
                   className="w-10 h-10 rounded-full mr-2 bg-gray-light"
                 />
               </td>
