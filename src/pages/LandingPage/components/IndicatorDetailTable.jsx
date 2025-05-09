@@ -2,7 +2,8 @@ import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 
 export default function IndicatorDetailTable({ weeklyData }) {
-  const { focusedIndicator, setFocusedIndicator } = useIndicator();
+  const { focusedIndicator, setFocusedIndicator, setLastClickedY } =
+    useIndicator();
 
   return (
     <div className="flex flex-col gap-6">
@@ -44,12 +45,16 @@ export default function IndicatorDetailTable({ weeklyData }) {
                       <td
                         className="p-2 cursor-pointer flex justify-between items-center"
                         onClick={() => {
+                          const currentY = window.scrollY;
+
                           if (focusedIndicator === event.indicator) {
                             setFocusedIndicator(null);
                             setTimeout(() => {
+                              setLastClickedY(currentY);
                               setFocusedIndicator(event.indicator);
                             }, 0);
                           } else {
+                            setLastClickedY(currentY);
                             setFocusedIndicator(event.indicator);
                           }
                         }}

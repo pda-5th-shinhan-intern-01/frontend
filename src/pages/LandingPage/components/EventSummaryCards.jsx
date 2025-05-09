@@ -5,7 +5,8 @@ import economicEventsData from "../dummies/economicEventsData";
 
 export default function EventSummaryCards() {
   const [events, setEvents] = useState([]);
-  const { setFocusedIndicator, focusedIndicator } = useIndicator();
+  const { setFocusedIndicator, focusedIndicator, setLastClickedY } =
+    useIndicator();
 
   useEffect(() => {
     setEvents(economicEventsData);
@@ -30,6 +31,21 @@ export default function EventSummaryCards() {
     return () => clearTimeout(timer);
   }, [focusedIndicator]);
 
+  const handleClick = (eventKey) => {
+    const currentY = window.scrollY;
+
+    if (focusedIndicator === eventKey) {
+      setFocusedIndicator(null);
+      setTimeout(() => {
+        setLastClickedY(currentY);
+        setFocusedIndicator(eventKey);
+      }, 0);
+    } else {
+      setLastClickedY(currentY);
+      setFocusedIndicator(eventKey);
+    }
+  };
+
   return (
     <div className="p-4 bg-white w-full">
       <h2 className="text-lg font-semibold mb-4 text-[color:var(--color-black)]">
@@ -43,16 +59,7 @@ export default function EventSummaryCards() {
           return (
             <div
               key={i}
-              onClick={() => {
-                if (focusedIndicator === event.key) {
-                  setFocusedIndicator(null);
-                  setTimeout(() => {
-                    setFocusedIndicator(event.key);
-                  }, 0);
-                } else {
-                  setFocusedIndicator(event.key);
-                }
-              }}
+              onClick={() => handleClick(event.key)}
               className="relative flex-shrink-0 w-1/4 bg-[color:var(--color-gray-light)] rounded p-4 text-sm cursor-pointer hover:bg-gray-300"
             >
               <div className="font-semibold text-[color:var(--color-black)]">
