@@ -14,12 +14,18 @@ export default function EventSummaryCards() {
 
   useEffect(() => {
     if (!focusedIndicator) return;
+
     const timer = setTimeout(() => {
-      const calendar = document.getElementById("indicator-summary-section");
-      if (calendar) {
-        calendar.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 50);
+      requestAnimationFrame(() => {
+        const el = document.getElementById("indicator-summary-section");
+        if (el) {
+          const headerHeight = 80;
+          const y =
+            el.getBoundingClientRect().top + window.scrollY - headerHeight;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      });
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [focusedIndicator]);
@@ -38,15 +44,14 @@ export default function EventSummaryCards() {
             <div
               key={i}
               onClick={() => {
-                setFocusedIndicator(event.key);
-                setTimeout(() => {
-                  const calendar = document.getElementById(
-                    "indicator-summary-section"
-                  );
-                  if (calendar) {
-                    calendar.scrollIntoView({ behavior: "smooth" });
-                  }
-                }, 100);
+                if (focusedIndicator === event.key) {
+                  setFocusedIndicator(null);
+                  setTimeout(() => {
+                    setFocusedIndicator(event.key);
+                  }, 0);
+                } else {
+                  setFocusedIndicator(event.key);
+                }
               }}
               className="relative flex-shrink-0 w-1/4 bg-[color:var(--color-gray-light)] rounded p-4 text-sm cursor-pointer hover:bg-gray-300"
             >

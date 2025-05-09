@@ -13,7 +13,6 @@ const today = new Date();
 export default function EconomicCalendar() {
   const [selectedDate, setSelectedDate] = useState(today);
   const [weeklyData, setWeeklyData] = useState([]);
-  const [openIndicators, setOpenIndicators] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
 
@@ -46,12 +45,6 @@ export default function EconomicCalendar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const toggleIndicator = (key) => {
-    setOpenIndicators((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
-    );
-  };
 
   return (
     <div className="p-4">
@@ -122,12 +115,7 @@ export default function EconomicCalendar() {
       </div>
 
       <CalendarSummaryGrid weeklyData={weeklyData} />
-
-      <IndicatorDetailTable
-        weeklyData={weeklyData}
-        openIndicators={openIndicators}
-        toggleIndicator={toggleIndicator}
-      />
+      <IndicatorDetailTable weeklyData={weeklyData} />
     </div>
   );
 }

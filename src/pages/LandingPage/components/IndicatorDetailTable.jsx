@@ -1,13 +1,9 @@
-import IndicatorChartCard from "./IndicatorChartCard";
-import { economicEventChartData } from "../dummies/economicEventChartData";
+import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
-import { SlArrowDown } from "react-icons/sl";
 
-export default function IndicatorDetailTable({
-  weeklyData,
-  openIndicators,
-  toggleIndicator,
-}) {
+export default function IndicatorDetailTable({ weeklyData }) {
+  const { focusedIndicator, setFocusedIndicator } = useIndicator();
+
   return (
     <div className="flex flex-col gap-6">
       {weeklyData.map((day) => (
@@ -15,6 +11,7 @@ export default function IndicatorDetailTable({
           <div className="font-semibold text-sm text-[color:var(--color-black)] mb-2">
             {day.date} {day.day}요일
           </div>
+
           {day.events.length === 0 ? (
             <div className="text-xs text-[color:var(--color-gray-md)]">
               예정된 이벤트 없음
@@ -33,51 +30,36 @@ export default function IndicatorDetailTable({
               </thead>
               <tbody>
                 {day.events.map((event) => {
-                  const key = `${day.date}-${event.indicator}`;
-                  const isOpen = openIndicators.includes(key);
+                  const indicatorName =
+                    economicIndicatorMap[event.indicator]?.name ||
+                    event.indicator;
+
                   return (
-                    <>
-                      <tr
-                        key={`row-${key}`}
-                        className={`${
-                          isOpen
-                            ? "bg-[color:var(--color-blue-md)]/10"
-                            : "hover:bg-[color:var(--color-gray-light)]"
-                        } transition`}
+                    <tr
+                      key={`${day.date}-${event.indicator}`}
+                      className="hover:bg-[color:var(--color-blue-md)]/10 transition"
+                    >
+                      <td className="p-2">{event.time}</td>
+                      <td className="p-2">{event.country}</td>
+                      <td
+                        className="p-2 cursor-pointer flex justify-between items-center"
+                        onClick={() => {
+                          if (focusedIndicator === event.indicator) {
+                            setFocusedIndicator(null);
+                            setTimeout(() => {
+                              setFocusedIndicator(event.indicator);
+                            }, 0);
+                          } else {
+                            setFocusedIndicator(event.indicator);
+                          }
+                        }}
                       >
-                        <td className="p-2">{event.time}</td>
-                        <td className="p-2">{event.country}</td>
-                        <td
-                          className="p-2 cursor-pointer flex justify-between items-center"
-                          onClick={() => toggleIndicator(key)}
-                        >
-                          <span>
-                            {economicIndicatorMap[event.indicator]?.name ||
-                              event.indicator}
-                          </span>
-                          <SlArrowDown
-                            className={`transition-transform duration-300 ml-2 ${
-                              isOpen ? "rotate-180" : "rotate-0"
-                            }`}
-                          />
-                        </td>
-                        <td className="p-2">{event.expected}</td>
-                        <td className="p-2">{event.actual}</td>
-                        <td className="p-2">{event.previous}</td>
-                      </tr>
-                      {isOpen && (
-                        <tr key={`card-${key}`}>
-                          <td colSpan={6} className="p-4">
-                            {economicEventChartData[event.indicator] && (
-                              <IndicatorChartCard
-                                indicator={event.indicator}
-                                data={economicEventChartData[event.indicator]}
-                              />
-                            )}
-                          </td>
-                        </tr>
-                      )}
-                    </>
+                        <span>{indicatorName}</span>
+                      </td>
+                      <td className="p-2">{event.expected}</td>
+                      <td className="p-2">{event.actual}</td>
+                      <td className="p-2">{event.previous}</td>
+                    </tr>
                   );
                 })}
               </tbody>
