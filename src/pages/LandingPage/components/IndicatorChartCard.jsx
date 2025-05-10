@@ -3,14 +3,23 @@ import ReactApexChart from "react-apexcharts";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 
 export default function IndicatorChartCard({ indicator, data }) {
+  const { name = indicator } = economicIndicatorMap[indicator] || {};
+
   const categories = data.map((item) => item.month);
   const expectedSeries = data.map((item) => item.expected);
   const actualSeries = data.map((item) => item.actual);
 
   const chartOptions = {
-    chart: { type: "bar", height: 300 },
+    chart: {
+      type: "bar",
+      height: 250,
+    },
     plotOptions: {
-      bar: { horizontal: false, columnWidth: "75%", endingShape: "rounded" },
+      bar: {
+        horizontal: false,
+        columnWidth: "75%",
+        endingShape: "rounded",
+      },
     },
     dataLabels: { enabled: false },
     xaxis: {
@@ -38,14 +47,13 @@ export default function IndicatorChartCard({ indicator, data }) {
   return (
     <div className="bg-white mt-4 rounded shadow p-4">
       <h3 className="text-sm font-semibold mb-2">
-        {economicIndicatorMap[indicator]?.name || indicator} 월별 발표치 vs
-        예상치
+        {name} 월별 발표치 vs 예상치
       </h3>
       <ReactApexChart
         options={chartOptions}
         series={chartSeries}
         type="bar"
-        height={300}
+        height={250}
       />
     </div>
   );

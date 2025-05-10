@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
-import { indicatorSummaryData } from "../dummies/indicatorSummaryData.js";
-import IndicatorChangeChart from "../../../components/IndicatorChangeChart";
+import { indicatorSummaryData } from "../dummies/indicatorSummaryData";
+import { economicEventChartData } from "../dummies/economicEventChartData";
+import IndicatorChartCard from "./IndicatorChartCard";
 
 export default function IndicatorSummary() {
   const { focusedIndicator } = useIndicator();
   const [data, setData] = useState(null);
+
+  const meta = focusedIndicator && economicIndicatorMap[focusedIndicator];
+  const diff =
+    data && typeof data.actual === "number" && typeof data.expected === "number"
+      ? (data.actual - data.expected).toFixed(1)
+      : null;
 
   useEffect(() => {
     if (focusedIndicator) {
@@ -14,11 +21,17 @@ export default function IndicatorSummary() {
     }
   }, [focusedIndicator]);
 
-  const meta = focusedIndicator && economicIndicatorMap[focusedIndicator];
-  const diff =
-    data && typeof data.actual === "number" && typeof data.expected === "number"
-      ? (data.actual - data.expected).toFixed(1)
-      : null;
+  useEffect(() => {
+    if (!data) return;
+    const el = document.getElementById("indicator-summary-section");
+    if (el) {
+      const offset = 80;
+      const y = el.getBoundingClientRect().top + window.scrollY - offset;
+      setTimeout(() => {
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }, 50);
+    }
+  }, [data]);
 
   if (!focusedIndicator || !meta || !data) return null;
 
@@ -27,56 +40,58 @@ export default function IndicatorSummary() {
       id="indicator-summary-section"
       className="bg-[color:var(--color-gray-light)] p-6 rounded flex flex-col gap-4"
     >
-      <div className="flex gap-6">
-        <div className="flex-1 flex flex-col gap-4">
-          <div className="text-lg font-semibold text-[color:var(--color-black)]">
-            {meta.name} ({focusedIndicator})
-          </div>
-          <p className="text-sm">{meta.description}</p>
-
-          <div className="flex gap-4">
-            <div className="flex-1 bg-[color:var(--color-gray-md)] p-3">
-              <div className="text-xs mb-1">예상치</div>
-              <div className="text-lg font-bold">
-                +{data.expected}% {data.unit || ""}
-              </div>
+      <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+        <div className="flex-1 flex flex-col gap-2 h-full">
+          <div>
+            <div className="text-lg font-semibold text-[color:var(--color-black)]">
+              {meta.name} ({focusedIndicator})
             </div>
-
-            <div className="flex-1 bg-[color:var(--color-gray-md)] p-3">
-              <div className="text-xs mb-1">발표치</div>
-              <div className="text-lg font-bold flex items-center gap-1">
-                +{data.actual}% {data.unit || ""}
-                {diff !== null && (
-                  <span
-                    className={`text-sm ml-1 ${
-                      parseFloat(diff) > 0
-                        ? "text-[color:var(--color-red-md)]"
-                        : "text-[color:var(--color-blue-md)]"
-                    }`}
-                  >
-                    ({diff > 0 ? "+" : "-"}
-                    {Math.abs(diff)}%p)
-                  </span>
-                )}
-              </div>
-            </div>
+            <p className="text-sm mt-1.5">{meta.description}</p>
           </div>
 
+          <div className="mt-auto flex gap-4">
+            {[
+              ["예상치", data.expected],
+              ["발표치", data.actual],
+            ].map(([label, value], i) => (
+              <div
+                key={label}
+                className="flex-1 bg-[color:var(--color-gray-md)] px-3 py-6"
+              >
+                <div className="text-sm mb-1">{label}</div>
+                <div className="text-lg font-bold flex items-center gap-1">
+                  +{value}% {data.unit || ""}
+                  {i === 1 && diff !== null && (
+                    <span
+                      className={`text-sm ml-1 ${
+                        parseFloat(diff) > 0
+                          ? "text-[color:var(--color-red-md)]"
+                          : "text-[color:var(--color-blue-md)]"
+                      }`}
+                    >
+                      ({diff > 0 ? "+" : "-"}
+                      {Math.abs(diff)}%p)
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex-1 flex flex-col gap-4 h-full">
           <div className="text-[color:var(--color-black)]">
             <span className="font-semibold">영향을 미치는 주요 산업군</span>
             <div className="text-sm mt-2">
               {data.industries.map((ind, i) => (
-                <span
-                  key={i}
-                  className="inline-block text-[color:var(--color-black)] px-2 py-0.5 border mr-1"
-                >
+                <span key={i} className="inline-block px-2 py-0.5 border mr-1">
                   {ind}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="font-semibold mt-2 text-[color:var(--color-black)]">
+          <div className="font-semibold text-[color:var(--color-black)]">
             영향력이 높은 종목 순위
           </div>
           <ul className="text-sm text-[color:var(--color-black)]">
@@ -86,7 +101,7 @@ export default function IndicatorSummary() {
                   {i + 1}. {item.name}
                 </span>
                 <span>
-                  {item.price}{" "}
+                  {item.price}
                   <span
                     className={`ml-1 ${
                       item.change.includes("+")
@@ -101,11 +116,14 @@ export default function IndicatorSummary() {
             ))}
           </ul>
         </div>
-
-        <div className="w-1/2 mt-4 bg-white rounded-xl">
-          <IndicatorChangeChart indicator={meta.name} data={data.chartData} />
-        </div>
       </div>
+
+      {economicEventChartData[focusedIndicator] && (
+        <IndicatorChartCard
+          indicator={focusedIndicator}
+          data={economicEventChartData[focusedIndicator]}
+        />
+      )}
     </div>
   );
 }

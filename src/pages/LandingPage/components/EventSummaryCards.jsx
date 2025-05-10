@@ -5,7 +5,8 @@ import economicEventsData from "../dummies/economicEventsData";
 
 export default function EventSummaryCards() {
   const [events, setEvents] = useState([]);
-  const { setFocusedIndicator, focusedIndicator } = useIndicator();
+  const { setFocusedIndicator, focusedIndicator, setLastClickedY } =
+    useIndicator();
 
   useEffect(() => {
     setEvents(economicEventsData);
@@ -14,15 +15,36 @@ export default function EventSummaryCards() {
 
   useEffect(() => {
     if (!focusedIndicator) return;
+
     const timer = setTimeout(() => {
-      const calendar = document.getElementById("indicator-summary-section");
-      if (calendar) {
-        calendar.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 50);
+      requestAnimationFrame(() => {
+        const el = document.getElementById("indicator-summary-section");
+        if (el) {
+          const headerHeight = 80;
+          const y =
+            el.getBoundingClientRect().top + window.scrollY - headerHeight;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      });
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [focusedIndicator]);
+
+  const handleClick = (eventKey) => {
+    const currentY = window.scrollY;
+
+    if (focusedIndicator === eventKey) {
+      setFocusedIndicator(null);
+      setTimeout(() => {
+        setLastClickedY(currentY);
+        setFocusedIndicator(eventKey);
+      }, 0);
+    } else {
+      setLastClickedY(currentY);
+      setFocusedIndicator(eventKey);
+    }
+  };
 
   return (
     <div className="p-4 bg-white w-full">
@@ -37,17 +59,7 @@ export default function EventSummaryCards() {
           return (
             <div
               key={i}
-              onClick={() => {
-                setFocusedIndicator(event.key);
-                setTimeout(() => {
-                  const calendar = document.getElementById(
-                    "indicator-summary-section"
-                  );
-                  if (calendar) {
-                    calendar.scrollIntoView({ behavior: "smooth" });
-                  }
-                }, 100);
-              }}
+              onClick={() => handleClick(event.key)}
               className="relative flex-shrink-0 w-1/4 bg-[color:var(--color-gray-light)] rounded p-4 text-sm cursor-pointer hover:bg-gray-300"
             >
               <div className="font-semibold text-[color:var(--color-black)]">
