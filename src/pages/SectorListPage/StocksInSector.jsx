@@ -86,10 +86,10 @@ const dummyStocks = [
   },
 ];
 
-export default function StocksInSector({ sector }) {
+export default function StocksInSector({ sector = "기술" }) {
   const [viewMode, setViewMode] = useState("LIST");
   const [stocks, setStocks] = useState(dummyStocks);
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
 
   const getStocks = () => {
     //종목 리스트 요청 api 호출
@@ -154,7 +154,7 @@ export default function StocksInSector({ sector }) {
                 key={idx}
                 className="border-t border-gray-200 text-sm"
                 onClick={() => {
-                  naviagte(`./${stock.ticker}`);
+                  navigate(`./${stock.ticker}`);
                 }}
               >
                 <td className="py-4">
@@ -182,7 +182,7 @@ export default function StocksInSector({ sector }) {
           </tbody>
         </table>
       ) : (
-        <TechTreemap stocks={stocks} />
+        <TechTreemap sector={sector} stocks={stocks} />
       )}
     </div>
   );

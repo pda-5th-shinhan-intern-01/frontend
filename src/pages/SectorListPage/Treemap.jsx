@@ -1,18 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Treemap, ResponsiveContainer } from "recharts";
-
-const dummyData = [
-  { name: "마이크로소프트", ticker: "MSFT", change: 3.57, marketCap: 280 },
-  { name: "애플", ticker: "AAPL", change: 1.54, marketCap: 270 },
-  { name: "엔비디아", ticker: "NVDA", change: 6.74, marketCap: 160 },
-  { name: "브로드컴", ticker: "AVGO", change: -1.27, marketCap: 50 },
-  { name: "오라클", ticker: "ORCL", change: 5.21, marketCap: 38 },
-  { name: "IBM", ticker: "IBM", change: 1.55, marketCap: 12 },
-  { name: "액센츄어 A", ticker: "ACN", change: -2.12, marketCap: 22 },
-  { name: "시스코", ticker: "CSCO", change: 4.48, marketCap: 21 },
-  { name: "어도비", ticker: "ADBE", change: 2.19, marketCap: 27 },
-  { name: "AMD", ticker: "AMD", change: -3.21, marketCap: 19 },
-];
 
 const getColor = (change) => {
   if (change >= 10) return "#ef4444";
@@ -28,16 +16,46 @@ const getColor = (change) => {
   return "#3b82f6";
 };
 
+const toTreemapData = (stocks, sector) => {
+  return [
+    {
+      name: sector,
+      children: stocks.map((stock) => ({
+        ...stock,
+        children: [],
+      })),
+    },
+  ];
+};
+
 function CustomContent(props) {
+  const [hoveredIndex, setHoveredIndex] = React.useState(null);
+  const { root, navigate } = props;
   return (
     <g>
-      {props?.root?.children?.map((node, i) => {
-        const { x, y, width, height, name, change } = node;
+      {root?.children?.map((node, i) => {
+        const { x, y, width, height, name, change, ticker } = node;
         const fillColor = getColor(change);
         const formattedChange = change?.toFixed(2);
+        const isHovered = hoveredIndex === i;
 
         return (
-          <g key={`cell-${i}`}>
+          <g
+            key={`cell-${i}`}
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => {
+              console.log("payload 확인:", ticker);
+              navigate(`./${ticker}`);
+            }}
+            style={{
+              cursor: "pointer",
+              transition: "transform 0.2s ease-in-out",
+              transform: isHovered ? "scale(1.1)" : "scale(1)",
+              transformBox: "fill-box", // 중심 기준으로 확대
+              transformOrigin: "center center", // 중심 위치 기준
+            }}
+          >
             <rect
               x={x}
               y={y}
@@ -67,7 +85,9 @@ function CustomContent(props) {
   );
 }
 
-export default function TechTreemap({ stocks }) {
+export default function TechTreemap({ sector = "기술", stocks }) {
+  const treemapData = toTreemapData(stocks, sector);
+
   const legendColors = [
     { label: "-10%", color: "#3b82f6" },
     { label: "-5%", color: "#60a5fa" },
@@ -81,17 +101,19 @@ export default function TechTreemap({ stocks }) {
     { label: "5%", color: "#f87171" },
     { label: "10%", color: "#ef4444" },
   ];
-
+  const navigate = useNavigate();
   return (
     <div className="p-6 bg-white rounded-2xl shadow-md">
       <div className="w-full h-[600px] rounded-xl overflow-hidden">
         <ResponsiveContainer width="100%" height="100%">
           <Treemap
-            data={stocks}
+            data={treemapData}
             dataKey="marketCap"
             stroke="#fff"
             animationDuration={0}
-            content={<CustomContent />}
+            content={(props) => (
+              <CustomContent {...props} navigate={navigate} />
+            )}
           />
         </ResponsiveContainer>
       </div>
