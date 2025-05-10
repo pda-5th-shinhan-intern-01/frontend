@@ -1,32 +1,118 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { formatNumberForMoney } from "../../utils/formatNumber";
+import TechTreemap from "./Treemap";
+import { useNavigate } from "react-router-dom";
 
-const techStocks = Array.from({ length: 8 }, (_, idx) => ({
-  ticker: "TSLA",
-  name: "테슬라 (TSLA)",
-  price: "292.03 USD",
-  change: "+2.15%",
-  volume: "755,656",
-  marketCap: "9150.67억 USD",
-}));
+const dummyStocks = [
+  {
+    name: "마이크로소프트",
+    ticker: "MSFT",
+    price: 412.56,
+    change: 3.57,
+    volume: 18000000,
+    marketCap: 280,
+  },
+  {
+    name: "애플",
+    ticker: "AAPL",
+    price: 191.12,
+    change: 1.54,
+    volume: 22000000,
+    marketCap: 270,
+  },
+  {
+    name: "엔비디아",
+    ticker: "NVDA",
+    price: 927.35,
+    change: 6.74,
+    volume: 30000000,
+    marketCap: 160,
+  },
+  {
+    name: "브로드컴",
+    ticker: "AVGO",
+    price: 1342.78,
+    change: -1.27,
+    volume: 6500000,
+    marketCap: 50,
+  },
+  {
+    name: "오라클",
+    ticker: "ORCL",
+    price: 121.49,
+    change: 5.21,
+    volume: 9000000,
+    marketCap: 38,
+  },
+  {
+    name: "IBM",
+    ticker: "IBM",
+    price: 168.23,
+    change: 1.55,
+    volume: 7000000,
+    marketCap: 12,
+  },
+  {
+    name: "액센츄어 A",
+    ticker: "ACN",
+    price: 297.84,
+    change: -2.12,
+    volume: 8000000,
+    marketCap: 22,
+  },
+  {
+    name: "시스코",
+    ticker: "CSCO",
+    price: 48.71,
+    change: 4.48,
+    volume: 17000000,
+    marketCap: 21,
+  },
+  {
+    name: "어도비",
+    ticker: "ADBE",
+    price: 512.67,
+    change: 2.19,
+    volume: 6200000,
+    marketCap: 27,
+  },
+  {
+    name: "AMD",
+    ticker: "AMD",
+    price: 152.33,
+    change: -3.21,
+    volume: 35000000,
+    marketCap: 19,
+  },
+];
 
-export default function StocksInSector({ sectorName }) {
+export default function StocksInSector({ sector = "기술" }) {
   const [viewMode, setViewMode] = useState("LIST");
+  const [stocks, setStocks] = useState(dummyStocks);
+  const navigate = useNavigate();
 
-  if (!sectorName) return null;
+  const getStocks = () => {
+    //종목 리스트 요청 api 호출
+  };
 
-  if (sectorName !== "기술") {
-    return (
-      <div className="p-8 bg-white">
-        <h1 className="text-2xl font-bold mb-6">{sectorName} 섹터</h1>
-        <p>❗️아직 이 섹터의 종목 데이터는 준비 중입니다.</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    getStocks();
+  }, [sector]);
 
   return (
     <div className="p-8 bg-white">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">{sectorName} 섹터</h1>
+      {/* ✅ 상단 섹터 타이틀 */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">
+          기술 <span className="font-normal text-gray-500">Technology</span>
+        </h2>
+        <p className="text-sm text-gray-500 mt-1">
+          소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터
+        </p>
+      </div>
+
+      {/* ✅ 토글 버튼 */}
+      <div className="flex justify-end items-center mb-6">
         <div className="flex bg-gray-300 rounded-full p-1">
           <button
             onClick={() => setViewMode("LIST")}
@@ -49,11 +135,12 @@ export default function StocksInSector({ sectorName }) {
         </div>
       </div>
 
+      {/* ✅ 컨텐츠 영역 */}
       {viewMode === "LIST" ? (
         <table className="w-full text-left border-t border-gray-300 table-fixed">
           <thead>
             <tr className="text-sm text-gray-600">
-              <th className="w-[10%] py-3">&nbsp;</th> {/* 로고 */}
+              <th className="w-[10%] py-3"></th>
               <th className="w-[25%] py-3">종목명</th>
               <th className="w-[15%] py-3">현재가</th>
               <th className="w-[15%] py-3">등락률</th>
@@ -62,8 +149,14 @@ export default function StocksInSector({ sectorName }) {
             </tr>
           </thead>
           <tbody>
-            {techStocks.map((stock, idx) => (
-              <tr key={idx} className="border-t border-gray-200 text-sm">
+            {stocks.map((stock, idx) => (
+              <tr
+                key={idx}
+                className="border-t border-gray-200 text-sm"
+                onClick={() => {
+                  navigate(`./${stock.ticker}`);
+                }}
+              >
                 <td className="py-4">
                   <img
                     src={`${import.meta.env.VITE_STOCK_LOGO_URL}${
@@ -74,18 +167,22 @@ export default function StocksInSector({ sectorName }) {
                   />
                 </td>
                 <td className="truncate">{stock.name}</td>
-                <td>{stock.price}</td>
-                <td className="text-green-600">{stock.change}</td>
-                <td className="truncate">{stock.volume}</td>
-                <td className="truncate">{stock.marketCap}</td>
+                <td>{formatNumberForMoney(stock.price)}원</td>
+                <td className="text-green-600">
+                  {formatNumberForMoney(stock.change)}%
+                </td>
+                <td className="truncate">
+                  {formatNumberForMoney(stock.volume)}
+                </td>
+                <td className="truncate">
+                  {formatNumberForMoney(stock.marketCap)}억원
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       ) : (
-        <div className="text-center text-gray-600 text-lg py-12">
-          트리맵 코드 작성중
-        </div>
+        <TechTreemap sector={sector} stocks={stocks} />
       )}
     </div>
   );

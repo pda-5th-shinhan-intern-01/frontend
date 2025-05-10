@@ -22,7 +22,7 @@ export default function SectorListPage() {
     <>
       <SectorOverview onSelectSector={handleSelectSector} />
       <div ref={stockSectionRef}>
-        <StocksInSector sectorName={selectedSector} />
+        <StocksInSector sector={selectedSector} />
       </div>
     </>
   );

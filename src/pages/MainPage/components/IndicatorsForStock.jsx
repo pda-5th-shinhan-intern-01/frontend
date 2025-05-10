@@ -124,23 +124,23 @@ export default function IndicatorsForStock() {
             민감도순
           </div>
         </div>
-        <p className="h-16 flex-col flex justify-between">
-          <p className="text-sm">
+        <div className="h-16 flex-col flex justify-between">
+          <div className="text-sm">
             💡 지표 바를 클릭하면 오른쪽에 해당 지표의 변화 추이를 확인할 수
             있어요.
-          </p>
+          </div>
 
           <div className="flex w-full justify-end gap-4 text-xs">
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-red-md rounded-full"></div>
-              <p>양(+): 지표 상승 시 주가 상승</p>
+              <div>양(+): 지표 상승 시 주가 상승</div>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-blue-md rounded-full"></div>
-              <p>음(-): 지표 상승 시 주가 하락</p>
+              <div>음(-): 지표 상승 시 주가 하락</div>
             </div>
           </div>
-        </p>
+        </div>
         <ReactApexChart
           options={options}
           series={series}
@@ -153,9 +153,9 @@ export default function IndicatorsForStock() {
           <h3 className="text-lg font-semibold mb-2">
             {economicIndicatorMap[selected].name} ({selected}) 변화
           </h3>
-          <p className="text-sm h-16">
+          <div className="text-sm h-16">
             {economicIndicatorMap[selected].description}
-          </p>
+          </div>
           <IndicatorChangeChart indicator={selected} />
         </div>
       ) : null}
