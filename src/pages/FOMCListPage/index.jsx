@@ -1,52 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-const dummy = [
-  {
-    title: "2024년 5월 FOMC 회의록",
-    date: "2024-05-01",
-    interestRate: "동결",
-  },
-  {
-    title: "2024년 6월 FOMC 회의록",
-    date: "2024-06-12",
-    interestRate: "인상",
-  },
-  {
-    title: "2024년 7월 FOMC 회의록",
-    date: "2024-07-31",
-    interestRate: "인상",
-  },
-  {
-    title: "2024년 9월 FOMC 회의록",
-    date: "2024-09-18",
-    interestRate: "동결",
-  },
-  {
-    title: "2024년 11월 FOMC 회의록",
-    date: "2024-11-06",
-    interestRate: "인하",
-  },
-  {
-    title: "2024년 12월 FOMC 회의록",
-    date: "2024-12-18",
-    interestRate: "동결",
-  },
-  {
-    title: "2025년 1월 FOMC 회의록",
-    date: "2025-01-29",
-    interestRate: "인하",
-  },
-  {
-    title: "2025년 3월 FOMC 회의록",
-    date: "2025-03-19",
-    interestRate: "동결",
-  },
-  {
-    title: "2025년 5월 FOMC 회의록",
-    date: "2025-05-01",
-    interestRate: "인상",
-  },
-];
+import { FaCaretUp, FaCaretDown, FaChevronDown } from "react-icons/fa";
+import { MdHorizontalRule } from "react-icons/md";
+import CustomDateInput from "../../components/CustomDatePicker";
+import PaginationBtn from "../../components/PaginationBtn";
+import dummy from "./dummies/dummy.json";
+import CompareModal from "./components/CompareModal";
 
 // FOMC 목록 페이지
 export default function FOMCListPage() {
@@ -56,10 +15,19 @@ export default function FOMCListPage() {
   const [selectedRateIndex, setSelectedRateIndex] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState("desc"); // desc, asc
+  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const ITEMS_PER_PAGE = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [compareModalOpen, setCompareModalOpen] = useState(false);
 
   // 필터링 로직
   const filteredData = useMemo(() => {
-    return dummy.filter((item) => {
+    const filtered = dummy.filter((item) => {
       const matchRate =
         selectedRateIndex !== null
           ? item.interestRate === interestRateMap[selectedRateIndex]
@@ -68,12 +36,43 @@ export default function FOMCListPage() {
       const matchEnd = endDate ? item.date <= endDate : true;
       return matchRate && matchStart && matchEnd;
     });
-  }, [selectedRateIndex, startDate, endDate]);
+
+    return filtered.sort((a, b) =>
+      sortOrder === "asc"
+        ? a.date.localeCompare(b.date)
+        : b.date.localeCompare(a.date)
+    );
+  }, [selectedRateIndex, startDate, endDate, sortOrder]);
+
+  // 페이지네이션
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return filteredData.slice(startIndex, endIndex);
+  }, [filteredData, currentPage]);
+
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+  // 비교하기
+  const toggleChecked = (item) => {
+    setCheckedItems((prev) => {
+      const isChecked = prev.includes(item);
+      if (isChecked) {
+        return prev.filter((i) => i !== item);
+      } else {
+        return [...prev, item];
+      }
+    });
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortOrder, selectedRateIndex, startDate, endDate]);
 
   return (
     <div className="flex flex-col gap-3 p-4">
-      <div className="font-bold text-xl">FOMC 회의</div>
-      <div className="bg-gray-light p-3">
+      <div className="font-bold text-xl text-black-md">FOMC 회의</div>
+      <div className="bg-gray-light px-5 py-3 text-black-md text-sm">
         FOMC(연방공개시장위원회)는 미국 연준의 통화정책을 최종 결정하는 기구로,
         매 정례회의에서 기준금리를 인상·동결·인하합니다.
         <br />
@@ -82,41 +81,109 @@ export default function FOMCListPage() {
       </div>
 
       <div className="flex justify-between items-center">
-        {/* 기간 */}
+        {/* 기간 -> 수정하고 공통 컴포넌트로 빼기 */}
         <div className="flex items-center gap-2">
           <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="border px-2 py-1 rounded"
+            className="text-black-md px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
           />
           <span>~</span>
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="border px-2 py-1 rounded"
+            className="text-black-md px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
           />
         </div>
 
-        {/* 금리 필터 버튼 */}
-        <div className="flex gap-2">
-          {interestRateMap.map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() =>
-                setSelectedRateIndex(selectedRateIndex === idx ? null : idx)
-              }
-              className={`border px-3 py-1 rounded ${
-                selectedRateIndex === idx ? "bg-gray-light" : "bg-white"
-              }`}
-            >
-              금리 {item}
-            </button>
-          ))}
+        <div className="flex flex-row gap-2">
+          {/* 정렬 드롭다운 */}
+          <div className="text-left">
+            <div>
+              <button
+                type="button"
+                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm font-medium text-black-md hover:bg-gray-50"
+                onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+              >
+                {sortOrder === "desc" ? "최신순" : "오래된 순"}
+                <FaChevronDown />
+              </button>
+            </div>
+
+            {sortDropdownOpen && (
+              <div className="absolute z-10 mt-2 w-40 rounded-md ring-1 ring-gray-light shadow-lg bg-white">
+                <div className="py-1 text-sm ">
+                  <div
+                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                    onClick={() => {
+                      setSortOrder("desc");
+                      setSortDropdownOpen(false);
+                    }}
+                  >
+                    최신순
+                  </div>
+                  <div
+                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                    onClick={() => {
+                      setSortOrder("asc");
+                      setSortDropdownOpen(false);
+                    }}
+                  >
+                    오래된 순
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 금리 드롭다운 */}
+
+          <div className="text-left">
+            <div>
+              <button
+                type="button"
+                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm  hover:bg-gray-hover text-black-md"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                {selectedRateIndex !== null
+                  ? `금리 ${interestRateMap[selectedRateIndex]}`
+                  : "금리 전체"}
+                <FaChevronDown />
+              </button>
+            </div>
+
+            {dropdownOpen && (
+              <div className="absolute z-10 mt-2 w-40 rounded-md ring-1 ring-gray-light shadow-lg bg-white">
+                <div className="py-1 text-sm ">
+                  <div
+                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                    onClick={() => {
+                      setSelectedRateIndex(null);
+                      setDropdownOpen(false);
+                    }}
+                  >
+                    전체
+                  </div>
+                  {interestRateMap.map((rate, idx) => (
+                    <div
+                      key={idx}
+                      className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                      onClick={() => {
+                        setSelectedRateIndex(idx);
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      금리 {rate}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
       {/* 회의록 리스트 */}
       <table className="w-full table-fixed">
         <colgroup>
@@ -124,31 +191,78 @@ export default function FOMCListPage() {
           <col className="w-1/6" />
           <col className="w-1/6" />
         </colgroup>
-        <thead>
-          <tr>
-            <th className="text-left font-normal py-5">회의록 제목</th>
-            <th className="text-left font-normal py-5">회의 날짜</th>
-            <th className="text-right font-normal py-5">금리</th>
-          </tr>
-        </thead>
+
         <tbody>
           {filteredData.length === 0 ? (
             <tr>
-              <td colSpan="3" className="text-center py-4 text-gray-md">
+              <td colSpan="3" className="text-center py-4 text-gray-md ">
                 해당 조건의 회의가 없습니다.
               </td>
             </tr>
           ) : (
-            filteredData.map((data, idx) => (
-              <tr key={idx} onClick={() => navigate(`${idx}`)}>
-                <td className="py-5">{data.title}</td>
-                <td className="py-5">{data.date}</td>
-                <td className="py-5 text-right">{data.interestRate}</td>
+            paginatedData.map((data, idx) => (
+              <tr
+                key={idx}
+                className="hover:bg-gray-hover cursor-pointer transition-colors duration-300"
+              >
+                <td className="py-5 px-4">
+                  <div className="flex items-center gap-5">
+                    <input
+                      type="checkbox"
+                      checked={checkedItems.includes(data)}
+                      onChange={() => toggleChecked(data)}
+                      className="mt-1 accent-gray-500"
+                    />
+                    <div onClick={() => navigate(`${idx}`)}>
+                      <div className="text-black-md">{data.title}</div>
+                      <div className="text-sm text-gray-md">
+                        ❤️‍🔥 : 경제 전망에 대한 불확실성 증가, 연준은 물가와 고용
+                        목표 모두를 주시
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-5 text-black-md">{data.date}</td>
+                <td className="py-5 flex justify-center">
+                  {data.interestRate === "인상" ? (
+                    <FaCaretUp className="text-red-md" />
+                  ) : data.interestRate === "인하" ? (
+                    <FaCaretDown className="text-blue-md" />
+                  ) : (
+                    <MdHorizontalRule className="w-3" />
+                  )}
+                </td>
               </tr>
             ))
           )}
         </tbody>
       </table>
+
+      {/* 비교하기 버튼 */}
+      {checkedItems.length >= 2 && (
+        <div className="fixed bottom-40 right-20 z-50">
+          <button
+            className="border border-gray-light  px-6 py-2 rounded-md shadow-lg text-sm hover:bg-gray-hover"
+            onClick={() => setCompareModalOpen(true)}
+          >
+            비교하기 ({checkedItems.length}개)
+          </button>
+        </div>
+      )}
+
+      {compareModalOpen && (
+        <CompareModal
+          checkedItems={checkedItems}
+          setCompareModalOpen={setCompareModalOpen}
+        />
+      )}
+
+      {/* 페이지네이션 버튼 */}
+      <PaginationBtn
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </div>
   );
 }

@@ -1,0 +1,47 @@
+[
+  {
+    "title": "2024년 5월 FOMC 회의록",
+    "date": "2024-05-01",
+    "interestRate": "동결"
+  },
+  {
+    "title": "2024년 6월 FOMC 회의록",
+    "date": "2024-06-12",
+    "interestRate": "인상"
+  },
+  {
+    "title": "2024년 7월 FOMC 회의록",
+    "date": "2024-07-31",
+    "interestRate": "인상"
+  },
+  {
+    "title": "2024년 9월 FOMC 회의록",
+    "date": "2024-09-18",
+    "interestRate": "동결"
+  },
+  {
+    "title": "2024년 11월 FOMC 회의록",
+    "date": "2024-11-06",
+    "interestRate": "인하"
+  },
+  {
+    "title": "2024년 12월 FOMC 회의록",
+    "date": "2024-12-18",
+    "interestRate": "동결"
+  },
+  {
+    "title": "2025년 1월 FOMC 회의록",
+    "date": "2025-01-29",
+    "interestRate": "인하"
+  },
+  {
+    "title": "2025년 3월 FOMC 회의록",
+    "date": "2025-03-19",
+    "interestRate": "동결"
+  },
+  {
+    "title": "2025년 5월 FOMC 회의록",
+    "date": "2025-05-01",
+    "interestRate": "인상"
+  }
+]
