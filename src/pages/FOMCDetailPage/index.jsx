@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Section from "./components/Section";
 import SectionItem from "./components/SectionItem";
 import dummy from "./dummies/dummy.json";
@@ -17,6 +17,8 @@ const labels = {
 
 export default function FOMCDetailPage() {
   const navigate = useNavigate();
+  const params = useParams();
+  console.log(params, "pa");
   return (
     <div className="flex flex-col">
       {/* 기본 정보 */}
@@ -68,6 +70,30 @@ export default function FOMCDetailPage() {
           <SectionItem key={key} title={labels[key] || key} data={value} />
         ))}
       </Section>
+
+      <div className="flex justify-between items-center mt-10">
+        {dummy.prev ? (
+          <button
+            onClick={() => navigate(`/main/fomcs/${parseInt(params.id) - 1}`)}
+            className="text-sm text-gray-md hover:underline"
+          >
+            ← 이전 회의록: {dummy.prev.title}
+          </button>
+        ) : (
+          <div />
+        )}
+
+        {dummy.next ? (
+          <button
+            onClick={() => navigate(`/main/fomcs/${parseInt(params.id) + 1}`)}
+            className="text-sm text-gray-md hover:underline"
+          >
+            다음 회의록: {dummy.next.title} →
+          </button>
+        ) : (
+          <div />
+        )}
+      </div>
     </div>
   );
 }
