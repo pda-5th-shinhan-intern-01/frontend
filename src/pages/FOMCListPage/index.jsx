@@ -19,6 +19,7 @@ export default function FOMCListPage() {
   const [sortOrder, setSortOrder] = useState("desc"); // desc, asc
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
+  const [searchDate, setSearchDate] = useState(false);
 
   const ITEMS_PER_PAGE = 5;
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,13 +37,14 @@ export default function FOMCListPage() {
       const matchEnd = endDate ? item.date <= endDate : true;
       return matchRate && matchStart && matchEnd;
     });
+    setSearchDate(false);
 
     return filtered.sort((a, b) =>
       sortOrder === "asc"
         ? a.date.localeCompare(b.date)
         : b.date.localeCompare(a.date)
     );
-  }, [selectedRateIndex, startDate, endDate, sortOrder]);
+  }, [selectedRateIndex, searchDate, sortOrder]);
 
   // 페이지네이션
   const paginatedData = useMemo(() => {
@@ -96,6 +98,22 @@ export default function FOMCListPage() {
             onChange={(e) => setEndDate(e.target.value)}
             className="text-black-md px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
           />
+          <div
+            onClick={() => setSearchDate(true)}
+            className="text-black-md text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
+          >
+            조회{" "}
+          </div>
+          <div
+            onClick={() => {
+              setStartDate("");
+              setEndDate("");
+              setSearchDate(true);
+            }}
+            className="text-black-md text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
+          >
+            초기화{" "}
+          </div>
         </div>
 
         <div className="flex flex-row gap-2">
