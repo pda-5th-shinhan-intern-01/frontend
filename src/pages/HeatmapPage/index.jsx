@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeatmapControlPanel from "./HeatmapControlPanel";
 import Heatmap from "./Heatmap";
+import useHeatmapData from "../../hooks/useHeatMapData";
+import { dummyRawData } from "./dummyRawData";
 
 export default function HeatmapPage() {
   const [threshold, setThreshold] = useState(0.3);
@@ -8,6 +10,25 @@ export default function HeatmapPage() {
   const [returnWindow, setReturnWindow] = useState("±1일");
   const [startDate, setStartDate] = useState("2024-03-10");
   const [endDate, setEndDate] = useState("2025-03-09");
+  const [rawData, setRawData] = useState();
+
+  useEffect(() => {
+    getHeatmapRawData();
+    setRawData(dummyRawData);
+  }, []);
+
+  const getHeatmapRawData = async () => {
+    //히트맵 계산을 위한 rawData api 호출
+  };
+
+  const heatmapData = useHeatmapData({
+    rawData,
+    startDate,
+    endDate,
+    normalization,
+    returnWindow,
+    useDeltaKey: "deltaRate",
+  });
 
   return (
     <div className="p-6">
@@ -30,7 +51,7 @@ export default function HeatmapPage() {
         onReturnWindowChange={setReturnWindow}
       />
       <div className="mt-5">
-        <Heatmap />
+        <Heatmap heatmapData={heatmapData} />
       </div>
     </div>
   );

@@ -25,36 +25,35 @@ function getGradientColor(value) {
   return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
 }
 
-export default function Heatmap() {
-  const yLabels = [
-    "CPI",
-    "PPI",
-    "GDP",
-    "실업률",
-    "비농업부문 고용지수",
-    "Core PCE",
-    "소매판매",
-    "산업생산",
-    "ISM 제조업 PMI",
-  ];
+const yLabels = [
+  "CPI",
+  "PPI",
+  "GDP",
+  "실업률",
+  "비농업부문 고용지수",
+  "Core PCE",
+  "소매판매",
+  "산업생산",
+  "ISM 제조업 PMI",
+];
 
-  const xLabels = [
-    "기술",
-    "금융",
-    "헬스케어",
-    "자유소비재",
-    "필수소비재",
-    "에너지",
-    "산업재",
-    "소재",
-    "부동산",
-    "유틸리티",
-    "커뮤니케이션",
-  ];
-
-  const dummyData = yLabels.map(() =>
-    xLabels.map(() => parseFloat((Math.random() * 2 - 1).toFixed(2)))
-  );
+const xLabels = [
+  "기술",
+  "금융",
+  "헬스케어",
+  "자유소비재",
+  "필수소비재",
+  "에너지",
+  "산업재",
+  "소재",
+  "부동산",
+  "유틸리티",
+  "커뮤니케이션",
+];
+export default function Heatmap({ heatmapData }) {
+  // const dummyData = yLabels.map(() =>
+  //   xLabels.map(() => parseFloat((Math.random() * 2 - 1).toFixed(2)))
+  // );
 
   return (
     <div className="p-4 bg-gray-light rounded-lg">
@@ -90,7 +89,7 @@ export default function Heatmap() {
 
           {/* 히트맵 셀 */}
           <div className="grid grid-rows-9 gap-1">
-            {dummyData.map((row, rowIdx) => (
+            {heatmapData.map((row, rowIdx) => (
               <div key={rowIdx} className="grid grid-cols-11 gap-1 h-[48px]">
                 {row.map((value, colIdx) => (
                   <div
