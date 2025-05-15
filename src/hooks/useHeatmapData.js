@@ -48,31 +48,15 @@ function getReturn(prices, date, window) {
 }
 
 // 정규화
-function normalize(values, method) {
+function normalize(values) {
   if (!values || values.length === 0) return [];
 
-  if (method === "z-score") {
-    const mean = values.reduce((a, b) => a + b, 0) / values.length;
-    const std = Math.sqrt(
-      values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / values.length
-    );
-    if (std === 0) return values.map(() => 0);
-    return values.map((v) => (v - mean) / std);
-  }
-
-  if (method === "Min-Max") {
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    if (min === max) return values.map(() => 0.5);
-    return values.map((v) => (v - min) / (max - min));
-  }
-
-  if (method === "percentile") {
-    const sorted = [...values].sort((a, b) => a - b);
-    return values.map((v) => sorted.indexOf(v) / (values.length - 1));
-  }
-
-  return values; // 그대로 반환 (%Change or 기타)
+  const mean = values.reduce((a, b) => a + b, 0) / values.length;
+  const std = Math.sqrt(
+    values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / values.length
+  );
+  if (std === 0) return values.map(() => 0);
+  return values.map((v) => (v - mean) / std);
 }
 
 // 커스텀 훅
@@ -80,7 +64,6 @@ export default function useHeatmapData({
   rawData,
   startDate,
   endDate,
-  normalization = "z-score",
   returnWindow = "±1일",
   useDeltaKey = "deltaRate",
 }) {
@@ -106,16 +89,12 @@ export default function useHeatmapData({
         continue;
       }
 
-      const deltas = normalize(
-        events.map((e) => e[useDeltaKey]),
-        normalization
-      );
+      const deltas = normalize(events.map((e) => e[useDeltaKey]));
 
       const row = sectors.map((sector) => {
         const prices = rawData.sectorPrices[sector];
         const returns = normalize(
-          events.map((e) => getReturn(prices, e.date, returnWindow)),
-          normalization
+          events.map((e) => getReturn(prices, e.date, returnWindow))
         );
         return pearson(deltas, returns);
       });
@@ -124,5 +103,5 @@ export default function useHeatmapData({
     }
 
     return matrix; // shape: [indicator][sector]
-  }, [rawData, startDate, endDate, normalization, returnWindow, useDeltaKey]);
+  }, [rawData, startDate, endDate, returnWindow, useDeltaKey]);
 }
