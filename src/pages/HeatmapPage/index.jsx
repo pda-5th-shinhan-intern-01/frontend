@@ -5,8 +5,6 @@ import useHeatmapData from "../../hooks/useHeatMapData";
 import { dummyRawData } from "./dummyRawData";
 
 export default function HeatmapPage() {
-  const [threshold, setThreshold] = useState(0.3);
-  const [normalization, setNormalization] = useState("z-score");
   const [returnWindow, setReturnWindow] = useState("±1일");
   const [startDate, setStartDate] = useState("2024-03-10");
   const [endDate, setEndDate] = useState("2025-03-09");
@@ -25,7 +23,6 @@ export default function HeatmapPage() {
     rawData,
     startDate,
     endDate,
-    normalization,
     returnWindow,
     useDeltaKey: "deltaRate",
   });
@@ -43,10 +40,6 @@ export default function HeatmapPage() {
         endDate={endDate}
         onStartDateChange={setStartDate}
         onEndDateChange={setEndDate}
-        threshold={threshold}
-        onThresholdChange={setThreshold}
-        normalization={normalization}
-        onNormalizationChange={setNormalization}
         returnWindow={returnWindow}
         onReturnWindowChange={setReturnWindow}
       />
