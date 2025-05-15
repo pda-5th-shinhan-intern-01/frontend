@@ -9,17 +9,15 @@ export default function IndicatorDetailTable({ weeklyData }) {
     <div className="flex flex-col gap-6">
       {weeklyData.map((day) => (
         <div key={day.date}>
-          <div className="font-semibold text-sm text-[color:var(--color-black)] mb-2">
+          <div className="font-semibold text-sm text-black mb-2">
             {day.date} {day.day}요일
           </div>
 
           {day.events.length === 0 ? (
-            <div className="text-xs text-[color:var(--color-gray-md)]">
-              예정된 이벤트 없음
-            </div>
+            <div className="text-xs text-gray-md">예정된 이벤트 없음</div>
           ) : (
             <table className="w-full text-xs table-fixed">
-              <thead className="text-left text-[color:var(--color-black)] bg-[color:var(--color-gray-light)]">
+              <thead className="text-left text-black bg-gray-light">
                 <tr>
                   <th className="p-2 w-[10%]">시간</th>
                   <th className="p-2 w-[10%]">국가</th>
@@ -38,7 +36,7 @@ export default function IndicatorDetailTable({ weeklyData }) {
                   return (
                     <tr
                       key={`${day.date}-${event.indicator}`}
-                      className="hover:bg-[color:var(--color-blue-md)]/10 transition"
+                      className="hover:bg-blue-md/10 transition"
                     >
                       <td className="p-2">{event.time}</td>
                       <td className="p-2">{event.country}</td>

@@ -6,12 +6,15 @@
   --color-black: #000000;
   --color-black-md: #364153;
   --color-gray-hover: #f3f4f6;
-  --color-gray-light: #d9d9d9;
+  --color-gray-light: #f5f5f5;
   --color-gray-md: #979797;
-  --color-red-md: #f14452;
+  --color-red-md: #fe4700;
   --color-red-light: #fca5a5;
-  --color-blue-md: #3083f6;
+  --color-blue-md: #00aaf0;
   --color-blue-light: #93c5fd;
+  --color-orange: #ff8341;
+  --color-ivory: #fffaf6;
+  --color-green-light: #f6fdec;
 }
 @layer utilities {
   @keyframes spin-slow {

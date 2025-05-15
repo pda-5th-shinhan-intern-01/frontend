@@ -4,7 +4,6 @@ import EventSummaryCards from "./components/EventSummaryCards";
 import EconomicCalendar from "./components/EconomicCalendar";
 import IndicatorSummary from "./components/IndicatorSummary";
 import TopMovers from "./components/TopMovers";
-import NewsList from "./components/NewsList";
 import ScrollBackBtn from "../../components/ScrollBackBtn";
 
 export default function LandingPage() {
@@ -22,7 +21,6 @@ export default function LandingPage() {
         </div>
         <aside className="hidden xl:flex w-80 flex-col gap-6">
           <TopMovers />
-          <NewsList />
         </aside>
         <ScrollBackBtn />
       </div>

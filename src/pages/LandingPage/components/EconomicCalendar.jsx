@@ -49,19 +49,19 @@ export default function EconomicCalendar() {
   return (
     <div className="p-4">
       <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2 text-[color:var(--color-black)]">
+        <h2 className="text-lg font-semibold mb-2 text-black">
           한 눈에 확인하는 주간 지표 캘린더
         </h2>
         <div className="flex items-center gap-2 relative" ref={calendarRef}>
           <button
             onClick={() => setSelectedDate(new Date())}
-            className="text-sm border border-[color:var(--color-gray-light)] px-3 py-2 rounded hover:bg-[color:var(--color-gray-light)]"
+            className="cursor-pointer text-sm border border-[color:var(--color-gray-light)] px-3 py-2 rounded hover:bg-gray-light"
           >
             오늘
           </button>
           <button
             onClick={() => setShowCalendar((prev) => !prev)}
-            className="p-2 hover:bg-[color:var(--color-gray-light)] border border-[color:var(--color-gray-light)] rounded-lg"
+            className="cursor-pointer p-2 hover:bg-gray-light border border-[color:var(--color-gray-light)] rounded-lg"
             aria-label="날짜 선택"
           >
             <IoCalendarOutline className="text-xl text-[color:var(--color-gray-md)]" />
@@ -74,7 +74,7 @@ export default function EconomicCalendar() {
             }
             className="p-2 hover:cursor-pointer"
           >
-            <FaChevronLeft className="text-sm text-[color:var(--color-gray-md)]" />
+            <FaChevronLeft className="text-sm text-gray-md" />
           </button>
           <button
             onClick={() =>
@@ -84,9 +84,9 @@ export default function EconomicCalendar() {
             }
             className="p-2 hover:cursor-pointer"
           >
-            <FaChevronRight className="text-sm text-[color:var(--color-gray-md)]" />
+            <FaChevronRight className="text-sm text-gray-md" />
           </button>
-          <span className="text-[color:var(--color-black)] font-medium ml-2">
+          <span className="text-black font-medium ml-2">
             {weeklyData.length > 0 &&
               `${new Date(weeklyData[0].date).toLocaleDateString("ko-KR", {
                 year: "numeric",

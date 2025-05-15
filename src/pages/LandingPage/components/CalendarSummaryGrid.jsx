@@ -16,24 +16,20 @@ export default function CalendarSummaryGrid({ weeklyData }) {
             key={idx}
             className="border border-[color:var(--color-gray-light)] rounded-lg px-2 py-2 text-sm flex flex-col gap-2"
           >
-            <div className="font-semibold text-sm text-[color:var(--color-black)]">
+            <div className="font-semibold text-sm text-black">
               {day.day} {new Date(day.date).getDate()}일
             </div>
-            <div className="flex flex-col gap-[1px] text-xs text-[color:var(--color-gray-md)] truncate">
+            <div className="flex flex-col gap-[1px] text-xs text-gray-md truncate">
               {entries.map(([indicator, count], i) => (
                 <div key={i} className="flex justify-between w-full">
                   <span className="truncate">
                     {economicIndicatorMap[indicator]?.name || indicator}
                   </span>
-                  <span className="font-semibold text-[color:var(--color-black)]">
-                    {count}
-                  </span>
+                  <span className="font-semibold text-black">{count}</span>
                 </div>
               ))}
               {entries.length === 0 && (
-                <span className="text-[color:var(--color-gray-md)]">
-                  예정 없음
-                </span>
+                <span className="text-gray-md">예정 없음</span>
               )}
             </div>
           </div>
