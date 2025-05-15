@@ -98,35 +98,33 @@ export default function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = () => {
-    //검색
     setSearchInput("");
     setSearchResult(dummyStocks);
     setIsModalOpen(true);
   };
 
   return (
-    <div className="text-sm flex justify-between items-center h-full px-12 bg-white shadow-md z-10">
-      {/* 로고 */}
-      <Link to="/main" className="">
+    <div className="w-full h-full flex justify-between items-center">
+      <Link to="/main" className="text-lg flex-grow">
         로고
       </Link>
-      {/* 네비게이션바 */}
-      <div className="flex items-center gap-4">
+
+      <div className="flex items-center">
+        <input
+          className="bg-gray-light px-4 py-2 rounded-2xl text-sm"
+          placeholder="종목명을 입력하세요"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
+        />
         {navigates.map((el) => (
-          <Link to={el.id} key={el.id}>
+          <Link to={el.id} key={el.id} className="ml-10 text-black-md">
             {el.title}
           </Link>
         ))}
         <div className="relative">
-          <input
-            className="bg-gray-light px-4 py-2 rounded-2xl text-sm"
-            placeholder="종목명을 입력하세요"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSearch();
-            }}
-          />
           {isModalOpen && (
             <div className="absolute top-full left-0 mt-1 w-full z-50">
               <SearchModel
@@ -137,7 +135,6 @@ export default function Header() {
           )}
         </div>
       </div>
-      <div></div>
     </div>
   );
 }

@@ -13,7 +13,7 @@ export default function LandingPage() {
 
   return (
     <IndicatorProvider>
-      <div className="flex px-2 py-2 gap-4">
+      <div className="flex gap-4">
         <div className="flex-1 flex flex-col gap-6">
           <EventSummaryCards />
           <EconomicCalendar />

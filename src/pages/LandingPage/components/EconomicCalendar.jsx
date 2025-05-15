@@ -47,71 +47,69 @@ export default function EconomicCalendar() {
   }, []);
 
   return (
-    <div className="p-4">
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2 text-black">
-          한 눈에 확인하는 주간 지표 캘린더
-        </h2>
-        <div className="flex items-center gap-2 relative" ref={calendarRef}>
-          <button
-            onClick={() => setSelectedDate(new Date())}
-            className="cursor-pointer text-sm border border-[color:var(--color-gray-light)] px-3 py-2 rounded hover:bg-gray-light"
-          >
-            오늘
-          </button>
-          <button
-            onClick={() => setShowCalendar((prev) => !prev)}
-            className="cursor-pointer p-2 hover:bg-gray-light border border-[color:var(--color-gray-light)] rounded-lg"
-            aria-label="날짜 선택"
-          >
-            <IoCalendarOutline className="text-xl text-[color:var(--color-gray-md)]" />
-          </button>
-          <button
-            onClick={() =>
-              setSelectedDate(
-                (prev) => new Date(prev.setDate(prev.getDate() - 7))
-              )
-            }
-            className="p-2 hover:cursor-pointer"
-          >
-            <FaChevronLeft className="text-sm text-gray-md" />
-          </button>
-          <button
-            onClick={() =>
-              setSelectedDate(
-                (prev) => new Date(prev.setDate(prev.getDate() + 7))
-              )
-            }
-            className="p-2 hover:cursor-pointer"
-          >
-            <FaChevronRight className="text-sm text-gray-md" />
-          </button>
-          <span className="text-black font-medium ml-2">
-            {weeklyData.length > 0 &&
-              `${new Date(weeklyData[0].date).toLocaleDateString("ko-KR", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })} - ${new Date(weeklyData[6].date).toLocaleDateString("ko-KR", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}`}
-          </span>
-          {showCalendar && (
-            <div className="absolute top-full mt-2 transform z-50">
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => {
-                  setSelectedDate(date);
-                  setShowCalendar(false);
-                }}
-                inline
-                calendarStartDay={1}
-              />
-            </div>
-          )}
-        </div>
+    <div className="mb-4">
+      <h2 className="text-lg font-semibold mb-2 text-black">
+        한 눈에 확인하는 주간 지표 캘린더
+      </h2>
+      <div className="flex items-center gap-2 relative" ref={calendarRef}>
+        <button
+          onClick={() => setSelectedDate(new Date())}
+          className="cursor-pointer text-sm border border-[color:var(--color-gray-light)] px-3 py-2 rounded hover:bg-gray-light"
+        >
+          오늘
+        </button>
+        <button
+          onClick={() => setShowCalendar((prev) => !prev)}
+          className="cursor-pointer p-2 hover:bg-gray-light border border-[color:var(--color-gray-light)] rounded-lg"
+          aria-label="날짜 선택"
+        >
+          <IoCalendarOutline className="text-xl text-[color:var(--color-gray-md)]" />
+        </button>
+        <button
+          onClick={() =>
+            setSelectedDate(
+              (prev) => new Date(prev.setDate(prev.getDate() - 7))
+            )
+          }
+          className="p-2 hover:cursor-pointer"
+        >
+          <FaChevronLeft className="text-sm text-gray-md" />
+        </button>
+        <button
+          onClick={() =>
+            setSelectedDate(
+              (prev) => new Date(prev.setDate(prev.getDate() + 7))
+            )
+          }
+          className="p-2 hover:cursor-pointer"
+        >
+          <FaChevronRight className="text-sm text-gray-md" />
+        </button>
+        <span className="text-black font-medium ml-2">
+          {weeklyData.length > 0 &&
+            `${new Date(weeklyData[0].date).toLocaleDateString("ko-KR", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })} - ${new Date(weeklyData[6].date).toLocaleDateString("ko-KR", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}`}
+        </span>
+        {showCalendar && (
+          <div className="absolute top-full mt-2 transform z-50">
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => {
+                setSelectedDate(date);
+                setShowCalendar(false);
+              }}
+              inline
+              calendarStartDay={1}
+            />
+          </div>
+        )}
       </div>
 
       <CalendarSummaryGrid weeklyData={weeklyData} />

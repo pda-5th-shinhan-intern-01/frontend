@@ -47,7 +47,7 @@ export default function EventSummaryCards() {
   };
 
   return (
-    <div className="p-4 bg-white w-full">
+    <div className="bg-white w-full">
       <h2 className="text-lg font-semibold mb-4 text-black">
         다가오는 경제 이벤트
       </h2>
