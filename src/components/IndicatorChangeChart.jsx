@@ -39,13 +39,13 @@ export default function IndicatorChangeChart({ indicator }) {
           autoSelected: "zoom",
         },
       },
+      colors: ["#FF8341"], // <- 여기에 색상 추가
       dataLabels: {
         enabled: false,
       },
       markers: {
         size: 0,
       },
-
       fill: {
         type: "gradient",
         gradient: {
@@ -58,7 +58,7 @@ export default function IndicatorChangeChart({ indicator }) {
       },
       yaxis: {
         labels: {
-          formatter: (val) => `${val.toFixed(1)}%`, // 예: 3.2%
+          formatter: (val) => `${val.toFixed(1)}%`,
         },
         title: {
           text: indicator,
@@ -72,7 +72,6 @@ export default function IndicatorChangeChart({ indicator }) {
           formatter: (val) => `${val.toFixed(1)}%`,
         },
       },
-
       xaxis: {
         type: "datetime",
       },
