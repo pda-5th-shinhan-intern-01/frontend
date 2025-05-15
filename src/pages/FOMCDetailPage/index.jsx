@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Section from "./components/Section";
 import SectionItem from "./components/SectionItem";
 import dummy from "./dummies/dummy.json";
+import { IoChevronBack } from "react-icons/io5";
 
 const labels = {
   laborMarket: "노동 시장",
@@ -18,18 +19,20 @@ const labels = {
 export default function FOMCDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
-  console.log(params, "pa");
   return (
     <div className="flex flex-col">
       {/* 기본 정보 */}
       <div className="font-bold text-xl flex items-center">
-        <span onClick={() => navigate("/main/fomcs")} className="text-3xl">
-          &lt; &nbsp;
+        <span
+          onClick={() => navigate("/main/fomcs")}
+          className="text-2xl cursor-pointer"
+        >
+          <IoChevronBack />
         </span>
         {dummy.title}
       </div>
-      <div>날짜 : {dummy.date}</div>
-      <div className="flex flex-row justify-between">
+      <div className="pl-5">날짜 : {dummy.date}</div>
+      <div className="flex flex-row justify-between pl-5">
         <div className="border-1  px-2 w-fit">
           금리 {dummy.rateChange} ({dummy.rateRange.from.toFixed(2)}% -&gt;{" "}
           {dummy.rateRange.to.toFixed(2)}%)

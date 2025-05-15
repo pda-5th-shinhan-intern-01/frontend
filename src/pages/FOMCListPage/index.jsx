@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCaretUp, FaCaretDown, FaChevronDown } from "react-icons/fa";
-import { MdHorizontalRule } from "react-icons/md";
+import { MdHorizontalRule, MdOutlineCancel } from "react-icons/md";
 import CustomDateInput from "../../components/CustomDatePicker";
 import PaginationBtn from "../../components/PaginationBtn";
 import dummy from "./dummies/dummy.json";
@@ -58,7 +58,7 @@ export default function FOMCListPage() {
   // 비교하기
   const toggleChecked = (item) => {
     setCheckedItems((prev) => {
-      const isChecked = prev.includes(item);
+      const isChecked = prev?.includes(item);
       if (isChecked) {
         return prev.filter((i) => i !== item);
       } else {
@@ -221,17 +221,21 @@ export default function FOMCListPage() {
             paginatedData.map((data, idx) => (
               <tr
                 key={idx}
+                onClick={() => navigate(`${idx}`)}
                 className="hover:bg-gray-hover cursor-pointer transition-colors duration-300"
               >
                 <td className="py-5 px-4">
                   <div className="flex items-center gap-5">
                     <input
                       type="checkbox"
-                      checked={checkedItems.includes(data)}
+                      checked={checkedItems?.includes(data)}
                       onChange={() => toggleChecked(data)}
                       className="mt-1 accent-gray-500"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
                     />
-                    <div onClick={() => navigate(`${idx}`)}>
+                    <div>
                       <div className="text-black-md">{data.title}</div>
                       <div className="text-sm text-gray-md">
                         ❤️‍🔥 : 경제 전망에 대한 불확실성 증가, 연준은 물가와 고용
@@ -257,11 +261,23 @@ export default function FOMCListPage() {
       </table>
 
       {/* 비교하기 버튼 */}
-      {checkedItems.length >= 2 && (
-        <div className="fixed bottom-40 right-20 z-50">
+      {checkedItems?.length >= 1 && (
+        <div className="z-50 bg-gray-light w-full flex flex-row justify-between px-5 py-1">
+          <div className="flex flex-row  gap-5">
+            {checkedItems?.map((item, idx) => (
+              <div key={idx} className="flex flex-row gap-2 items-center">
+                {item.title}{" "}
+                <MdOutlineCancel
+                  className="cursor-pointer"
+                  // onClick={() => toggleChecked(item)}
+                />
+              </div>
+            ))}
+          </div>
           <button
-            className="border border-gray-light  px-6 py-2 rounded-md shadow-lg text-sm hover:bg-gray-hover"
+            className="border border-gray-light bg-white px-6 py-2 rounded-md shadow-lg text-sm hover:bg-gray-hover"
             onClick={() => setCompareModalOpen(true)}
+            disabled={checkedItems.length < 2}
           >
             비교하기 ({checkedItems.length}개)
           </button>
@@ -272,6 +288,7 @@ export default function FOMCListPage() {
         <CompareModal
           checkedItems={checkedItems}
           setCompareModalOpen={setCompareModalOpen}
+          setCheckedItems={setCheckedItems}
         />
       )}
 
