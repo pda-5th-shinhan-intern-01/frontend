@@ -1,8 +1,8 @@
 import IntroSection from "./components/IntroSection";
 import ProblemSection from "./components/ProblemSection";
 import ChartSection from "./components/ChartSection";
+import FeatureSection from "./components/FeatureSection";
 import FeaturesSection from "./components/FeaturesSection";
-import FOMCSection from "./components/FOMCSection";
 import CTASection from "./components/CTASection";
 
 export default function IntroPage() {
@@ -11,8 +11,8 @@ export default function IntroPage() {
       <IntroSection />
       <ProblemSection />
       <ChartSection />
+      <FeatureSection />
       <FeaturesSection />
-      <FOMCSection />
       <CTASection />
     </div>
   );
