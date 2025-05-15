@@ -5,7 +5,6 @@ import LandingPage from "../pages/LandingPage";
 import FOMCListPage from "../pages/FOMCListPage";
 import FOMCDetailPage from "../pages/FOMCDetailPage";
 import HeatmapPage from "../pages/HeatmapPage";
-import IntroductionIndicatorPage from "../pages/IntroduceIndicatorPage";
 import MainPage from "../pages/MainPage";
 import SectorListPage from "../pages/SectorListPage";
 import IntroPage from "../pages/IntroPage";
@@ -22,7 +21,6 @@ const router = createBrowserRouter([
       { path: "heatmap", element: <HeatmapPage /> },
       { path: "sectors", element: <SectorListPage /> },
       { path: "sectors/:id", element: <MainPage /> },
-      { path: "introduce-indicators", element: <IntroductionIndicatorPage /> },
     ],
   },
 ]);
