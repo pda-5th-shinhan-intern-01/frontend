@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HeatmapControlPanel from "./HeatmapControlPanel";
 import Heatmap from "./Heatmap";
-import useHeatmapData from "../../hooks/useHeatMapData";
+import useHeatmapData from "../../hooks/useHeatmapData";
 import { dummyRawData } from "./dummyRawData";
 
 export default function HeatmapPage() {

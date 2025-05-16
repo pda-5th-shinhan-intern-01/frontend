@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import StockMiniChart from "../../../components/stockMiniChart";
+import StockMiniChart from "../../../components/StockMiniChart";
 import { IoIosCalendar } from "react-icons/io";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { currentIndicatorsData } from "../dummies/currentIndicatorData";
