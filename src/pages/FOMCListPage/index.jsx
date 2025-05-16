@@ -221,7 +221,6 @@ export default function FOMCListPage() {
             paginatedData.map((data, idx) => (
               <tr
                 key={idx}
-                onClick={() => navigate(`${idx}`)}
                 className="hover:bg-gray-hover cursor-pointer transition-colors duration-300"
               >
                 <td className="py-5 px-4">
@@ -234,8 +233,9 @@ export default function FOMCListPage() {
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
+                      disabled={checkedItems.length >= 3}
                     />
-                    <div>
+                    <div onClick={() => navigate(`${idx}`)} className="w-full">
                       <div className="text-black-md">{data.title}</div>
                       <div className="text-sm text-gray-md">
                         ❤️‍🔥 : 경제 전망에 대한 불확실성 증가, 연준은 물가와 고용
@@ -262,29 +262,45 @@ export default function FOMCListPage() {
 
       {/* 비교하기 버튼 */}
       {checkedItems?.length >= 1 && (
-        <div className="z-50 bg-gray-light w-full flex flex-row justify-between px-5 py-1">
-          <div className="flex flex-row  gap-5">
+        <div
+          className={`z-30 bg-gray-light flex flex-row justify-between px-16 py-1 fixed left-0 bottom-4 w-full rounded-lg shadow-lg
+          transition-all duration-300 ease-in-out transform
+          ${
+            checkedItems.length >= 1
+              ? "translate-y-0 opacity-100"
+              : "translate-y-full opacity-0 pointer-events-none"
+          }
+        `}
+        >
+          <div className="flex flex-row gap-5">
             {checkedItems?.map((item, idx) => (
-              <div key={idx} className="flex flex-row gap-2 items-center">
+              <div
+                key={idx}
+                className="flex flex-row gap-2 items-center px-5 text-sm "
+              >
                 {item.title}{" "}
                 <MdOutlineCancel
-                  className="cursor-pointer"
-                  // onClick={() => toggleChecked(item)}
+                  className="cursor-pointer text-lg"
+                  onClick={() => toggleChecked(item)}
                 />
               </div>
             ))}
           </div>
-          <button
-            className="border border-gray-light bg-white px-6 py-2 rounded-md shadow-lg text-sm hover:bg-gray-hover"
-            onClick={() => setCompareModalOpen(true)}
-            disabled={checkedItems.length < 2}
-          >
-            비교하기 ({checkedItems.length}개)
-          </button>
+          <div className="flex flex-row gap-4">
+            <button className="text-sm" onClick={() => setCheckedItems([])}>
+              전체취소
+            </button>
+            <button
+              className="border border-gray-light bg-white px-6 py-2 rounded-md shadow-lg text-sm hover:bg-gray-hover"
+              onClick={() => setCompareModalOpen(true)}
+            >
+              비교하기 ({checkedItems.length}개)
+            </button>
+          </div>
         </div>
       )}
 
-      {compareModalOpen && (
+      {compareModalOpen && checkedItems.length >= 1 && (
         <CompareModal
           checkedItems={checkedItems}
           setCompareModalOpen={setCompareModalOpen}
