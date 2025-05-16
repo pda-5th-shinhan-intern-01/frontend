@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   build-and-deploy:
@@ -19,7 +19,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build project
         run: npm run build
@@ -43,6 +43,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker rm -f hotsignal-frontend || true
+            docker stop hotsignal-frontend || true
+            docker rm hotsignal-frontend || true
+            docker rmi kimdongjae/hotsignal-frontend:latest || true
             docker pull kimdongjae/hotsignal-frontend:latest
             docker run -d -p 80:80 --name hotsignal-frontend kimdongjae/hotsignal-frontend:latest
