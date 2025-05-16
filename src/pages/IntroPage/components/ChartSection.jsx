@@ -12,15 +12,15 @@ export default function ChartSection() {
         viewport={{ amount: 0.4 }}
       >
         <div className="flex-1 text-left">
-          <h2 className="text-2xl md:text-4xl font-bold mb-4">
-            경제 지표가 변화하면{" "}
-            <span className="text-green">주가도 변화합니다.</span>
+          <h2 className="text-2xl md:text-4xl font-bold mb-8">
+            경제 지표가 변화하면
+            <div className="text-green-md mt-1">주가도 변화합니다.</div>
           </h2>
-          <p className="text-base md:text-lg mb-2 leading-relaxed">
-            CPI, 고용지표, 금리 발표… <br className="md:hidden" />
-            이런 뉴스가 주가에 어떤 영향을 주는지 알고 계신가요?
+          <p className="md:text-lg mb-4 text-gray-md">
+            CPI, 고용지표, 금리 발표…
+            <br /> 이런 뉴스가 주가에 어떤 영향을 주는지 알고 계신가요?
           </p>
-          <p className="text-lg">
+          <p className="text-xl font-semibold">
             “시장의 반응을 미리 예측하고, 더 현명한 투자 결정을 내리세요”
           </p>
         </div>
@@ -29,7 +29,7 @@ export default function ChartSection() {
           <img
             src={chart}
             alt="지표와 S&P500 그래프"
-            className="w-[90%] max-w-[400px] h-auto"
+            className="w-[90%] max-w-[500px] h-auto p-8 bg-white rounded-2xl shadow-lg"
           />
         </div>
       </motion.div>
