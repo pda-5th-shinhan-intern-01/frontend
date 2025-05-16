@@ -7,7 +7,7 @@ import CalendarSummaryGrid from "./CalendarSummaryGrid";
 import IndicatorDetailTable from "./IndicatorDetailTable";
 import { economicCalendarData } from "../dummies/economicCalendarData";
 
-const days = ["월", "화", "수", "목", "금", "토", "일"];
+const days = ["월", "화", "수", "목", "금"];
 const today = new Date();
 
 export default function EconomicCalendar() {
@@ -19,7 +19,7 @@ export default function EconomicCalendar() {
   const calculateWeek = (baseDate) => {
     const base = new Date(baseDate);
     const startOfWeek = new Date(base);
-    startOfWeek.setDate(base.getDate() - base.getDay() + 1); // 월요일 시작
+    startOfWeek.setDate(base.getDate() - base.getDay() + 1);
 
     return [...Array(5)].map((_, i) => {
       const date = new Date(startOfWeek);
@@ -27,7 +27,7 @@ export default function EconomicCalendar() {
       const dateString = date.toISOString().split("T")[0];
       return {
         date: dateString,
-        day: days[i], // 월~금
+        day: days[i],
         events: economicCalendarData.filter((ev) => ev.date === dateString),
       };
     });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import heroImage from "../../../assets/hero-image.png"; // 이미지 경로
+import heroImage from "../../../assets/icons/stock.png";
 const phrases = [
   "반응하는 이유를 보여주는",
   "눈치 빠른 투자 감각",
@@ -39,11 +39,10 @@ export default function HeroSection() {
 
         <div className="hidden md:block w-[300px] h-[200px]" />
 
-        {/* 오른쪽 하단 이미지 (Top Movers 왼쪽으로 보이게 배치) */}
         <img
           src={heroImage}
           alt="Hero Visual"
-          className="absolute right-6 bottom-6 md:right-[43%] w-40 md:w-25 lg:w-58 object-contain pointer-events-none"
+          className="absolute right-6 bottom-3 md:right-[40%] w-40 md:w-25 lg:w-58 object-contain pointer-events-none"
         />
       </div>
     </section>

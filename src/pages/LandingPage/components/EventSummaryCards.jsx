@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 import economicEventsData from "../dummies/economicEventsData";
