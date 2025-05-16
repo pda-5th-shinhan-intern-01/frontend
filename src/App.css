@@ -15,6 +15,7 @@
   --color-orange: #ff8341;
   --color-ivory: #fffaf6;
   --color-green-light: #f6fdec;
+  --color-green-md: #4fcb7c;
 }
 @layer utilities {
   @keyframes spin-slow {
