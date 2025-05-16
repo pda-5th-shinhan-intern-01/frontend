@@ -6,13 +6,13 @@ export default function ScrollBackBtn() {
 
   return (
     <button
-      className="fixed bottom-24 right-11 p-5 rounded-full shadow-lg"
+      className="font-bold text-sm fixed bottom-5 right-11 p-3 rounded-full shadow-lg"
       onClick={() => {
         const scrollTo = lastClickedY !== null ? lastClickedY : 0;
         window.scrollTo({ top: scrollTo, behavior: "smooth" });
       }}
     >
-      <FaArrowUp />
+      TOP
     </button>
   );
 }
