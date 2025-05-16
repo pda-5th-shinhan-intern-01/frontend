@@ -14,7 +14,7 @@ export default function ChartSection() {
         <div className="flex-1 text-left">
           <h2 className="text-2xl md:text-4xl font-bold mb-8">
             경제 지표가 변화하면
-            <div className="text-green-md mt-1">주가도 변화합니다.</div>
+            <div className="text-green-md mt-1">주가도 변화해요</div>
           </h2>
           <p className="md:text-lg mb-4 text-gray-md">
             CPI, 고용지표, 금리 발표…

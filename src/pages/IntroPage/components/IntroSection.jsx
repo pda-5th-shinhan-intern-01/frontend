@@ -18,7 +18,7 @@ export default function IntroSection() {
         </h2>
         <p className="mt-5 text-lg">
           세계 경제 캘린더와 종목별 민감도 분석으로
-          <br />한 발 앞선 투자 인사이트를 제공합니다
+          <br />한 발 앞선 투자 인사이트를 확인하세요
         </p>
       </div>
     </motion.section>

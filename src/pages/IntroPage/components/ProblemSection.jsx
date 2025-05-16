@@ -45,7 +45,7 @@ export default function ProblemSection() {
       className="flex flex-col justify-center items-center text-center min-h-screen"
     >
       <div className="mb-40">
-        <h2 className="text-5xl md:text-4xl font-semibold">
+        <h2 className="text-5xl md:text-5xl font-semibold">
           경제 지표 발표, 그냥 흘려보내고 계신가요?
         </h2>
         <p className="mt-4 md:text-lg leading-relaxed">
