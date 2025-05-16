@@ -3,7 +3,7 @@ import chart from "../../../assets/chart.png";
 
 export default function ChartSection() {
   return (
-    <section className="w-full flex flex-col items-center justify-center overflow-hidden bg-green-light min-h-[600px]">
+    <section className="w-full flex flex-col items-center justify-center overflow-hidden bg-blue-lighter min-h-[600px]">
       <motion.div
         className="max-w-7xl w-full flex flex-col md:flex-row items-center justify-between px-6"
         initial={{ opacity: 0, y: 30 }}
@@ -14,7 +14,7 @@ export default function ChartSection() {
         <div className="flex-1 text-left">
           <h2 className="text-2xl md:text-4xl font-bold mb-8">
             경제 지표가 변화하면
-            <div className="text-green-md mt-1">주가도 변화해요</div>
+            <div className="text-blue-md mt-1">주가도 변화해요</div>
           </h2>
           <p className="md:text-lg mb-4 text-gray-md">
             CPI, 고용지표, 금리 발표…

@@ -12,6 +12,7 @@
   --color-red-light: #fca5a5;
   --color-blue-md: #00aaf0;
   --color-blue-light: #93c5fd;
+  --color-blue-lighter: #daf4ff;
   --color-orange: #ff8341;
   --color-ivory: #fffaf6;
   --color-green-light: #f6fdec;
@@ -26,7 +27,6 @@
       transform: rotate(360deg);
     }
   }
-
   .animate-spin-slow {
     animation: spin-slow 60s linear infinite;
   }
@@ -45,5 +45,18 @@
     background-color: #fdba74; /* Tailwind orange-300과 유사 */
     border-radius: 2px;
     z-index: -1;
+  }
+
+  @keyframes waveText {
+    0% {
+      startoffset: 100%;
+    }
+    100% {
+      startoffset: 0%;
+    }
+  }
+
+  .animate-wave-text {
+    animation: waveText 30s linear infinite;
   }
 }

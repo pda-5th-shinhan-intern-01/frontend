@@ -13,21 +13,21 @@ export default function ProblemSection() {
   ];
 
   const animatedWords = indicators.map((text, i) => {
-    const yRange = Math.floor(Math.random() * 20) + 5;
-    const rotateRange = Math.floor(Math.random() * 15) + 2;
-    const delay = Math.random() * 2.5;
+    const yRange = Math.floor(Math.random() * 5) + 10; // 🔽 작게 흔들림
+    const rotateRange = Math.floor(Math.random() * 5) + 10; // 🔽 회전도 작게
+    const delay = Math.random() * 1.5; // 🔽 빠른 템포
 
     return (
       <motion.span
         key={i}
-        className="inline-block mx-36"
+        className="inline-block mx-24"
         animate={{
           y: [0, -yRange, 0, yRange, 0],
           rotate: [-rotateRange, 0, rotateRange, 0, -rotateRange],
         }}
         transition={{
           repeat: Infinity,
-          duration: 15 + Math.random(),
+          duration: 10, // 🔽 부드러운 반복
           delay,
           ease: "easeInOut",
         }}
@@ -36,15 +36,11 @@ export default function ProblemSection() {
       </motion.span>
     );
   });
+
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ amount: 0.4 }}
-      className="flex flex-col justify-center items-center text-center min-h-screen w-full"
-    >
-      <div className="mb-40">
+    <section className="flex flex-col justify-between items-center text-center max-h-[800px] w-full overflow-x-hidden">
+      {/* 상단 문구 */}
+      <div className="mb-40 mt-80">
         <h2 className="text-5xl md:text-5xl font-semibold">
           경제 지표 발표, 그냥 흘려보내고 계신가요?
         </h2>
@@ -57,26 +53,30 @@ export default function ProblemSection() {
         </p>
       </div>
 
-      <div className="relative w-full h-24 mb-12 overflow-hidden">
-        <svg
-          viewBox="0 0 1440 150"
-          className="absolute top-0 left-0 w-full h-full pointer-events-none"
-          preserveAspectRatio="none"
+      <div className="relative w-full h-100 overflow-hidden">
+        <motion.div
+          className="absolute top-[-80px] left-0 w-full h-[150%] z-0"
+          animate={{ y: [0, 24, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          <path
-            d="M 0 100 Q 240 0, 480 100 T 960 100 T 1440 100"
-            fill="transparent"
-            stroke="#333"
-            strokeWidth="1"
-          />
-        </svg>
+          <svg
+            viewBox="0 0 1440 250"
+            className="w-full h-full"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M 0 120 Q 180 60, 360 120 T 720 120 T 1080 120 T 1440 120 V 250 H 0 Z"
+              fill="#DAF4FF"
+            />
+          </svg>
+        </motion.div>
 
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-4xl font-extrabold"
+          className="absolute top-[72%] -translate-y-1/2 whitespace-nowrap text-4xl font-extrabold"
           animate={{ x: ["-100%", "0%"] }}
           transition={{
             repeat: Infinity,
-            duration: 100,
+            duration: 300,
             ease: "linear",
           }}
         >
@@ -87,6 +87,6 @@ export default function ProblemSection() {
           )}
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }
