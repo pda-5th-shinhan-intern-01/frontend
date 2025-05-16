@@ -3,38 +3,46 @@ import calendar from "../../../assets/calendar.png";
 import sector from "../../../assets/sector.png";
 import heatmap from "../../../assets/heatmap.png";
 import fomc from "../../../assets/fomc.png";
+import calendarIcon from "../../../assets/icons/calendar.jpg";
+import stockIcon from "../../../assets/icons/stock.png";
 import ImageSlider from "../../../components/ImageSlider";
+import fomcIcon from "../../../assets/icons/fomc.png";
 
 const features = [
   {
     title: "경제 이벤트 캘린더",
     subtitle: "경제 이벤트를 한눈에!",
     description:
-      "경제지표 발표 일정과 <br />변화추세, 지표별 주요 섹터, 종목 인사이트",
+      "경제 지표 이벤트 및 FOMC 발표 일정을 확인하고 각 경제 지표 이벤트 별 예상치와 영향력을 볼 수 있어요. ",
     image: calendar,
+    icon: calendarIcon,
     reverse: false,
   },
   {
     title: "경제지표X종목",
-    subtitle: "경제 이벤트를 한눈에!",
+    subtitle: "지표가 종목에 미치는 영향은?",
     description:
-      "종목별 경제지표에 대한 민감도 분석과 <br />앞으로 나올 지표에 따른 주가 예측",
+      "지표가 발표되기 전 후로 주가가 어떻게 변화되는 지 확인하세요. 지표가 변화하면 주가는 어떻게 변동될까요?",
     image: sector,
+    icon: stockIcon,
     reverse: true,
   },
   {
     title: "경제지표X섹터",
-    subtitle: "경제 이벤트를 한눈에!",
+    subtitle: "지표가 섹터에 미치는 영향 포착!",
     description:
-      "경제지표와 섹터에 대한 히트맵을 통해 <br />섹터와 경제지표의 연관성 확인",
+      "경제 지표와 섹터에 대한 히트맵을 확인하세요. 각각의 지표가 섹터에 미치는 영향을 한눈에 확인할 수 있어요.",
     image: heatmap,
+    icon: stockIcon,
     reverse: false,
   },
   {
     title: "FOMC 회의록",
-    subtitle: "경제 이벤트를 한눈에!",
-    description: "FOMC의 주요 발언을 AI로 요약 제공",
+    subtitle: "기준 금리가 오를까요?",
+    description:
+      "FOMC 회의록을 분석한 요약을 제공해요. 여러 FOMC 회의록을 한 눈에 비교해보세요.",
     image: fomc,
+    icon: fomcIcon,
     reverse: true,
   },
 ];
@@ -47,19 +55,19 @@ const fadeVariant = {
 
 export default function FeaturesSection() {
   return (
-    <section className="w-full max-w-[1200px] gap-38 flex flex-col justify-center items-center px-6">
+    <section className="w-full py-20 max-w-[1200px] gap-38 flex flex-col justify-center items-center px-6">
       {features.map((feature, idx) => {
-        const isRightAligned = idx === 1 || idx === 3;
+        const isRightAligned = false;
 
         return (
           <div
             key={idx}
             className={`flex flex-col w-full items-center md:flex-row ${
               feature.reverse ? "md:flex-row-reverse" : ""
-            } gap-10`}
+            } gap-12`}
           >
             <motion.div
-              className={` w-1/3 flex flex-col h-[500px] justify-center ${
+              className={` w-1/3 flex flex-col h-[500px] justify-between py-4 ${
                 isRightAligned
                   ? "items-end text-right"
                   : "items-start text-left"
@@ -70,14 +78,16 @@ export default function FeaturesSection() {
               transition={{ duration: 0.4 }}
               variants={fadeVariant}
             >
-              <h5 className="font-semibold text-orange text-xl mb-4">
-                {feature.subtitle}
-              </h5>
-              <h3 className="text-4xl font-bold">{feature.title}</h3>
-              <p
-                className="mt-8 text-lg font-bold"
-                dangerouslySetInnerHTML={{ __html: feature.description }}
-              />
+              <div className="mt-8">
+                <h5 className="font-semibold text-orange text-xl mb-4">
+                  {feature.subtitle}
+                </h5>
+                <h3 className="text-4xl font-bold">{feature.title}</h3>
+                <p className="mt-12 text-lg">{feature.description}</p>
+              </div>
+              <div className="flex w-full justify-end">
+                <img className="h-48" src={feature.icon} />
+              </div>
             </motion.div>
 
             <motion.div
@@ -90,11 +100,6 @@ export default function FeaturesSection() {
               transition={{ duration: 0.4 }}
               variants={fadeVariant}
             >
-              {/* <img
-                  src={feature.image}
-                  alt={feature.title}
-                  className="max-w-full h-auto"
-                /> */}
               <ImageSlider images={[feature.image, feature.image]} />
             </motion.div>
           </div>

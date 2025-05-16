@@ -9,7 +9,7 @@ export default function CTASection() {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ amount: 0.5 }}
-      className="items-center flex flex-col justify-center bg-gradient-to-t from-red-md to-orange text-white min-h-screen "
+      className="w-full items-center flex flex-col justify-center bg-gradient-to-t from-red-md to-orange text-white min-h-screen "
     >
       <div className="bg-gradient-to-t from-red-md to-orange text-white min-h-screen px-6 text-center flex flex-col justify-center items-center">
         <h2 className="text-2xl md:text-6xl font-bold my-12">
