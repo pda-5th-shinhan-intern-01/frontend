@@ -3,6 +3,7 @@ import calendar from "../../../assets/calendar.png";
 import sector from "../../../assets/sector.png";
 import heatmap from "../../../assets/heatmap.png";
 import fomc from "../../../assets/fomc.png";
+import ImageSlider from "../../../components/ImageSlider";
 
 const features = [
   {
@@ -46,60 +47,59 @@ const fadeVariant = {
 
 export default function FeaturesSection() {
   return (
-    <div className="flex items-center justify-center">
-      <section className="max-w-[1200px] flex flex-col gap-38">
-        {features.map((feature, idx) => {
-          const isRightAligned = idx === 1 || idx === 3;
+    <section className="w-full max-w-[1200px] gap-38 flex flex-col justify-center items-center px-6">
+      {features.map((feature, idx) => {
+        const isRightAligned = idx === 1 || idx === 3;
 
-          return (
-            <div
-              key={idx}
-              className={`flex flex-col md:flex-row items-center ${
-                feature.reverse ? "md:flex-row-reverse" : ""
-              } gap-10`}
+        return (
+          <div
+            key={idx}
+            className={`flex flex-col w-full items-center md:flex-row ${
+              feature.reverse ? "md:flex-row-reverse" : ""
+            } gap-10`}
+          >
+            <motion.div
+              className={` w-1/3 flex flex-col h-[500px] justify-center ${
+                isRightAligned
+                  ? "items-end text-right"
+                  : "items-start text-left"
+              }`}
+              initial={feature.reverse ? "hiddenRight" : "hiddenLeft"}
+              whileInView="visible"
+              viewport={{ amount: 0.4 }}
+              transition={{ duration: 0.4 }}
+              variants={fadeVariant}
             >
-              <motion.div
-                className={` w-1/3 flex flex-col h-[500px] justify-center ${
-                  isRightAligned
-                    ? "items-end text-right"
-                    : "items-start text-left"
-                }`}
-                initial={feature.reverse ? "hiddenRight" : "hiddenLeft"}
-                whileInView="visible"
-                viewport={{ amount: 0.4 }}
-                transition={{ duration: 0.4 }}
-                variants={fadeVariant}
-              >
-                <h5 className="font-semibold text-orange text-xl mb-4">
-                  {feature.subtitle}
-                </h5>
-                <h3 className="text-4xl font-bold">{feature.title}</h3>
-                <p
-                  className="mt-8 text-lg font-bold"
-                  dangerouslySetInnerHTML={{ __html: feature.description }}
-                />
-              </motion.div>
+              <h5 className="font-semibold text-orange text-xl mb-4">
+                {feature.subtitle}
+              </h5>
+              <h3 className="text-4xl font-bold">{feature.title}</h3>
+              <p
+                className="mt-8 text-lg font-bold"
+                dangerouslySetInnerHTML={{ __html: feature.description }}
+              />
+            </motion.div>
 
-              <motion.div
-                className={`w-2/3 flex h-[500px]  ${
-                  feature.reverse ? "justify-start" : "justify-end"
-                }`}
-                initial={feature.reverse ? "hiddenLeft" : "hiddenRight"}
-                whileInView="visible"
-                viewport={{ amount: 0.4 }}
-                transition={{ duration: 0.4 }}
-                variants={fadeVariant}
-              >
-                <img
+            <motion.div
+              className={`w-2/3 flex h-[500px]  ${
+                feature.reverse ? "justify-start" : "justify-end"
+              }`}
+              initial={feature.reverse ? "hiddenLeft" : "hiddenRight"}
+              whileInView="visible"
+              viewport={{ amount: 0.4 }}
+              transition={{ duration: 0.4 }}
+              variants={fadeVariant}
+            >
+              {/* <img
                   src={feature.image}
                   alt={feature.title}
                   className="max-w-full h-auto"
-                />
-              </motion.div>
-            </div>
-          );
-        })}
-      </section>
-    </div>
+                /> */}
+              <ImageSlider images={[feature.image, feature.image]} />
+            </motion.div>
+          </div>
+        );
+      })}
+    </section>
   );
 }

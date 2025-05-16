@@ -7,7 +7,7 @@ export default function FeatureSection() {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: false, amount: 0.5 }}
-      className="min-h-[500px] flex flex-col justify-center items-center px-6"
+      className="min-h-[500px] flex flex-col justify-center items-center px-6 w-full max-w-[1200px]"
     >
       <h2 className="text-2xl md:text-5xl font-semibold text-center">
         HotSignal에서 확인하는{" "}

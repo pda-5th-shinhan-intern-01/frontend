@@ -42,7 +42,7 @@ export default function ProblemSection() {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ amount: 0.4 }}
-      className="flex flex-col justify-center items-center text-center min-h-screen"
+      className="flex flex-col justify-center items-center text-center min-h-screen w-full"
     >
       <div className="mb-40">
         <h2 className="text-5xl md:text-5xl font-semibold">

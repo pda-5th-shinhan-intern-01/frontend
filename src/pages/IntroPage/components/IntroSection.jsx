@@ -8,7 +8,7 @@ export default function IntroSection() {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ amount: 0.5 }}
-      className="items-center flex flex-col justify-center bg-gradient-to-t from-red-md to-orange text-white min-h-screen "
+      className="w-full items-center flex flex-col justify-center bg-gradient-to-t from-red-md to-orange text-white min-h-screen "
     >
       <div className="flex flex-col justify-center max-w-[1200px] w-full">
         {/* <img src={logo} className="w-140"></img> */}
