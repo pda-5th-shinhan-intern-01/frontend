@@ -2,7 +2,7 @@ import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 
 export default function CalendarSummaryGrid({ weeklyData }) {
   return (
-    <div className="grid grid-cols-7 gap-2 mb-4">
+    <div className="grid grid-cols-5 gap-2 mb-4">
       {weeklyData.map((day, idx) => {
         const indicatorCount = day.events.reduce((acc, cur) => {
           acc[cur.indicator] = (acc[cur.indicator] || 0) + 1;
@@ -14,12 +14,12 @@ export default function CalendarSummaryGrid({ weeklyData }) {
         return (
           <div
             key={idx}
-            className="border border-[color:var(--color-gray-light)] rounded-lg px-2 py-2 text-sm flex flex-col gap-2"
+            className="mt-6 shadow rounded-lg px-4 py-4 flex flex-col gap-2"
           >
-            <div className="font-semibold text-black">
+            <div className="text-lg font-semibold text-black">
               {day.day} {new Date(day.date).getDate()}일
             </div>
-            <div className="flex flex-col gap-[1px] text-gray-md truncate">
+            <div className="mt-2 flex flex-col gap-2 text-gray-md truncate">
               {entries.map(([indicator, count], i) => (
                 <div key={i} className="flex justify-between w-full">
                   <span className="truncate">

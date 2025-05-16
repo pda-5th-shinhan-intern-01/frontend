@@ -34,28 +34,30 @@ export default function IndicatorSummary() {
   return (
     <div
       id="indicator-summary-section"
-      className="bg-ivory p-6 rounded flex flex-col gap-4 rounded-2xl shadow-xl"
+      className="bg-ivory p-6 rounded flex flex-col gap-6 rounded-2xl shadow-xl"
     >
+      <div className="text-2xl font-extrabold text-black">
+        {meta.name} ({focusedIndicator})
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-8 items-stretch">
         <div className="flex-1 flex flex-col gap-6 h-full">
-          <div>
-            <div className="text-2xl font-extrabold text-black">
-              {meta.name} ({focusedIndicator})
-            </div>
-            <p className="text-lg mt-5">{meta.description}</p>
-          </div>
+          <p className="text-lg">{meta.description}</p>
 
           <div className="mt-auto flex gap-4">
             {[
               ["예상치", data.expected],
               ["발표치", data.actual],
-            ].map(([label, value], i) => (
+            ].map(([label, value]) => (
               <div
                 key={label}
-                className="flex-1 bg-orange rounded-3xl px-3 py-6 text-ivory"
+                className="flex-1 bg-orange rounded-3xl py-14 text-ivory relative"
               >
-                <div className="text-xl font-bold mb-1">{label}</div>
-                <div className="text-3xl font-bold flex items-center gap-1">
+                <div className="absolute top-2 left-2 text-lg font-bold">
+                  {label}
+                </div>
+
+                <div className="absolute bottom-2 right-2 text-5xl font-bold flex items-center gap-1">
                   {value}% {data.unit || ""}
                 </div>
               </div>
