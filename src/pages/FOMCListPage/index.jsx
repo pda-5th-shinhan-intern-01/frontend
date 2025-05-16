@@ -73,8 +73,8 @@ export default function FOMCListPage() {
 
   return (
     <div className="flex flex-col gap-3 p-4">
-      <div className="font-bold text-xl text-black-md">FOMC 회의</div>
-      <div className="bg-gray-light px-5 py-3 text-black-md text-sm">
+      <div className="font-bold text-3xl text-black-md">FOMC 회의</div>
+      <div className="bg-ivory p-5 text-md">
         FOMC(연방공개시장위원회)는 미국 연준의 통화정책을 최종 결정하는 기구로,
         매 정례회의에서 기준금리를 인상·동결·인하합니다.
         <br />
@@ -89,18 +89,18 @@ export default function FOMCListPage() {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="text-black-md px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
+            className=" px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
           />
           <span>~</span>
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="text-black-md px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
+            className="px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
           />
           <div
             onClick={() => setSearchDate(true)}
-            className="text-black-md text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
+            className="text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
           >
             조회{" "}
           </div>
@@ -110,7 +110,7 @@ export default function FOMCListPage() {
               setEndDate("");
               setSearchDate(true);
             }}
-            className="text-black-md text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
+            className="text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
           >
             초기화{" "}
           </div>
@@ -122,7 +122,7 @@ export default function FOMCListPage() {
             <div>
               <button
                 type="button"
-                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm font-medium text-black-md hover:bg-gray-50"
+                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm font-medium  hover:bg-gray-50"
                 onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
               >
                 {sortOrder === "desc" ? "최신순" : "오래된 순"}
@@ -134,7 +134,7 @@ export default function FOMCListPage() {
               <div className="absolute z-10 mt-2 w-40 rounded-md ring-1 ring-gray-light shadow-lg bg-white">
                 <div className="py-1 text-sm ">
                   <div
-                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer "
                     onClick={() => {
                       setSortOrder("desc");
                       setSortDropdownOpen(false);
@@ -143,7 +143,7 @@ export default function FOMCListPage() {
                     최신순
                   </div>
                   <div
-                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer "
                     onClick={() => {
                       setSortOrder("asc");
                       setSortDropdownOpen(false);
@@ -162,7 +162,7 @@ export default function FOMCListPage() {
             <div>
               <button
                 type="button"
-                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm  hover:bg-gray-hover text-black-md"
+                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm  hover:bg-gray-hover "
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 {selectedRateIndex !== null
@@ -176,7 +176,7 @@ export default function FOMCListPage() {
               <div className="absolute z-10 mt-2 w-40 rounded-md ring-1 ring-gray-light shadow-lg bg-white">
                 <div className="py-1 text-sm ">
                   <div
-                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                    className="px-4 py-2 hover:bg-gray-hover cursor-pointer "
                     onClick={() => {
                       setSelectedRateIndex(null);
                       setDropdownOpen(false);
@@ -187,7 +187,7 @@ export default function FOMCListPage() {
                   {interestRateMap.map((rate, idx) => (
                     <div
                       key={idx}
-                      className="px-4 py-2 hover:bg-gray-hover cursor-pointer text-black-md"
+                      className="px-4 py-2 hover:bg-gray-hover cursor-pointer "
                       onClick={() => {
                         setSelectedRateIndex(idx);
                         setDropdownOpen(false);
@@ -236,7 +236,7 @@ export default function FOMCListPage() {
                       disabled={checkedItems.length >= 3}
                     />
                     <div onClick={() => navigate(`${idx}`)} className="w-full">
-                      <div className="text-black-md">{data.title}</div>
+                      <div className="">{data.title}</div>
                       <div className="text-sm text-gray-md">
                         ❤️‍🔥 : 경제 전망에 대한 불확실성 증가, 연준은 물가와 고용
                         목표 모두를 주시
@@ -247,11 +247,11 @@ export default function FOMCListPage() {
                 <td className="py-5 text-black-md">{data.date}</td>
                 <td className="py-5 flex justify-center">
                   {data.interestRate === "인상" ? (
-                    <FaCaretUp className="text-red-md" />
+                    <FaCaretUp className="text-red-md text-2xl" />
                   ) : data.interestRate === "인하" ? (
-                    <FaCaretDown className="text-blue-md" />
+                    <FaCaretDown className="text-blue-md text-2xl" />
                   ) : (
-                    <MdHorizontalRule className="w-3" />
+                    <MdHorizontalRule className="w-4" />
                   )}
                 </td>
               </tr>
@@ -263,8 +263,10 @@ export default function FOMCListPage() {
       {/* 비교하기 버튼 */}
       {checkedItems?.length >= 1 && (
         <div
-          className={`z-30 bg-gray-light flex flex-row justify-between px-16 py-1 fixed left-0 bottom-4 w-full rounded-lg shadow-lg
-          transition-all duration-300 ease-in-out transform
+          className={`z-30 bg-orange flex flex-row justify-between px-16 py-1
+          fixed bottom-4 w-11/12 left-1/2 -translate-x-1/2 rounded-lg shadow-lg
+          transform
+          transition-transform transition-opacity duration-500 ease-out
           ${
             checkedItems.length >= 1
               ? "translate-y-0 opacity-100"
@@ -276,7 +278,7 @@ export default function FOMCListPage() {
             {checkedItems?.map((item, idx) => (
               <div
                 key={idx}
-                className="flex flex-row gap-2 items-center px-5 text-sm "
+                className="flex flex-row gap-2 items-center px-5 text-sm text-white"
               >
                 {item.title}{" "}
                 <MdOutlineCancel
@@ -286,12 +288,15 @@ export default function FOMCListPage() {
               </div>
             ))}
           </div>
-          <div className="flex flex-row gap-4">
-            <button className="text-sm" onClick={() => setCheckedItems([])}>
+          <div className="flex flex-row gap-10">
+            <button
+              className="text-sm text-ivory cursor-pointer"
+              onClick={() => setCheckedItems([])}
+            >
               전체취소
             </button>
             <button
-              className="border border-gray-light bg-white px-6 py-2 rounded-md shadow-lg text-sm hover:bg-gray-hover"
+              className="border border-gray-light bg-white px-3 py-1 rounded-md shadow-lg text-sm hover:bg-gray-hover cursor-pointer"
               onClick={() => setCompareModalOpen(true)}
             >
               비교하기 ({checkedItems.length}개)

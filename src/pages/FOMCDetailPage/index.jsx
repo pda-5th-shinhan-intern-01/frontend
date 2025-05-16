@@ -22,25 +22,33 @@ export default function FOMCDetailPage() {
   return (
     <div className="flex flex-col">
       {/* 기본 정보 */}
-      <div className="font-bold text-xl flex items-center">
-        <span
-          onClick={() => navigate("/main/fomcs")}
-          className="text-2xl cursor-pointer"
-        >
-          <IoChevronBack />
-        </span>
+
+      <span
+        onClick={() => navigate("/main/fomcs")}
+        className="cursor-pointer flex flex-row items-center"
+      >
+        ← 목록으로
+      </span>
+      <div className="items-center  text-4xl font-bold mb-4 text-black">
         {dummy.title}
       </div>
-      <div className="pl-5">날짜 : {dummy.date}</div>
-      <div className="flex flex-row justify-between pl-5">
-        <div className="border-1  px-2 w-fit">
+
+      <div className="flex flex-row justify-between">
+        <div className="bg-orange text-white text-xl px-3 py-1 rounded-2xl">
           금리 {dummy.rateChange} ({dummy.rateRange.from.toFixed(2)}% -&gt;{" "}
           {dummy.rateRange.to.toFixed(2)}%)
         </div>
-        <div className="flex flex-row gap-2">
-          <div className="bg-gray-light px-2">영상 보기</div>
-          <div className="bg-gray-light px-2">원본 회의록으로 가기</div>
+        <div className="flex flex-row gap-2 items-center">
+          <div className="bg-gray-light px-2 rounded-2xl cursor-pointer">
+            영상 보기
+          </div>
+          <div className="bg-gray-light px-2 rounded-2xl cursor-pointer">
+            원본 회의록으로 가기
+          </div>
         </div>
+      </div>
+      <div className="pl-3 mt-2 text-gray-md text-sm">
+        {dummy.announcement.datetime}
       </div>
       <hr className="my-6" />
 
