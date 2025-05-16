@@ -135,33 +135,33 @@ export default function Header() {
           />
         </Link>
 
-        <div className="flex items-center">
+      <div className="flex items-center">
+        <div className="relative ml-4">
           <input
-            className="bg-gray-light px-4 py-2 rounded-2xl text-sm outline-none"
+            className="bg-gray-light px-4 py-2 rounded-2xl text-sm"
             placeholder="종목명을 입력하세요"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                setSearchInput("");
-                setSearchResult(dummyStocks);
-                setIsModalOpen(true);
-              }
+              if (e.key === "Enter") handleSearch();
             }}
           />
 
-          {navigates.map((el) => (
-            <Link
-              to={el.id}
-              key={el.id}
-              className={`ml-10 transition-colors duration-500 ${
-                isOrange ? "text-white" : "text-black"
-              }`}
-            >
-              {el.title}
-            </Link>
-          ))}
-
+          {isModalOpen && (
+            <div className="absolute top-full left-0 mt-1 w-full z-50">
+              <SearchModel
+                results={searchResult}
+                onClose={() => setIsModalOpen(false)}
+              />
+            </div>
+          )}
+        </div>
+        {navigates.map((el) => (
+          <Link to={el.id} key={el.id} className="ml-10 text-black-md">
+            {el.title}
+          </Link>
+        ))}
+        {/* <div className="relative">
           {isModalOpen && (
             <div className="relative">
               <div className="absolute top-full left-0 mt-1 w-full z-50">
@@ -172,7 +172,7 @@ export default function Header() {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
