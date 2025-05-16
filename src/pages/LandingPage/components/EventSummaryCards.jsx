@@ -48,11 +48,13 @@ export default function EventSummaryCards() {
 
   return (
     <div className="bg-white w-full py-6">
-      <h2 className="text-4xl font-bold mb-4 text-black">
-        다가오는 경제 이벤트
+      <h2 className="leading-snug mt-14 text-4xl font-semibold text-black">
+        중요한 발표만 쏙쏙
+        <br />
+        다음 일정, 놓치지 마세요
       </h2>
 
-      <div className="mt-12 flex overflow-x-auto gap-4 scrollbar-hide">
+      <div className="mt-8 flex overflow-x-auto gap-4 scrollbar-hide">
         {events.map((event, i) => {
           const meta = economicIndicatorMap[event.key];
 

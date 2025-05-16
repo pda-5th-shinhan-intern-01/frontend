@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import SearchModel from "../SearchModel";
+import logo from "../../assets/logo.png";
+import logoBlack from "../../assets/logo-black.png";
 
+// 더미 종목 데이터
 const dummyStocks = [
   {
     name: "마이크로소프트",
@@ -85,6 +88,7 @@ const dummyStocks = [
   },
 ];
 
+// 네비게이션 메뉴
 const navigates = [
   { id: "/main", title: "홈" },
   { id: "/main/sectors", title: "종목섹터" },
@@ -93,44 +97,79 @@ const navigates = [
 ];
 
 export default function Header() {
+  const location = useLocation();
+  const isMainPage = location.pathname === "/main";
+
+  const [isTop, setIsTop] = useState(true);
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSearch = () => {
-    setSearchInput("");
-    setSearchResult(dummyStocks);
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsTop(window.scrollY < 10);
+    };
+
+    if (isMainPage) {
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    } else {
+      setIsTop(false);
+    }
+  }, [isMainPage]);
+
+  const isOrange = isMainPage && isTop;
 
   return (
-    <div className="w-full h-full flex justify-between items-center">
-      <Link to="/main" className="text-lg flex-grow">
-        로고
-      </Link>
+    <div
+      className={`w-full h-full transition-colors duration-500 ${
+        isOrange ? "bg-orange" : "bg-white shadow-md"
+      }`}
+    >
+      <div className="max-w-[1280px] mx-auto h-16 flex justify-between items-center transition-all duration-500">
+        <Link to="/main" className="flex items-center">
+          <img
+            src={isOrange ? logo : logoBlack}
+            alt="로고"
+            className="h-10 w-auto object-contain transition-all duration-300"
+          />
+        </Link>
 
-      <div className="flex items-center">
-        <input
-          className="bg-gray-light px-4 py-2 rounded-2xl text-sm"
-          placeholder="종목명을 입력하세요"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSearch();
-          }}
-        />
-        {navigates.map((el) => (
-          <Link to={el.id} key={el.id} className="ml-10 text-black-md">
-            {el.title}
-          </Link>
-        ))}
-        <div className="relative">
+        <div className="flex items-center">
+          <input
+            className="bg-gray-light px-4 py-2 rounded-2xl text-sm outline-none"
+            placeholder="종목명을 입력하세요"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setSearchInput("");
+                setSearchResult(dummyStocks);
+                setIsModalOpen(true);
+              }
+            }}
+          />
+
+          {navigates.map((el) => (
+            <Link
+              to={el.id}
+              key={el.id}
+              className={`ml-10 transition-colors duration-500 ${
+                isOrange ? "text-white" : "text-black"
+              }`}
+            >
+              {el.title}
+            </Link>
+          ))}
+
           {isModalOpen && (
-            <div className="absolute top-full left-0 mt-1 w-full z-50">
-              <SearchModel
-                results={searchResult}
-                onClose={() => setIsModalOpen(false)}
-              />
+            <div className="relative">
+              <div className="absolute top-full left-0 mt-1 w-full z-50">
+                <SearchModel
+                  results={searchResult}
+                  onClose={() => setIsModalOpen(false)}
+                />
+              </div>
             </div>
           )}
         </div>
