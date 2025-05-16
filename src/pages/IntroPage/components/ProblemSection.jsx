@@ -57,7 +57,7 @@ export default function ProblemSection() {
         </p>
       </div>
 
-      <div className="relative w-full h-24 mb-12">
+      <div className="relative w-full h-24 mb-12 overflow-hidden">
         <svg
           viewBox="0 0 1440 150"
           className="absolute top-0 left-0 w-full h-full pointer-events-none"

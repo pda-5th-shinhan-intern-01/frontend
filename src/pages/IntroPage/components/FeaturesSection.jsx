@@ -61,7 +61,7 @@ export default function FeaturesSection() {
               }`}
               initial={feature.reverse ? "hiddenRight" : "hiddenLeft"}
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ amount: 0.4 }}
               transition={{ duration: 0.4 }}
               variants={fadeVariant}
             >
@@ -78,7 +78,7 @@ export default function FeaturesSection() {
               }`}
               initial={feature.reverse ? "hiddenLeft" : "hiddenRight"}
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ amount: 0.4 }}
               transition={{ duration: 0.4 }}
               variants={fadeVariant}
             >
