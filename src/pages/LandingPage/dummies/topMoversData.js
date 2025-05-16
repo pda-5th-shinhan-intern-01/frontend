@@ -5,5 +5,4 @@ export const topMoversData = [
   { name: "아마존", ticker: "AMZN", price: 122.75, change: "+1.3%" },
   { name: "메타", ticker: "META", price: 314.1, change: "-0.7%" },
   { name: "넷플릭스", ticker: "NFLX", price: 421.3, change: "+2.0%" },
-  { name: "브로드컴", ticker: "AVGO", price: 1324.5, change: "+0.9%" },
 ];

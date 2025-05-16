@@ -20,7 +20,7 @@ export default function EventSummaryCards() {
       requestAnimationFrame(() => {
         const el = document.getElementById("indicator-summary-section");
         if (el) {
-          const headerHeight = 80;
+          const headerHeight = 50;
           const y =
             el.getBoundingClientRect().top + window.scrollY - headerHeight;
           window.scrollTo({ top: y, behavior: "smooth" });
@@ -47,12 +47,12 @@ export default function EventSummaryCards() {
   };
 
   return (
-    <div className="bg-white w-full">
-      <h2 className="text-lg font-semibold mb-4 text-black">
+    <div className="bg-white w-full py-6">
+      <h2 className="text-4xl font-bold mb-4 text-black">
         다가오는 경제 이벤트
       </h2>
 
-      <div className="flex overflow-x-auto gap-4 scrollbar-hide">
+      <div className="mt-12 flex overflow-x-auto gap-4 scrollbar-hide">
         {events.map((event, i) => {
           const meta = economicIndicatorMap[event.key];
 
@@ -60,7 +60,7 @@ export default function EventSummaryCards() {
             <div
               key={i}
               onClick={() => handleClick(event.key)}
-              className="relative flex-shrink-0 w-1/4 bg-gray-light rounded p-4 text-sm cursor-pointer hover:bg-white"
+              className="relative flex-shrink-0 w-1/4 bg-gray-light rounded-xl py-4 px-6 text-lg cursor-pointer hover:bg-white"
             >
               <div className="font-semibold text-black">
                 {meta?.name || event.key}

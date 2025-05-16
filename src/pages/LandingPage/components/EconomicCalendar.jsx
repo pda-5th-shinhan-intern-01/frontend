@@ -47,8 +47,8 @@ export default function EconomicCalendar() {
   }, []);
 
   return (
-    <div className="mb-4">
-      <h2 className="text-lg font-semibold mb-2 text-black">
+    <div className="mb-4 py-12">
+      <h2 className="text-2xl font-bold mb-2 text-black">
         한 눈에 확인하는 주간 지표 캘린더
       </h2>
       <div className="flex items-center gap-2 relative" ref={calendarRef}>
@@ -63,7 +63,7 @@ export default function EconomicCalendar() {
           className="cursor-pointer p-2 hover:bg-gray-light border border-[color:var(--color-gray-light)] rounded-lg"
           aria-label="날짜 선택"
         >
-          <IoCalendarOutline className="text-xl text-[color:var(--color-gray-md)]" />
+          <IoCalendarOutline className="text-xl text-gray-md" />
         </button>
         <button
           onClick={() =>

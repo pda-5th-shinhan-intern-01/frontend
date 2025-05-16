@@ -10,10 +10,6 @@ export default function IndicatorSummary() {
   const [data, setData] = useState(null);
 
   const meta = focusedIndicator && economicIndicatorMap[focusedIndicator];
-  const diff =
-    data && typeof data.actual === "number" && typeof data.expected === "number"
-      ? (data.actual - data.expected).toFixed(1)
-      : null;
 
   useEffect(() => {
     if (focusedIndicator) {
@@ -25,7 +21,7 @@ export default function IndicatorSummary() {
     if (!data) return;
     const el = document.getElementById("indicator-summary-section");
     if (el) {
-      const offset = 80;
+      const offset = 50;
       const y = el.getBoundingClientRect().top + window.scrollY - offset;
       setTimeout(() => {
         window.scrollTo({ top: y, behavior: "smooth" });
@@ -38,15 +34,15 @@ export default function IndicatorSummary() {
   return (
     <div
       id="indicator-summary-section"
-      className="bg-gray-light p-6 rounded flex flex-col gap-4"
+      className="bg-ivory p-6 rounded flex flex-col gap-4 rounded-2xl shadow-xl"
     >
       <div className="flex flex-col lg:flex-row gap-8 items-stretch">
-        <div className="flex-1 flex flex-col gap-2 h-full">
+        <div className="flex-1 flex flex-col gap-6 h-full">
           <div>
-            <div className="text-lg font-semibold text-black">
+            <div className="text-2xl font-extrabold text-black">
               {meta.name} ({focusedIndicator})
             </div>
-            <p className="text-sm mt-1.5">{meta.description}</p>
+            <p className="text-lg mt-5">{meta.description}</p>
           </div>
 
           <div className="mt-auto flex gap-4">
@@ -54,30 +50,25 @@ export default function IndicatorSummary() {
               ["예상치", data.expected],
               ["발표치", data.actual],
             ].map(([label, value], i) => (
-              <div key={label} className="flex-1 bg-gray-md px-3 py-6">
-                <div className="text-sm mb-1">{label}</div>
-                <div className="text-lg font-bold flex items-center gap-1">
-                  +{value}% {data.unit || ""}
-                  {i === 1 && diff !== null && (
-                    <span
-                      className={`text-sm ml-1 ${
-                        parseFloat(diff) > 0 ? "text-red-md" : "text-blue-md"
-                      }`}
-                    >
-                      ({diff > 0 ? "+" : "-"}
-                      {Math.abs(diff)}%p)
-                    </span>
-                  )}
+              <div
+                key={label}
+                className="flex-1 bg-orange rounded-3xl px-3 py-6 text-ivory"
+              >
+                <div className="text-xl font-bold mb-1">{label}</div>
+                <div className="text-3xl font-bold flex items-center gap-1">
+                  {value}% {data.unit || ""}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col gap-4 h-full">
+        <div className="flex-1 flex flex-col gap-6 h-full">
           <div className="text-black">
-            <span className="font-semibold">영향을 미치는 주요 산업군</span>
-            <div className="text-sm mt-2">
+            <span className="text-lg font-semibold">
+              영향을 미치는 주요 산업군
+            </span>
+            <div className="text-md mt-2">
               {data.industries.map((ind, i) => (
                 <span key={i} className="inline-block px-2 py-0.5 border mr-1">
                   {ind}
@@ -86,10 +77,10 @@ export default function IndicatorSummary() {
             </div>
           </div>
 
-          <div className="font-semibold text-black">
+          <div className="font-semibold text-black text-lg">
             영향력이 높은 종목 순위
           </div>
-          <ul className="text-sm text-black">
+          <ul className="text-lg text-black">
             {data.ranking.map((item, i) => (
               <li key={i} className="flex justify-between py-1">
                 <span>

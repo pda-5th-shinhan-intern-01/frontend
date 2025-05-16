@@ -16,10 +16,10 @@ export default function CalendarSummaryGrid({ weeklyData }) {
             key={idx}
             className="border border-[color:var(--color-gray-light)] rounded-lg px-2 py-2 text-sm flex flex-col gap-2"
           >
-            <div className="font-semibold text-sm text-black">
+            <div className="font-semibold text-black">
               {day.day} {new Date(day.date).getDate()}일
             </div>
-            <div className="flex flex-col gap-[1px] text-xs text-gray-md truncate">
+            <div className="flex flex-col gap-[1px] text-gray-md truncate">
               {entries.map(([indicator, count], i) => (
                 <div key={i} className="flex justify-between w-full">
                   <span className="truncate">
