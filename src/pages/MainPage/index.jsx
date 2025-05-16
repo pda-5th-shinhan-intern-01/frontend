@@ -18,11 +18,11 @@ export default function MainPage() {
         <StockChart />
       </div>
       {/* 종목 별 지표 그래프 */}
-      <div className="">
+      <div className="mt-20">
         <IndicatorsForStock />
       </div>
       {/* 지표별 주가 변화 */}
-      <div className="">
+      <div className="mt-20">
         <CurrentIndicators />
       </div>
       {/* 미래 지표 이벤트 */}

@@ -65,12 +65,12 @@ export default function IndicatorsForStock() {
             {
               from: -Infinity,
               to: 0,
-              color: "#3083f6",
+              color: "#00aaf0",
             },
             {
               from: 0.00001,
               to: Infinity,
-              color: "#f14452",
+              color: "#fe4700",
             },
           ],
         },
@@ -114,8 +114,8 @@ export default function IndicatorsForStock() {
   return (
     <div className="flex w-full gap-4">
       <div className="w-full">
-        <div className="flex w-full justify-between   mb-2">
-          <h3 className="text-lg font-semibold flex gap-1 items-center">
+        <div className="flex w-full justify-between mb-4">
+          <h3 className="text-3xl font-semibold flex gap-1 items-center">
             경제 지표별 민감도
             <Tooltip content={introduceService.민감도} />
           </h3>
@@ -125,12 +125,15 @@ export default function IndicatorsForStock() {
           </div>
         </div>
         <div className="h-16 flex-col flex justify-between">
-          <div className="text-sm">
-            💡 지표 바를 클릭하면 오른쪽에 해당 지표의 변화 추이를 확인할 수
-            있어요.
+          <div className="text-lg">
+            <div>지표가 변화할 때, 주가가 어떻게 변화했는지를 확인하세요</div>
+            <div className="">
+              지표 바를 클릭하면 오른쪽에 해당 지표의 변화 추이를 확인할 수
+              있어요.
+            </div>
           </div>
 
-          <div className="flex w-full justify-end gap-4 text-xs">
+          {/* <div className="flex w-full justify-end gap-4 text-xs">
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-red-md rounded-full"></div>
               <div>양(+): 지표 상승 시 주가 상승</div>
@@ -139,7 +142,7 @@ export default function IndicatorsForStock() {
               <div className="w-3 h-3 bg-blue-md rounded-full"></div>
               <div>음(-): 지표 상승 시 주가 하락</div>
             </div>
-          </div>
+          </div> */}
         </div>
         <ReactApexChart
           options={options}
