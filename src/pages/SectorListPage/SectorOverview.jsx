@@ -1,4 +1,5 @@
 import React from "react";
+import fomc from "../../assets/coin.png";
 
 const sectors = [
   {
@@ -83,17 +84,21 @@ const sectors = [
 
 export default function SectorOverview({ onSelectSector }) {
   return (
-    <div className="bg-gray-light p-5">
-      <h1 className="text-2xl font-bold mb-4">시장 섹터 분류</h1>
+    <div className="p-5">
+      <h1 className="text-5xl font-bold mb-4">Sectors</h1>
       <p className="mb-8">
         11개 주요 시장 섹터와 각 섹터에 포함된 대표 종목들을 확인하세요.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {sectors.map((sector, idx) => (
-          <div key={idx} className="bg-white rounded-xl shadow p-4">
+          <div
+            key={idx}
+            className="bg-white rounded-xl shadow px-10 py-6 hover:cursor-pointer"
+            onClick={() => onSelectSector(sector.name)}
+          >
             <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-3xl font-semibold">
                 {sector.name}{" "}
                 <span
                   className={`${sector.change.startsWith("-")
@@ -104,14 +109,13 @@ export default function SectorOverview({ onSelectSector }) {
                   {sector.change}
                 </span>
               </h2>
-              <button
-                className="text-sm text-blue-md hover:cursor-pointer"
-                onClick={() => onSelectSector(sector.name)}
-              >
-                종목 보기
-              </button>
             </div>
-            <p className="text-sm mb-3">{sector.description}</p>
+            <p className="text-sm mb-4">{sector.description}</p>
+            <img
+              src={fomc}
+              alt={`${sector.name} 이미지`}
+              className="w-full max-w-xs mb-6"
+            />
             <div className="flex flex-wrap gap-2">
               {sector.stocks.map((stock, sIdx) => (
                 <span
