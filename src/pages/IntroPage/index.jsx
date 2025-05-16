@@ -7,7 +7,7 @@ import CTASection from "./components/CTASection";
 
 export default function IntroPage() {
   return (
-    <div>
+    <div className="flex flex-col w-full items-center justify-center">
       <IntroSection />
       <ProblemSection />
       <ChartSection />
