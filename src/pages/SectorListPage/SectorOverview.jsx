@@ -1,5 +1,15 @@
 import React from "react";
-import fomc from "../../assets/sector_tech.jpg";
+import sector_tech from "../../assets/sector_tech.png";
+import sector_finance from "../../assets/sector_finance.png";
+import sector_healthcare from "../../assets/sector_healthcare.png";
+import sector_energy from "../../assets/sector_energy.png";
+import sector_consumer_discretionary from "../../assets/sector_consumer_discretionary.png";
+import sector_consumer_staples from "../../assets/sector_consumer_staples.png";
+import sector_communication from "../../assets/sector_communication.png";
+import sector_industrials from "../../assets/sector_industrials.png";
+import sector_utilities from "../../assets/sector_utilities.png";
+import sector_real_estate from "../../assets/sector_real_estate.png";
+import sector_materials from "../../assets/sector_materials.png";
 
 const sectors = [
   {
@@ -82,6 +92,22 @@ const sectors = [
   },
 ];
 
+
+
+const sectorImages = {
+  기술: sector_tech,
+  금융: sector_finance,
+  헬스케어: sector_healthcare,
+  에너지: sector_energy,
+  자유소비재: sector_consumer_discretionary,
+  필수소비재: sector_consumer_staples,
+  커뮤니티: sector_communication,
+  산업재: sector_industrials,
+  유틸리티: sector_utilities,
+  부동산: sector_real_estate,
+  소재: sector_materials,
+};
+
 export default function SectorOverview({ onSelectSector }) {
   return (
     <div className="p-5">
@@ -104,10 +130,12 @@ export default function SectorOverview({ onSelectSector }) {
           const textColor = rowIndex === 1 ? "#FE4700" : "#F6FDEC";
           const stockBgColor = "#FE4700";
 
-          // change 텍스트 색상, 배경색 버튼 스타일
           const isNegative = sector.change.startsWith("-");
-          const changeBgColor = isNegative ? "#DBEAFE" : "#FEE2E2"; // 연한 파랑 / 연한 빨강
-          const changeTextColor = isNegative ? "#2563EB" : "#DC2626"; // 파랑 / 빨강
+          const changeBgColor = isNegative ? "#DBEAFE" : "#FEE2E2";
+          const changeTextColor = isNegative ? "#2563EB" : "#DC2626";
+
+          // 이미지 매핑
+          const imageSrc = sectorImages[sector.name] || sector_tech;
 
           return (
             <div
@@ -144,7 +172,7 @@ export default function SectorOverview({ onSelectSector }) {
 
               <p className="text-sm mb-3 mt-4">{sector.description}</p>
               <img
-                src={fomc}
+                src={imageSrc}
                 alt={`${sector.name} 이미지`}
                 className="w-full max-w-xs mb-6"
               />
