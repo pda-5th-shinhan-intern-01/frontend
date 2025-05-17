@@ -107,7 +107,7 @@ export default function HeatmapChart() {
   };
 
   return (
-    <div className="p-6 bg-[#F5F5F5] rounded-xl shadow-lg w-full max-w-screen-xl mx-auto">
+    <div className="p-6 bg-gray-light rounded-2xl shadow-md w-full max-w-screen-xl mx-auto">
       <Chart options={options} series={series} type="heatmap" height={800} />
     </div>
   );
