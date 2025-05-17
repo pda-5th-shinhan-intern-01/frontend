@@ -119,30 +119,14 @@ export default function IndicatorsForStock() {
             경제 지표별 민감도
             <Tooltip content={introduceService.민감도} />
           </h3>
-
-          <div className="flex items-center text-xs bg-gray-light py-1 px-4 rounded-lg">
-            민감도순
-          </div>
         </div>
         <div className="h-16 flex-col flex justify-between">
           <div className="text-lg">
             <div>지표가 변화할 때, 주가가 어떻게 변화했는지를 확인하세요</div>
             <div className="">
-              지표 바를 클릭하면 오른쪽에 해당 지표의 변화 추이를 확인할 수
-              있어요.
+              지표 바를 클릭하면 해당 지표의 변화 추이를 볼 수 있어요
             </div>
           </div>
-
-          {/* <div className="flex w-full justify-end gap-4 text-xs">
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-red-md rounded-full"></div>
-              <div>양(+): 지표 상승 시 주가 상승</div>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-blue-md rounded-full"></div>
-              <div>음(-): 지표 상승 시 주가 하락</div>
-            </div>
-          </div> */}
         </div>
         <ReactApexChart
           options={options}
@@ -153,10 +137,13 @@ export default function IndicatorsForStock() {
       </div>
       {isEconomicChartVisible && economicIndicatorMap[selected] ? (
         <div className="w-1/2">
-          <h3 className="text-lg font-semibold mb-2">
-            {economicIndicatorMap[selected].name} ({selected}) 변화
+          <h3 className="text-3xl font-semibold mb-4">
+            {selected} 변화
+            <span className="ml-2 text-lg text-gray-md">
+              {economicIndicatorMap[selected].name}{" "}
+            </span>
           </h3>
-          <div className="text-sm h-16">
+          <div className="text-lg h-16">
             {economicIndicatorMap[selected].description}
           </div>
           <IndicatorChangeChart indicator={selected} />

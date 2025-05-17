@@ -7,6 +7,7 @@ import { currentIndicatorsData } from "../dummies/currentIndicatorData";
 
 export default function CurrentIndicators() {
   const [events, setEvents] = useState([]);
+  const [sortedBy, setSorterBy] = useState("민감도순");
 
   const tryGetCurrEvents = () => {
     // api 호출 함수
@@ -20,17 +21,35 @@ export default function CurrentIndicators() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
-        <div className="flex gap-2 items-end">
-          <h3 className="text-lg font-semibold">지표별 주가 변화</h3>
-          <p className="text-sm">
+        <div className="flex-col gap-2 items-end">
+          <h3 className="text-3xl font-semibold">최근 지표 이벤트 주가 변화</h3>
+          <p className="text-sm mt-4">
             최근 경제지표 발표에서 주가가 얼마나 변동되었는지 확인하세요
           </p>
         </div>
         <div className="flex gap-2 items-end">
-          <div className="flex items-center text-xs bg-gray-light py-1 px-4 rounded-lg">
+          <div
+            onClick={() => {
+              setSorterBy("민감도순");
+            }}
+            className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
+              sortedBy == "민감도순"
+                ? "bg-red-md text-white"
+                : "bg-gray-light text-black"
+            }`}
+          >
             민감도순
           </div>
-          <div className="flex items-center text-xs bg-gray-light py-1 px-4 rounded-lg">
+          <div
+            onClick={() => {
+              setSorterBy("최신순");
+            }}
+            className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
+              sortedBy == "최신순"
+                ? "bg-red-md text-white"
+                : "bg-gray-light text-black"
+            }`}
+          >
             최신순
           </div>
         </div>
@@ -53,7 +72,7 @@ export default function CurrentIndicators() {
             </div>
             <div>
               <p className="flex items-center text-sm">
-                이전치 <FaArrowRight className="text-xs" /> 발표치
+                예상치 <FaArrowRight className="text-xs" /> 발표치
               </p>
               <h2 className="flex items-end text-xl  font-semibold">
                 <span className="flex items-center text-sm">
