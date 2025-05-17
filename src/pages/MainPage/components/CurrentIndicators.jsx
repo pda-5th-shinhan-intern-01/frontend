@@ -4,6 +4,7 @@ import StockMiniChart from "../../../components/stockMiniChart";
 import { IoIosCalendar } from "react-icons/io";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { currentIndicatorsData } from "../dummies/currentIndicatorData";
+import HorizontalScroller from "../../../components/HorizontalScroller";
 
 export default function CurrentIndicators() {
   const [events, setEvents] = useState([]);
@@ -23,7 +24,7 @@ export default function CurrentIndicators() {
       <div className="flex justify-between">
         <div className="flex-col gap-2 items-end">
           <h3 className="text-3xl font-semibold">최근 지표 이벤트 주가 변화</h3>
-          <p className="text-sm mt-4">
+          <p className="text-lg mt-4">
             최근 경제지표 발표에서 주가가 얼마나 변동되었는지 확인하세요
           </p>
         </div>
@@ -55,15 +56,16 @@ export default function CurrentIndicators() {
         </div>
       </div>
       {/* 카드 목록 */}
-      <div className="flex gap-2 overflow-x-auto p-2 scrollbar-hide">
+
+      <HorizontalScroller>
         {events.map((event, id) => (
           <div
             key={id}
-            className="flex flex-col gap-2 bg-white p-4 rounded-lg min-w-[350px] shadow-lg"
+            className="hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 rounded-2xl min-w-[350px]"
           >
-            <div className="flex justify-between items-center">
-              <h4 className="text-lg font-semibold">{event.name}</h4>
-              <p className="text-sm text-gray-md flex gap-1 items-center">
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="text-2xl font-semibold">{event.name}</h4>
+              <p className="text-sm flex gap-1 items-center">
                 <span>
                   <IoIosCalendar />
                 </span>
@@ -99,7 +101,7 @@ export default function CurrentIndicators() {
                 <div className="text-sm text-gray-md">주가반응</div>
                 {event.chartData[event.chartData.length - 1].y >
                 event.chartData[0].y ? (
-                  <div className="flex gap-1 items-center text-red-md">
+                  <div className="flex gap-1 text-2xl items-center justify-center text-red-md">
                     <FaArrowTrendUp />
                     {event.chartData[event.chartData.length - 1].y -
                       event.chartData[0].y}
@@ -108,13 +110,14 @@ export default function CurrentIndicators() {
                   event.chartData[0].y ? (
                   <div className="flex gap-1 items-center">-</div>
                 ) : (
-                  <div className="flex gap-1 items-center text-blue-md">
+                  <div className="flex gap-1 items-center text-blue-md text-2xl">
                     <FaArrowTrendDown />
                     {event.chartData[event.chartData.length - 1].y -
                       event.chartData[0].y}
                   </div>
                 )}
               </div>
+
               <StockMiniChart
                 indicator={event.name}
                 chartData={event.chartData}
@@ -122,7 +125,7 @@ export default function CurrentIndicators() {
             </div>
           </div>
         ))}
-      </div>
+      </HorizontalScroller>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 export const currentIndicatorsData = [
   {
-    name: "지표명",
+    name: "CPI",
     date: "2023년 10월 10일 00시 00분", //이벤트 발표 일시 ex)
     prevData: 2.5, //이전치
     currData: 3.0, //발표치
