@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import StockMiniChart from "../../../components/stockMiniChart";
-import { IoIosCalendar } from "react-icons/io";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { currentIndicatorsData } from "../dummies/currentIndicatorData";
 import HorizontalScroller from "../../../components/HorizontalScroller";
 
 export default function CurrentIndicators() {
   const [events, setEvents] = useState([]);
-  const [sortedBy, setSorterBy] = useState("민감도순");
+  const [sortedBy, setSortedBy] = useState("민감도순");
 
   const tryGetCurrEvents = () => {
     // api 호출 함수
@@ -31,7 +30,7 @@ export default function CurrentIndicators() {
         <div className="flex gap-2 items-end">
           <div
             onClick={() => {
-              setSorterBy("민감도순");
+              setSortedBy("민감도순");
             }}
             className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
               sortedBy == "민감도순"
@@ -43,7 +42,7 @@ export default function CurrentIndicators() {
           </div>
           <div
             onClick={() => {
-              setSorterBy("최신순");
+              setSortedBy("최신순");
             }}
             className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
               sortedBy == "최신순"
@@ -65,12 +64,7 @@ export default function CurrentIndicators() {
           >
             <div className="flex justify-between items-center mb-4">
               <h4 className="text-2xl font-semibold">{event.name}</h4>
-              <p className="text-sm flex gap-1 items-center">
-                <span>
-                  <IoIosCalendar />
-                </span>
-                {event.date}
-              </p>
+              <p className="text-sm flex gap-1 items-center">{event.date}</p>
             </div>
             <div>
               <p className="flex items-center text-sm">
