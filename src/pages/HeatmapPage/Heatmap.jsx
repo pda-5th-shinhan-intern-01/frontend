@@ -66,8 +66,8 @@ export default function HeatmapChart() {
         const clamp = Math.max(-1, Math.min(1, value));
         const percent = (clamp + 1) / 2;
 
-        const blue = [0, 170, 240];   // #00AAF0
-        const red = [254, 71, 0];     // #FE4700
+        const blue = [0, 170, 240]; // #00AAF0
+        const red = [254, 71, 0]; // #FE4700
 
         let r, g, b;
 
@@ -108,7 +108,6 @@ export default function HeatmapChart() {
 
   return (
     <div className="p-6 bg-[#F5F5F5] rounded-xl shadow-lg w-full max-w-screen-xl mx-auto">
-      
       <Chart options={options} series={series} type="heatmap" height={800} />
     </div>
   );

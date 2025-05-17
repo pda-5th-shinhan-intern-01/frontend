@@ -1,76 +1,92 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Section from "./components/Section";
-import SectionItem from "./components/SectionItem";
 import dummy from "./dummies/dummy.json";
+import PolicyDecision from "./components/PolicyDecision";
+import Votes from "./components/Votes";
+import CommonSection from "./components/CommonSection";
+import miniLogo from "../../assets/miniLogo.png";
 
-const labels = {
-  laborMarket: "노동 시장",
-  consumptionInvestmentExport: "소비 · 투자 · 수출",
-  inflation: "물가 및 기대 인플레이션",
-  financialMarket: "금융 시장",
-  summary: "요약",
-  qtComment: "QT 관련 언급",
-  dissent: "반대 의견",
-  marketReaction: "시장 반응",
+const economicLabel = {
+  labor_market: "노동 시장",
+  consumption_investment_trade: "소비 · 투자 · 무역",
+  inflation_trend: "인플레이션 추세",
+  other_macro: "기타 거시 지표",
+};
+
+const futureLabel = {
+  rationale: "정책 근거",
+  factors_to_watch: "주요 관찰 요소",
+  change_conditions: "변화 조건",
 };
 
 export default function FOMCDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
-  console.log(params, "pa");
   return (
     <div className="flex flex-col">
       {/* 기본 정보 */}
-      <div className="font-bold text-xl flex items-center">
-        <span onClick={() => navigate("/main/fomcs")} className="text-3xl">
-          &lt; &nbsp;
-        </span>
-        {dummy.title}
+      <span
+        onClick={() => navigate("/main/fomcs")}
+        className="cursor-pointer flex flex-row items-center mb-3 hover:underline"
+      >
+        ← 목록으로
+      </span>
+      <div className="items-center  text-4xl font-bold mb-4 text-black">
+        {dummy.announcement.datetime.split(" ")[0]}&nbsp;
+        {dummy.announcement.datetime.split(" ")[1]} FOMC 회의 요약
       </div>
-      <div>날짜 : {dummy.date}</div>
       <div className="flex flex-row justify-between">
-        <div className="border-1  px-2 w-fit">
-          금리 {dummy.rateChange} ({dummy.rateRange.from.toFixed(2)}% -&gt;{" "}
-          {dummy.rateRange.to.toFixed(2)}%)
+        <div
+          className={`${
+            dummy.policy_decision.rate_policy.direction == "raise"
+              ? "bg-orange"
+              : dummy.rateChange == "lower"
+              ? "bg-blue-md"
+              : "bg-gray-md"
+          } text-white text-xl px-5 py-1 rounded-2xl shadow-sm`}
+        >
+          금리 {dummy.policy_decision.rate_policy.change} ({" "}
+          {dummy.policy_decision.rate_policy.range} )
         </div>
-        <div className="flex flex-row gap-2">
-          <div className="bg-gray-light px-2">영상 보기</div>
-          <div className="bg-gray-light px-2">원본 회의록으로 가기</div>
+        <div className="flex flex-row gap-2 items-center">
+          <div className="bg-ivory px-2 rounded-2xl cursor-pointer shadow-sm hover:bg-gray-light">
+            영상 보기
+          </div>
+          <div className="bg-ivory px-2 rounded-2xl cursor-pointer shadow-sm hover:bg-gray-light">
+            원본 회의록으로 가기
+          </div>
         </div>
+      </div>
+      <div className="pl-5 mt-2 text-gray-md text-sm">
+        {dummy.announcement.datetime}
       </div>
       <hr className="my-6" />
-
-      {/* 회의록 요약  */}
-      <Section title="경제 여건 진단">
-        {Object.entries(dummy.economicAssessment).map(([key, value]) => (
-          <SectionItem key={key} title={labels[key] || key} data={value} />
-        ))}
-      </Section>
-
-      <Section title="통화정책 결정">
-        <SectionItem
-          title="정책 금리"
-          data={dummy.policyDecision.policyRateSummary}
+      <div className="bg-ivory p-7 shadow-sm rounded-2xl">
+        {" "}
+        <div className="text-black-md flex flex-row">
+          <img src={miniLogo} className="w-5 h-5 mr-1" /> Hot Signal 한눈에 보기{" "}
+        </div>
+        <div>
+          <div className="font-bold  text-lg ">| {dummy.title} </div>
+          <div className="text-orange font-semibold">
+            {dummy.additional_insight}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-10 my-5">
+        <CommonSection
+          title={"경제 상황"}
+          data={dummy.economic_conditions}
+          label={economicLabel}
         />
-        <SectionItem
-          title={dummy.policyDecision.qtPolicyTitle}
-          data={dummy.policyDecision.qtPolicyDetails}
+        <PolicyDecision data={dummy.policy_decision} />
+        <CommonSection
+          title={"향후 계획"}
+          data={dummy.future_guidance}
+          label={futureLabel}
         />
-      </Section>
-
-      <Section title="투표 결과">
-        <SectionItem title="찬성" data={dummy.votes.agreed} />
-        <SectionItem title="반대" data={dummy.votes.disagreed} />
-        <div className="">반대 이유 : {dummy.votes.note} </div>
-      </Section>
-
-      <Section title="추가 언급 및 시장 반응">
-        {Object.entries(dummy.remarks).map(([key, value]) => (
-          <SectionItem key={key} title={labels[key] || key} data={value} />
-        ))}
-      </Section>
-
+        <Votes data={dummy.votes} />
+      </div>
       <div className="flex justify-between items-center mt-10">
         {dummy.prev ? (
           <button

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchModel from "../SearchModel";
+import logo from "../../assets/logo.png";
+import logoBlack from "../../assets/logo-black.png";
 
 const dummyStocks = [
   {
@@ -92,52 +94,67 @@ const navigates = [
   { id: "/main/heatmap", title: "섹터X경제지표" },
 ];
 
-export default function Header() {
+export default function Header({ isOrange }) {
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = () => {
-    //검색
     setSearchInput("");
     setSearchResult(dummyStocks);
     setIsModalOpen(true);
   };
 
   return (
-    <div className="text-sm flex justify-between items-center h-full px-12 bg-white shadow-md z-10">
-      {/* 로고 */}
-      <Link to="/main" className="">
-        로고
-      </Link>
-      {/* 네비게이션바 */}
-      <div className="flex items-center gap-4">
-        {navigates.map((el) => (
-          <Link to={el.id} key={el.id}>
-            {el.title}
-          </Link>
-        ))}
-        <div className="relative">
-          <input
-            className="bg-gray-light px-4 py-2 rounded-2xl text-sm"
-            placeholder="종목명을 입력하세요"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSearch();
-            }}
+    <div
+      className={`w-full h-full transition-colors duration-500 ${
+        isOrange ? "bg-orange" : "bg-white shadow-md"
+      }`}
+    >
+      <div className="max-w-[1280px] mx-auto h-16 flex justify-between items-center transition-all duration-500">
+        <Link to="/main" className="flex items-center">
+          <img
+            src={isOrange ? logo : logoBlack}
+            alt="로고"
+            className="h-10 w-auto object-contain transition-all duration-300"
           />
-          {isModalOpen && (
-            <div className="absolute top-full left-0 mt-1 w-full z-50">
-              <SearchModel
-                results={searchResult}
-                onClose={() => setIsModalOpen(false)}
-              />
-            </div>
-          )}
+        </Link>
+
+        <div className="flex items-center">
+          <div className="relative ml-4">
+            <input
+              className="bg-gray-light px-4 py-2 rounded-2xl text-sm outline-none"
+              placeholder="종목명을 입력하세요"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
+            />
+
+            {isModalOpen && (
+              <div className="absolute top-full left-0 mt-1 w-full z-50">
+                <SearchModel
+                  results={searchResult}
+                  onClose={() => setIsModalOpen(false)}
+                />
+              </div>
+            )}
+          </div>
+
+          {navigates.map((el) => (
+            <Link
+              to={el.id}
+              key={el.id}
+              className={`ml-10 transition-colors duration-300 ${
+                isOrange ? "text-white" : "text-black"
+              }`}
+            >
+              {el.title}
+            </Link>
+          ))}
         </div>
       </div>
-      <div></div>
     </div>
   );
 }

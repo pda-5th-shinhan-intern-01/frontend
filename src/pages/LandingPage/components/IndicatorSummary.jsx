@@ -10,10 +10,6 @@ export default function IndicatorSummary() {
   const [data, setData] = useState(null);
 
   const meta = focusedIndicator && economicIndicatorMap[focusedIndicator];
-  const diff =
-    data && typeof data.actual === "number" && typeof data.expected === "number"
-      ? (data.actual - data.expected).toFixed(1)
-      : null;
 
   useEffect(() => {
     if (focusedIndicator) {
@@ -25,7 +21,7 @@ export default function IndicatorSummary() {
     if (!data) return;
     const el = document.getElementById("indicator-summary-section");
     if (el) {
-      const offset = 80;
+      const offset = 50;
       const y = el.getBoundingClientRect().top + window.scrollY - offset;
       setTimeout(() => {
         window.scrollTo({ top: y, behavior: "smooth" });
@@ -38,63 +34,58 @@ export default function IndicatorSummary() {
   return (
     <div
       id="indicator-summary-section"
-      className="bg-[color:var(--color-gray-light)] p-6 rounded flex flex-col gap-4"
+      className="bg-ivory p-6 rounded flex flex-col gap-6 rounded-2xl shadow-xl"
     >
+      <div className="text-2xl font-extrabold text-black">
+        {meta.name} ({focusedIndicator})
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-8 items-stretch">
-        <div className="flex-1 flex flex-col gap-2 h-full">
-          <div>
-            <div className="text-lg font-semibold text-[color:var(--color-black)]">
-              {meta.name} ({focusedIndicator})
-            </div>
-            <p className="text-sm mt-1.5">{meta.description}</p>
-          </div>
+        <div className="flex-1 flex flex-col gap-6 h-full">
+          <p className="text-xl">{meta.description}</p>
 
           <div className="mt-auto flex gap-4">
             {[
               ["예상치", data.expected],
               ["발표치", data.actual],
-            ].map(([label, value], i) => (
+            ].map(([label, value]) => (
               <div
                 key={label}
-                className="flex-1 bg-[color:var(--color-gray-md)] px-3 py-6"
+                className="flex-1 bg-orange rounded-3xl py-14 text-ivory relative"
               >
-                <div className="text-sm mb-1">{label}</div>
-                <div className="text-lg font-bold flex items-center gap-1">
-                  +{value}% {data.unit || ""}
-                  {i === 1 && diff !== null && (
-                    <span
-                      className={`text-sm ml-1 ${
-                        parseFloat(diff) > 0
-                          ? "text-[color:var(--color-red-md)]"
-                          : "text-[color:var(--color-blue-md)]"
-                      }`}
-                    >
-                      ({diff > 0 ? "+" : "-"}
-                      {Math.abs(diff)}%p)
-                    </span>
-                  )}
+                <div className="absolute top-4 left-4 text-lg font-bold">
+                  {label}
+                </div>
+
+                <div className="absolute bottom-4 right-3 text-4xl font-bold flex items-center gap-1">
+                  {value}% {data.unit || ""}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col gap-4 h-full">
-          <div className="text-[color:var(--color-black)]">
-            <span className="font-semibold">영향을 미치는 주요 산업군</span>
-            <div className="text-sm mt-2">
+        <div className="flex-1 flex flex-col gap-6 h-full">
+          <div className="text-black">
+            <span className="text-xl font-semibold">
+              영향을 미치는 주요 산업군
+            </span>
+            <div className="text-md mt-4">
               {data.industries.map((ind, i) => (
-                <span key={i} className="inline-block px-2 py-0.5 border mr-1">
+                <span
+                  key={i}
+                  className="inline-block px-4 py-2 bg-white rounded-2xl shadow font-medium mr-1"
+                >
                   {ind}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="font-semibold text-[color:var(--color-black)]">
+          <div className="font-semibold text-black text-xl">
             영향력이 높은 종목 순위
           </div>
-          <ul className="text-sm text-[color:var(--color-black)]">
+          <ul className="text-lg text-black">
             {data.ranking.map((item, i) => (
               <li key={i} className="flex justify-between py-1">
                 <span>
@@ -104,9 +95,7 @@ export default function IndicatorSummary() {
                   {item.price}
                   <span
                     className={`ml-1 ${
-                      item.change.includes("+")
-                        ? "text-[color:var(--color-red-md)]"
-                        : "text-[color:var(--color-blue-md)]"
+                      item.change.includes("+") ? "text-red-md" : "text-blue-md"
                     }`}
                   >
                     ({item.change})
