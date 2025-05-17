@@ -6,6 +6,16 @@ import { introduceService } from "../../../data/IntroduceOfService";
 import HorizontalScroller from "../../../components/HorizontalScroller";
 import { TbArrowBigDownFilled, TbArrowBigUpFilled } from "react-icons/tb";
 
+function getPerformanceLabel(score) {
+  if (score >= 1.0)
+    return { label: "매우 긍정적 영향", className: "text-red-md" };
+  if (score >= 0.5)
+    return { label: "긍정적 영향", className: "text-orange-500" };
+  if (score > -0.5) return { label: "영향 미미", className: "text-gray-md" };
+  if (score >= -1.0) return { label: "부정적 영향", className: "text-blue-md" };
+  return { label: "매우 부정적 영향", className: "text-blue-800" };
+}
+
 export default function NxtIndicators() {
   const [sortedBy, setSortedBy] = useState("예상 영향도순");
   const [events, setEvents] = useState([]);
@@ -147,7 +157,20 @@ export default function NxtIndicators() {
               </h2>
             </div>
 
-            {/* 정량적 평가 */}
+            {/* 정성적 평가 */}
+            <div
+              className={`text-sm font-semibold bg-white flex py-2 px-4 rounded-full justify-center items-center mt-4 ${
+                getPerformanceLabel(
+                  event.beta * (event.nxtData - event.prevData)
+                ).className
+              }`}
+            >
+              {
+                getPerformanceLabel(
+                  event.beta * (event.nxtData - event.prevData)
+                ).label
+              }
+            </div>
           </div>
         ))}
       </HorizontalScroller>
