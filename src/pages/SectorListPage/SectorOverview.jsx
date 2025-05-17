@@ -1,4 +1,15 @@
 import React from "react";
+import sector_tech from "../../assets/sector_tech.png";
+import sector_finance from "../../assets/sector_finance.png";
+import sector_healthcare from "../../assets/sector_healthcare.png";
+import sector_energy from "../../assets/sector_energy.png";
+import sector_consumer_discretionary from "../../assets/sector_consumer_discretionary.png";
+import sector_consumer_staples from "../../assets/sector_consumer_staples.png";
+import sector_communication from "../../assets/sector_communication.png";
+import sector_industrials from "../../assets/sector_industrials.png";
+import sector_utilities from "../../assets/sector_utilities.png";
+import sector_real_estate from "../../assets/sector_real_estate.png";
+import sector_materials from "../../assets/sector_materials.png";
 
 const sectors = [
   {
@@ -81,52 +92,127 @@ const sectors = [
   },
 ];
 
+
+
+const sectorImages = {
+  기술: sector_tech,
+  금융: sector_finance,
+  헬스케어: sector_healthcare,
+  에너지: sector_energy,
+  자유소비재: sector_consumer_discretionary,
+  필수소비재: sector_consumer_staples,
+  커뮤니티: sector_communication,
+  산업재: sector_industrials,
+  유틸리티: sector_utilities,
+  부동산: sector_real_estate,
+  소재: sector_materials,
+};
+
 export default function SectorOverview({ onSelectSector }) {
   return (
-    <div className="bg-gray-light p-5">
-      <h1 className="text-2xl font-bold mb-4">시장 섹터 분류</h1>
-      <p className="mb-8">
-        11개 주요 시장 섹터와 각 섹터에 포함된 대표 종목들을 확인하세요.
+    <div className="p-5">
+      <h1 className="text-5xl font-bold mb-3">Sectors</h1>
+      <p className="text-xl text-[#00AAF0] font-semibold mb-6">
+      11개 핵심 시장 섹터와 그 속을 이끄는 대표 종목들, 시장을 움직이는 주역들을 지금 만나보세요!
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sectors.map((sector, idx) => (
-          <div key={idx} className="bg-white rounded-xl shadow p-4">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-semibold">
-                {sector.name}{" "}
-                <span
-                  className={`${sector.change.startsWith("-")
-                    ? "text-blue-md"
-                    : "text-red-md"
-                    }`}
-                >
-                  {sector.change}
-                </span>
-              </h2>
-              <button
-                className="text-sm text-blue-md hover:cursor-pointer"
-                onClick={() => onSelectSector(sector.name)}
-              >
-                종목 보기
-              </button>
-            </div>
-            <p className="text-sm mb-3">{sector.description}</p>
-            <div className="flex flex-wrap gap-2">
-              {sector.stocks.map((stock, sIdx) => (
-                <span
-                  key={sIdx}
-                  className="bg-gray-light px-3 py-1 text-sm rounded-full"
-                >
-                  {stock}
-                </span>
-              ))}
-              <span className="bg-gray-light px-3 py-1 text-sm rounded-full">
-                +{sector.more}
-              </span>
-            </div>
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {sectors.map((sector, idx) => {
+          const colIndex = idx % 4;
+          const isOffsetCard = colIndex === 1 || colIndex === 3;
+          const rowIndex = Math.floor(idx / 4);
+
+          let bgColor = "#fff";
+          if (rowIndex === 0) bgColor = "#FF8341";
+          else if (rowIndex === 1) bgColor = "#F6FDEC";
+          else if (rowIndex === 2) bgColor = "#FF8341";
+
+          const textColor = rowIndex === 1 ? "#FE4700" : "#F6FDEC";
+          const stockBgColor = "#FE4700";
+          const moreClolr = "#FE4700";
+
+          const isNegative = sector.change.startsWith("-");
+          const changeBgColor = isNegative ? "#DBEAFE" : "#FEE2E2";
+          const changeTextColor = isNegative ? "#2563EB" : "#DC2626";
+
+          // 이미지 매핑
+          const imageSrc = sectorImages[sector.name] || sector_tech;
+
+          return (
+            <div
+  key={idx}
+  className="rounded-xl shadow px-10 py-6 hover:cursor-pointer mb-3 flex flex-col justify-between"
+  onClick={() => onSelectSector(sector.name)}
+  style={{
+    height: "480px",
+    position: "relative",
+    top: isOffsetCard ? "60px" : "0",
+    backgroundColor: bgColor,
+    color: textColor,
+  }}
+>
+  {/* 카드 콘텐츠 전체를 감싸는 wrapper */}
+  <div className="flex flex-col h-full justify-between">
+    <div>
+      <div className="mb-2">
+        <h2 className="text-3xl font-semibold mb-2">{sector.name}</h2>
+        <div
+          style={{
+            backgroundColor: changeBgColor,
+            color: changeTextColor,
+            display: "inline-block",
+            padding: "4px 12px",
+            borderRadius: "9999px",
+            fontWeight: "600",
+            fontSize: "1.125rem",
+            userSelect: "none",
+            minWidth: "60px",
+            textAlign: "center",
+          }}
+        >
+          {sector.change}
+        </div>
+      </div>
+
+      <p className="text-md mb-3 mt-4">{sector.description}</p>
+    </div>
+
+    <div className="flex flex-col items-center">
+    <img
+  src={imageSrc}
+  alt={`${sector.name} 이미지`}
+  className="mb-5"
+  style={{
+    width: "180px",
+    height: "180px",
+    objectFit: "contain",
+  }}
+/>
+
+
+      <div className="flex flex-wrap justify-center gap-2">
+        {sector.stocks.map((stock, sIdx) => (
+          <span
+            key={sIdx}
+            className="px-3 py-1 text-sm rounded-full"
+            style={{ backgroundColor: stockBgColor, color: "#fff" }}
+          >
+            {stock}
+          </span>
         ))}
+        <span
+          className="px-3 py-1 text-sm rounded-full"
+          style={{ backgroundColor: moreClolr, color: "#fff" }}
+        >
+          +{sector.more}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+          );
+        })}
       </div>
     </div>
   );

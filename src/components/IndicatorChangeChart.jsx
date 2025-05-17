@@ -51,7 +51,7 @@ export default function IndicatorChangeChart({ indicator }) {
         gradient: {
           shadeIntensity: 1,
           inverseColors: false,
-          opacityFrom: 0.5,
+          opacityFrom: 0,
           opacityTo: 0,
           stops: [0, 90, 100],
         },

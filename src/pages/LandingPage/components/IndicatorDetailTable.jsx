@@ -36,7 +36,7 @@ export default function IndicatorDetailTable({ weeklyData }) {
                   return (
                     <tr
                       key={`${day.date}-${event.indicator}`}
-                      className="hover:bg-blue-md/10 transition"
+                      className="hover:bg-orange/10 transition"
                     >
                       <td className="p-2">{event.time}</td>
                       <td className="p-2">{event.country}</td>

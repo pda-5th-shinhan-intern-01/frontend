@@ -42,7 +42,7 @@ export default function IndicatorSummary() {
 
       <div className="flex flex-col lg:flex-row gap-8 items-stretch">
         <div className="flex-1 flex flex-col gap-6 h-full">
-          <p className="text-lg">{meta.description}</p>
+          <p className="text-xl">{meta.description}</p>
 
           <div className="mt-auto flex gap-4">
             {[
@@ -53,11 +53,11 @@ export default function IndicatorSummary() {
                 key={label}
                 className="flex-1 bg-orange rounded-3xl py-14 text-ivory relative"
               >
-                <div className="absolute top-2 left-2 text-lg font-bold">
+                <div className="absolute top-4 left-4 text-lg font-bold">
                   {label}
                 </div>
 
-                <div className="absolute bottom-2 right-2 text-5xl font-bold flex items-center gap-1">
+                <div className="absolute bottom-4 right-3 text-4xl font-bold flex items-center gap-1">
                   {value}% {data.unit || ""}
                 </div>
               </div>
@@ -67,19 +67,22 @@ export default function IndicatorSummary() {
 
         <div className="flex-1 flex flex-col gap-6 h-full">
           <div className="text-black">
-            <span className="text-lg font-semibold">
+            <span className="text-xl font-semibold">
               영향을 미치는 주요 산업군
             </span>
-            <div className="text-md mt-2">
+            <div className="text-md mt-4">
               {data.industries.map((ind, i) => (
-                <span key={i} className="inline-block px-2 py-0.5 border mr-1">
+                <span
+                  key={i}
+                  className="inline-block px-4 py-2 bg-white rounded-2xl shadow font-medium mr-1"
+                >
                   {ind}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="font-semibold text-black text-lg">
+          <div className="font-semibold text-black text-xl">
             영향력이 높은 종목 순위
           </div>
           <ul className="text-lg text-black">

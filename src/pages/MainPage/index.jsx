@@ -8,7 +8,7 @@ import NxtIndicators from "./components/NxtIndicators";
 //종목 별 지표 인사이트 페이지
 export default function MainPage() {
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-12 mt-20">
       {/* 종목 기본 정보 */}
       <div className="">
         <StockInfo ticker="AAPL" />
@@ -18,15 +18,15 @@ export default function MainPage() {
         <StockChart />
       </div>
       {/* 종목 별 지표 그래프 */}
-      <div className="">
+      <div className="mt-20">
         <IndicatorsForStock />
       </div>
       {/* 지표별 주가 변화 */}
-      <div className="">
+      <div className="mt-20">
         <CurrentIndicators />
       </div>
       {/* 미래 지표 이벤트 */}
-      <div className="">
+      <div className="mt-20">
         <NxtIndicators />
       </div>
     </div>

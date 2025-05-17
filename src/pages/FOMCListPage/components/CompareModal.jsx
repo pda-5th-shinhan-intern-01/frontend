@@ -80,7 +80,7 @@ export default function CompareModal({
             setCompareModalOpen(false);
             setCheckedItems([]);
           }}
-          className="absolute top-3 right-3 text-gray-500 hover:text-black-md"
+          className="absolute top-5 right-10 text-gray-500 hover:text-black-md"
         >
           <MdOutlineCancel className="w-5 h-5" />
         </button>
