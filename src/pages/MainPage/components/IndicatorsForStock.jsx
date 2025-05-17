@@ -4,6 +4,7 @@ import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 import IndicatorChangeChart from "../../../components/IndicatorChangeChart";
 import Tooltip from "../../../components/Tooltip";
 import { introduceService } from "../../../data/IntroduceOfService";
+import { TbArrowBigDownFilled, TbArrowBigUpFilled } from "react-icons/tb";
 
 const economicCategories = [
   "CPI",
@@ -140,10 +141,13 @@ export default function IndicatorsForStock() {
         `;
       },
     },
+    legend: {
+      show: false,
+    },
   };
 
   return (
-    <div className="flex w-full gap-4">
+    <div className="flex w-full gap-8">
       <div className="w-full">
         <div className="flex w-full justify-between mb-4">
           <h3 className="text-3xl font-semibold flex gap-1 items-center">
@@ -163,6 +167,34 @@ export default function IndicatorsForStock() {
           type="bar"
           height={350}
         />
+        <div className="flex items-center gap-4 w-full">
+          {/* 좌측 텍스트: 크기 고정 */}
+          <div className="text-sm flex items-center shrink-0">
+            지표{" "}
+            <span className="text-lg text-red-md">
+              <TbArrowBigUpFilled />
+            </span>{" "}
+            주가{" "}
+            <span className="text-lg text-blue-md">
+              <TbArrowBigDownFilled />
+            </span>
+          </div>
+
+          {/* 막대: 남는 공간 다 차지 */}
+          <div className="h-4 rounded grow bg-gradient-to-r from-blue-md via-white to-red-md" />
+
+          {/* 우측 텍스트: 크기 고정 */}
+          <div className="text-sm flex items-center shrink-0">
+            지표{" "}
+            <span className="text-lg text-red-md">
+              <TbArrowBigUpFilled />
+            </span>{" "}
+            주가{" "}
+            <span className="text-lg text-red-md">
+              <TbArrowBigUpFilled />
+            </span>
+          </div>
+        </div>
       </div>
 
       {isEconomicChartVisible && economicIndicatorMap[selected] && (
