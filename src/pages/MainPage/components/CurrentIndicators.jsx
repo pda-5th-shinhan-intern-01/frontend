@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import StockMiniChart from "../../../components/stockMiniChart";
-import { IoIosCalendar } from "react-icons/io";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { currentIndicatorsData } from "../dummies/currentIndicatorData";
+import HorizontalScroller from "../../../components/HorizontalScroller";
 
 export default function CurrentIndicators() {
   const [events, setEvents] = useState([]);
+  const [sortedBy, setSortedBy] = useState("민감도순");
 
   const tryGetCurrEvents = () => {
     // api 호출 함수
@@ -20,40 +21,56 @@ export default function CurrentIndicators() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
-        <div className="flex gap-2 items-end">
-          <h3 className="text-lg font-semibold">지표별 주가 변화</h3>
-          <p className="text-sm">
+        <div className="flex-col gap-2 items-end">
+          <h3 className="text-3xl font-semibold">
+            최근 지표 이벤트에 대한 주가 변화
+          </h3>
+          <p className="text-lg mt-4">
             최근 경제지표 발표에서 주가가 얼마나 변동되었는지 확인하세요
           </p>
         </div>
         <div className="flex gap-2 items-end">
-          <div className="flex items-center text-xs bg-gray-light py-1 px-4 rounded-lg">
+          <div
+            onClick={() => {
+              setSortedBy("민감도순");
+            }}
+            className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
+              sortedBy == "민감도순"
+                ? "bg-red-md text-white"
+                : "bg-gray-light text-black"
+            }`}
+          >
             민감도순
           </div>
-          <div className="flex items-center text-xs bg-gray-light py-1 px-4 rounded-lg">
+          <div
+            onClick={() => {
+              setSortedBy("최신순");
+            }}
+            className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
+              sortedBy == "최신순"
+                ? "bg-red-md text-white"
+                : "bg-gray-light text-black"
+            }`}
+          >
             최신순
           </div>
         </div>
       </div>
       {/* 카드 목록 */}
-      <div className="flex gap-2 overflow-x-auto p-2 scrollbar-hide">
+
+      <HorizontalScroller>
         {events.map((event, id) => (
           <div
             key={id}
-            className="flex flex-col gap-2 bg-white p-4 rounded-lg min-w-[350px] shadow-lg"
+            className="hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 rounded-2xl min-w-[350px]"
           >
-            <div className="flex justify-between items-center">
-              <h4 className="text-lg font-semibold">{event.name}</h4>
-              <p className="text-sm text-gray-md flex gap-1 items-center">
-                <span>
-                  <IoIosCalendar />
-                </span>
-                {event.date}
-              </p>
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="text-2xl font-semibold">{event.name}</h4>
+              <p className="text-sm flex gap-1 items-center">{event.date}</p>
             </div>
             <div>
               <p className="flex items-center text-sm">
-                이전치 <FaArrowRight className="text-xs" /> 발표치
+                예상치 <FaArrowRight className="text-xs" /> 발표치
               </p>
               <h2 className="flex items-end text-xl  font-semibold">
                 <span className="flex items-center text-sm">
@@ -80,7 +97,7 @@ export default function CurrentIndicators() {
                 <div className="text-sm text-gray-md">주가반응</div>
                 {event.chartData[event.chartData.length - 1].y >
                 event.chartData[0].y ? (
-                  <div className="flex gap-1 items-center text-red-md">
+                  <div className="flex gap-1 text-2xl items-center justify-center text-red-md">
                     <FaArrowTrendUp />
                     {event.chartData[event.chartData.length - 1].y -
                       event.chartData[0].y}
@@ -89,13 +106,14 @@ export default function CurrentIndicators() {
                   event.chartData[0].y ? (
                   <div className="flex gap-1 items-center">-</div>
                 ) : (
-                  <div className="flex gap-1 items-center text-blue-md">
+                  <div className="flex gap-1 items-center text-blue-md text-2xl">
                     <FaArrowTrendDown />
                     {event.chartData[event.chartData.length - 1].y -
                       event.chartData[0].y}
                   </div>
                 )}
               </div>
+
               <StockMiniChart
                 indicator={event.name}
                 chartData={event.chartData}
@@ -103,7 +121,7 @@ export default function CurrentIndicators() {
             </div>
           </div>
         ))}
-      </div>
+      </HorizontalScroller>
     </div>
   );
 }

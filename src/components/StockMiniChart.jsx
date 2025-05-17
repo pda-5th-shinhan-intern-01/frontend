@@ -2,16 +2,55 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 
 export default function StockMiniChart({ indicator, chartData }) {
+  const middleIndex = Math.floor(chartData.length / 2);
+  const middlePoint = chartData[middleIndex];
+
+  const xValue =
+    typeof middlePoint.x === "string"
+      ? new Date(middlePoint.x).getTime()
+      : middlePoint.x;
+
+  const series = [
+    {
+      name: indicator,
+      data: chartData.map((d) => ({
+        x: typeof d.x === "string" ? new Date(d.x).getTime() : d.x,
+        y: d.y,
+      })),
+    },
+  ];
+
   const options = {
     chart: {
       type: "area",
       height: 80,
-      toolbar: {
-        show: false, // 상단 툴바 제거
-      },
-      sparkline: {
-        enabled: true, // 축, 레이블, 그리드 등 모두 숨김
-      },
+      toolbar: { show: false },
+      sparkline: { enabled: false }, // 🔥 annotations 허용
+    },
+    annotations: {
+      points: [
+        {
+          x: xValue,
+          y: middlePoint.y,
+          marker: {
+            size: 6,
+            fillColor: "#ff8341",
+            strokeColor: "#fff",
+            strokeWidth: 2,
+            shape: "circle",
+          },
+          label: {
+            text: `이벤트 발생`, // 🔥 중간값 텍스트 추가
+            borderColor: "#ff8341",
+            offsetY: -10,
+            style: {
+              background: "#ff8341",
+              color: "#fff",
+              fontSize: "10px",
+            },
+          },
+        },
+      ],
     },
     stroke: {
       curve: "smooth",
@@ -27,13 +66,14 @@ export default function StockMiniChart({ indicator, chartData }) {
       },
     },
     tooltip: {
+      enabled: true, // 🔥 hover 시 데이터 표시
       x: { format: "MM/dd" },
       y: {
         formatter: (val) => `${val.toFixed(1)}원`,
       },
     },
-    // ✅ 아래는 sparkline 켜면 사실상 무시되지만, 혹시를 위해 추가
     xaxis: {
+      type: "datetime",
       labels: { show: false },
       axisBorder: { show: false },
       axisTicks: { show: false },
@@ -53,7 +93,7 @@ export default function StockMiniChart({ indicator, chartData }) {
   return (
     <div className="w-0.5">
       <ReactApexChart
-        series={[{ name: indicator, data: chartData }]}
+        series={series}
         options={options}
         type="area"
         height={80}

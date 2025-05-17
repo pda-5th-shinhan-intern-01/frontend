@@ -18,17 +18,17 @@ const eventMarkers = Object.entries(groupedEvents).map(
     x: Number(timestamp),
     marker: {
       size: 6,
-      fillColor: "#F14452",
+      fillColor: "#fe4700",
       strokeColor: "#fff",
       strokeWidth: 2,
       shape: "circle",
     },
     label: {
-      borderColor: "#F14452",
+      borderColor: "#fe4700",
       offsetY: 0,
       style: {
         color: "#fff",
-        background: "#F14452",
+        background: "#fe4700",
         fontSize: "10px",
         whiteSpace: "pre-line", // 줄바꿈 허용
       },
@@ -50,9 +50,9 @@ export default function StockChart() {
     const [open, , , close] = priceData.y;
     const color =
       close > open
-        ? "##f14452" // 상승: 빨강
+        ? "##fe4700" // 상승: 빨강
         : close < open
-        ? "##3083f6" // 하락: 파랑
+        ? "##00aaf0" // 하락: 파랑
         : "#999999"; // 보합: 회색
 
     return { ...volumeData, color };
@@ -84,8 +84,8 @@ export default function StockChart() {
       plotOptions: {
         candlestick: {
           colors: {
-            upward: "#f14452",
-            downward: "#3083f6",
+            upward: "#fe4700",
+            downward: "#00aaf0",
           },
         },
       },
@@ -197,12 +197,12 @@ export default function StockChart() {
               {
                 from: -1000,
                 to: 0,
-                color: "#3083f6",
+                color: "#00aaf0",
               },
               {
                 from: 1,
                 to: 10000,
-                color: "#f14452",
+                color: "#fe4700",
               },
             ],
           },
