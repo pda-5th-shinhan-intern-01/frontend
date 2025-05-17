@@ -111,9 +111,9 @@ const sectorImages = {
 export default function SectorOverview({ onSelectSector }) {
   return (
     <div className="p-5">
-      <h1 className="text-5xl font-bold mb-4">Sectors</h1>
-      <p className="text-xl mb-5">
-        11개 주요 시장 섹터와 각 섹터에 포함된 대표 종목들을 확인하세요.
+      <h1 className="text-5xl font-bold mb-3">Sectors</h1>
+      <p className="text-xl text-[#00AAF0] font-semibold mb-6">
+      11개 핵심 시장 섹터와 그 속을 이끄는 대표 종목들, 시장을 움직이는 주역들을 지금 만나보세요!
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
