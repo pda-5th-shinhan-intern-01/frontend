@@ -68,7 +68,7 @@ export default function EventSummaryCards() {
                 {meta?.name || event.key}
               </div>
 
-              <div className="text-[11px] text-gray-md">{event.datetime}</div>
+              <div className="text-[12px] text-gray-md">{event.datetime}</div>
 
               <div className="mt-3 text-gray-md">
                 {event.previous}
