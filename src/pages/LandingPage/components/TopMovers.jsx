@@ -4,7 +4,7 @@ export default function TopMovers() {
   const navigate = useNavigate();
 
   return (
-    <div className="hidden xl:block fixed top-1/4 right-32 shadow-md rounded-3xl bg-white px-8 py-12 w-[30%] z-50">
+    <div className="hidden xl:block fixed top-1/5 right-32 shadow-md rounded-3xl bg-white px-8 py-10 w-[30%] z-50">
       <div className="flex justify-between items-center mb-2">
         <h3 className="font-semibold text-2xl text-black">Top Movers</h3>
         <button

@@ -6,17 +6,17 @@ export default function IndicatorDetailTable({ weeklyData }) {
     useIndicator();
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-12 mt-8">
       {weeklyData.map((day) => (
         <div key={day.date}>
-          <div className="font-semibold text-sm text-black mb-2">
+          <div className="font-semibold text-lg text-black mb-3">
             {day.date} {day.day}요일
           </div>
 
           {day.events.length === 0 ? (
-            <div className="text-xs text-gray-md">예정된 이벤트 없음</div>
+            <div className="text-md text-gray-md">예정된 이벤트 없음</div>
           ) : (
-            <table className="w-full text-xs table-fixed">
+            <table className="w-full text-md table-fixed">
               <thead className="text-left text-black bg-gray-light">
                 <tr>
                   <th className="p-2 w-[10%]">시간</th>

@@ -12,18 +12,20 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <IndicatorProvider>
-      <div className="relative flex gap-4">
-        <div className="flex-1 flex flex-col gap-6 md:pr-0 xl:pr-[38%]">
-          <HeroSection />
-          <EventSummaryCards />
-          <EconomicCalendar />
-          <IndicatorSummary />
-        </div>
+    <>
+      <HeroSection />
+      <IndicatorProvider>
+        <div className="relative flex gap-4">
+          <div className="flex-1 flex flex-col gap-6 md:pr-0 xl:pr-[38%]">
+            <EventSummaryCards />
+            <EconomicCalendar />
+            <IndicatorSummary />
+          </div>
 
-        <TopMovers />
-        <ScrollBackBtn />
-      </div>
-    </IndicatorProvider>
+          <TopMovers />
+          <ScrollBackBtn />
+        </div>
+      </IndicatorProvider>
+    </>
   );
 }
