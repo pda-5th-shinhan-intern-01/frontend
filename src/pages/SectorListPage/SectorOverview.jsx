@@ -129,6 +129,7 @@ export default function SectorOverview({ onSelectSector }) {
 
           const textColor = rowIndex === 1 ? "#FE4700" : "#F6FDEC";
           const stockBgColor = "#FE4700";
+          const moreClolr = "#FE4700";
 
           const isNegative = sector.change.startsWith("-");
           const changeBgColor = isNegative ? "#DBEAFE" : "#FEE2E2";
@@ -139,61 +140,77 @@ export default function SectorOverview({ onSelectSector }) {
 
           return (
             <div
-              key={idx}
-              className="rounded-xl shadow px-10 py-6 hover:cursor-pointer mb-3"
-              onClick={() => onSelectSector(sector.name)}
-              style={{
-                height: "480px",
-                position: "relative",
-                top: isOffsetCard ? "60px" : "0",
-                backgroundColor: bgColor,
-                color: textColor,
-              }}
-            >
-              <div className="mb-2">
-                <h2 className="text-3xl font-semibold mb-2">{sector.name}</h2>
-                <div
-                  style={{
-                    backgroundColor: changeBgColor,
-                    color: changeTextColor,
-                    display: "inline-block",
-                    padding: "4px 12px",
-                    borderRadius: "9999px",
-                    fontWeight: "600",
-                    fontSize: "1.125rem",
-                    userSelect: "none",
-                    minWidth: "60px",
-                    textAlign: "center",
-                  }}
-                >
-                  {sector.change}
-                </div>
-              </div>
+  key={idx}
+  className="rounded-xl shadow px-10 py-6 hover:cursor-pointer mb-3 flex flex-col justify-between"
+  onClick={() => onSelectSector(sector.name)}
+  style={{
+    height: "480px",
+    position: "relative",
+    top: isOffsetCard ? "60px" : "0",
+    backgroundColor: bgColor,
+    color: textColor,
+  }}
+>
+  {/* 카드 콘텐츠 전체를 감싸는 wrapper */}
+  <div className="flex flex-col h-full justify-between">
+    <div>
+      <div className="mb-2">
+        <h2 className="text-3xl font-semibold mb-2">{sector.name}</h2>
+        <div
+          style={{
+            backgroundColor: changeBgColor,
+            color: changeTextColor,
+            display: "inline-block",
+            padding: "4px 12px",
+            borderRadius: "9999px",
+            fontWeight: "600",
+            fontSize: "1.125rem",
+            userSelect: "none",
+            minWidth: "60px",
+            textAlign: "center",
+          }}
+        >
+          {sector.change}
+        </div>
+      </div>
 
-              <p className="text-sm mb-3 mt-4">{sector.description}</p>
-              <img
-                src={imageSrc}
-                alt={`${sector.name} 이미지`}
-                className="w-full max-w-xs mb-6"
-              />
-              <div className="flex flex-wrap gap-2">
-                {sector.stocks.map((stock, sIdx) => (
-                  <span
-                    key={sIdx}
-                    className="px-3 py-1 text-sm rounded-full"
-                    style={{ backgroundColor: stockBgColor, color: "#fff" }}
-                  >
-                    {stock}
-                  </span>
-                ))}
-                <span
-                  className="px-3 py-1 text-sm rounded-full"
-                  style={{ backgroundColor: stockBgColor, color: "#fff" }}
-                >
-                  +{sector.more}
-                </span>
-              </div>
-            </div>
+      <p className="text-md mb-3 mt-4">{sector.description}</p>
+    </div>
+
+    <div className="flex flex-col items-center">
+    <img
+  src={imageSrc}
+  alt={`${sector.name} 이미지`}
+  className="mb-5"
+  style={{
+    width: "180px",
+    height: "180px",
+    objectFit: "contain",
+  }}
+/>
+
+
+      <div className="flex flex-wrap justify-center gap-2">
+        {sector.stocks.map((stock, sIdx) => (
+          <span
+            key={sIdx}
+            className="px-3 py-1 text-sm rounded-full"
+            style={{ backgroundColor: stockBgColor, color: "#fff" }}
+          >
+            {stock}
+          </span>
+        ))}
+        <span
+          className="px-3 py-1 text-sm rounded-full"
+          style={{ backgroundColor: moreClolr, color: "#fff" }}
+        >
+          +{sector.more}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
           );
         })}
       </div>
