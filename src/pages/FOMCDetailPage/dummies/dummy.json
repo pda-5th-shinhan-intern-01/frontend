@@ -1,47 +1,57 @@
 {
-  "title": "2025년 3월 19일 FOMC 성명",
+  "title": "기준금리 동결과 QT 속도 조절을 통한 점진적 완화 기조 유지",
   "announcement": {
     "datetime": "2025년 1월 29일, 오후 2시 (ET)"
   },
-  "date": "2025년 3월 19일 오전 2시",
-  "rateChange": "인상",
-  "rateRange": {
-    "from": 4.5,
-    "to": 4.75
-  },
-  "economicAssessment": {
-    "laborMarket": "실업률은 낮고 고용 창출은 안정적인 수준을 유지함",
-    "consumptionInvestmentExport": "소비는 완만한 증가세, 기업 투자는 보합, 수출은 글로벌 수요 둔화로 다소 약세",
-    "inflation": "근원 PCE는 목표치 상회 지속, 기대 인플레이션은 중장기적으로 안정적",
-    "financialMarket": "주식 및 신용 스프레드는 안정적이며 전반적인 금융 여건은 완화적"
-  },
-  "policyDecision": {
-    "policyRateSummary": "연방기금금리 목표 범위 4.50%~4.75% (동결)",
-    "qtPolicyTitle": "자산 축소(QT) 정책",
-    "qtPolicyDetails": [
-      "국채 상환 한도: 월 250억 → 50억 달러로 축소 (4월부터)",
-      "기관 부채·MBS 상환 한도: 월 350억 달러 유지"
+  "economic_conditions": {
+    "labor_market": "실업률은 낮은 수준에서 안정세를 보이고 있음.",
+    "consumption_investment_trade": "경제 활동은 견조하게 확장되고 있음.",
+    "inflation_trend": "인플레이션은 다소 높은 상태.",
+    "other_macro": "위험이 균형을 이루고 있다고 판단.",
+    "keywords": [
+      "고용 안정",
+      "소비 증가",
+      "물가 상승",
+      "경제 확장",
+      "위험 균형"
     ]
+  },
+  "policy_decision": {
+    "rate_policy": {
+      "direction": "raise",
+      "range": "4-1/4% - 4-1/2%",
+      "change": "인상"
+    },
+    "ioer": null,
+    "qt_policy": {
+      "treasury": "보유량을 계속 줄여 나갈 것.",
+      "agency_debt_mbs": "보유량을 계속 줄여 나갈 것."
+    },
+    "keywords": ["기준금리 동결", "QT 속도 완화", "정책 조정", "위험 평가"]
+  },
+  "future_guidance": {
+    "rationale": "정책 조정을 위해 지속적으로 정보를 모니터링할 것.",
+    "factors_to_watch": "노동 시장, 인플레이션 압력, 금융 및 국제 개발.",
+    "change_conditions": "필요 시 정책 조정을 준비할 것.",
+    "keywords": ["정책 유연성", "인플레이션 기대", "노동시장", "금융 개발"]
   },
   "votes": {
-    "agreed": [
-      "Jerome H. Powell",
-      "John C. Williams",
-      "Michelle W. Bowman",
-      "Susan M. Collins"
-    ],
-    "disagreed": ["Christopher J. Waller"],
-    "note": "Waller 위원은 0.25%포인트 인하를 주장"
+    "approve": {
+      "count": 12,
+      "members": ["Jerome H. Powell", "Jerome H. Powell", "Jerome H. Powell"],
+      "reason": "정책에 대한 합의가 이루어졌음."
+    },
+    "oppose": {
+      "count": 5,
+      "members": ["Jerome H. Powell", "Jerome H. Powell", "Jerome H. Powell"],
+      "reason": ""
+    },
+    "abstain": {
+      "count": 0,
+      "members": []
+    }
   },
-  "remarks": {
-    "summary": "\"물가가 다소 높은 수준\"임에도 금리 동결은 인플레이션 완화 가능성과 세계 경기 둔화를 함께 우려한 결과로 해석됩니다.",
-    "qtComment": "국채 상환 한도 대폭 축소(250→50억) 결정은 금융 시장의 유동성 경색 리스크를 낮추려는 조치로 향후 국채의 장단기 금리 스프레드에 영향이 있을 수 있습니다.",
-    "dissent": "Waller 이사의 유일 반대는 'QT 지속 필요성'을 강조하고 있어 위원회 내에서도 양적 축소에 대한 보수·진보 간 시각 차이가 존재함을 시사합니다.",
-    "marketReaction": [
-      "단기 금리선물 시장은 동결 기조를 재확인했으나 QT 속도 조절 소식에 금리 인상 베팅이 일시 약화될 수 있습니다.",
-      "달러 지수는 하락 압력을 받을 전망이며 국채 금리(특히 장기물)도 소폭 하락 가능성"
-    ]
-  },
+  "additional_insight": "이번 회의에서의 결정은 시장에서 완화적 신호로 받아들여질 수 있습니다.",
   "prev": {
     "title": "2025년 1월 FOMC 회의록",
     "id": "2025-01"

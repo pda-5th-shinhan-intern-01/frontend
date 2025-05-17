@@ -73,8 +73,8 @@ export default function FOMCListPage() {
 
   return (
     <div className="flex flex-col gap-3 p-4">
-      <div className="font-bold text-3xl text-black-md">FOMC 회의</div>
-      <div className="bg-ivory p-5 text-md">
+      <div className="font-bold text-3xl">FOMC 회의</div>
+      <div className="bg-ivory p-5 text-md shadow-md">
         FOMC(연방공개시장위원회)는 미국 연준의 통화정책을 최종 결정하는 기구로,
         매 정례회의에서 기준금리를 인상·동결·인하합니다.
         <br />
@@ -244,7 +244,7 @@ export default function FOMCListPage() {
                     </div>
                   </div>
                 </td>
-                <td className="py-5 text-black-md">{data.date}</td>
+                <td className="py-5">{data.date}</td>
                 <td className="py-5 flex justify-center">
                   {data.interestRate === "인상" ? (
                     <FaCaretUp className="text-red-md text-2xl" />
