@@ -25,7 +25,7 @@ export default function CalendarSummaryGrid({ weeklyData }) {
                   <span className="truncate">
                     {economicIndicatorMap[indicator]?.name || indicator}
                   </span>
-                  <span className="font-semibold text-black">{count}</span>
+                  <span className="font-semibold text-red-md">{count}</span>
                 </div>
               ))}
               {entries.length === 0 && (

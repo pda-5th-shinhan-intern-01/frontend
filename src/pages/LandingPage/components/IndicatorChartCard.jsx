@@ -35,7 +35,7 @@ export default function IndicatorChartCard({ indicator, data }) {
         formatter: (val) => `${val}%`,
       },
     },
-    colors: ["#0046FF", "#D9D9D9"],
+    colors: ["#00aaf0", " #f5f5f5"],
   };
 
   const chartSeries = [
