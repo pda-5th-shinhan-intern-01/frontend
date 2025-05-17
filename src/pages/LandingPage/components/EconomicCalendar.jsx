@@ -50,18 +50,18 @@ export default function EconomicCalendar() {
   return (
     <div className="mb-4 py-12">
       <h2 className="text-3xl font-bold mb-2 text-black">
-        놓치면 아쉬운 이번 주 지표 모음
+        놓치면 아쉬운 <span class="text-orange">이번 주 지표</span> 모음
       </h2>
       <div className="mt-8 flex items-center gap-2 relative" ref={calendarRef}>
         <button
           onClick={() => setSelectedDate(new Date())}
-          className="text-lg cursor-pointer border border-[color:var(--color-gray-light)] px-4 py-2 rounded hover:bg-gray-light"
+          className="text-lg font-semibold cursor-pointer border border-[color:var(--color-gray-light)] px-4 py-2 rounded-xl hover:bg-gray-light"
         >
           오늘
         </button>
         <button
           onClick={() => setShowCalendar((prev) => !prev)}
-          className="cursor-pointer p-3 hover:bg-gray-light border border-[color:var(--color-gray-light)] rounded-lg"
+          className="cursor-pointer p-3 hover:bg-gray-light border border-[color:var(--color-gray-light)] rounded-xl"
           aria-label="날짜 선택"
         >
           <IoCalendarOutline className="text-xl text-gray-md" />
@@ -86,7 +86,7 @@ export default function EconomicCalendar() {
         >
           <FaChevronRight className="text-sm text-gray-md" />
         </button>
-        <span className="text-xl text-black font-medium ml-2">
+        <span className="text-xl text-black font-semibold ml-2">
           {weeklyData.length > 0 &&
             `${new Date(weeklyData[0].date).toLocaleDateString("ko-KR", {
               year: "numeric",
