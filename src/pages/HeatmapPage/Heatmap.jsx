@@ -28,12 +28,12 @@ export default function HeatmapChart() {
     "ISM 제조업 PMI",
   ];
 
-  
+  // 더미 데이터: -1 ~ +1 사이 z-score 값
   const series = yLabels.map((indicator) => ({
     name: indicator,
-    data: xLabels.map(() => ({
-      x: "",
-      y: parseFloat((Math.random() * 2 - 1).toFixed(2)), // -1.0 ~ +1.0
+    data: xLabels.map((sector) => ({
+      x: sector,
+      y: parseFloat((Math.random() * 2 - 1).toFixed(2)),
     })),
   }));
 
@@ -65,22 +65,25 @@ export default function HeatmapChart() {
       ({ value }) => {
         const clamp = Math.max(-1, Math.min(1, value));
         const percent = (clamp + 1) / 2;
-        const interpolate = (a, b, t) => Math.round(a + (b - a) * t);
+
+        const blue = [0, 170, 240];   // #00AAF0
+        const red = [254, 71, 0];     // #FE4700
 
         let r, g, b;
+
         if (percent < 0.5) {
           const t = percent / 0.5;
-          r = interpolate(33, 240, t);
-          g = interpolate(102, 240, t);
-          b = interpolate(172, 240, t);
+          r = Math.round(blue[0] + (255 - blue[0]) * t);
+          g = Math.round(blue[1] + (255 - blue[1]) * t);
+          b = Math.round(blue[2] + (255 - blue[2]) * t);
         } else {
           const t = (percent - 0.5) / 0.5;
-          r = interpolate(240, 178, t);
-          g = interpolate(240, 24, t);
-          b = interpolate(240, 43, t);
+          r = Math.round(255 + (red[0] - 255) * t);
+          g = Math.round(255 + (red[1] - 255) * t);
+          b = Math.round(255 + (red[2] - 255) * t);
         }
 
-        return `rgb(${r},${g},${b})`;
+        return `rgb(${r}, ${g}, ${b})`;
       },
     ],
     plotOptions: {
@@ -104,7 +107,8 @@ export default function HeatmapChart() {
   };
 
   return (
-    <div className="p-4 bg-[#F5F5F5] rounded-lg shadow">
+    <div className="p-6 bg-[#F5F5F5] rounded-xl shadow-lg w-full max-w-screen-xl mx-auto">
+      
       <Chart options={options} series={series} type="heatmap" height={800} />
     </div>
   );

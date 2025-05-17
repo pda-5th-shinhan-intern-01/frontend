@@ -12,8 +12,8 @@ export default function HeatmapPage() {
   return (
     <div className="p-6">
       <h1 className="font-bold text-4xl mb-2"> 섹터 X 경제 지표</h1>
-      <h3 className="text-xl mb-6 mt-4">
-        9가지 주요 경제 지표와 11개 시장 섹터 간의 상관관계를 나타낸 히트맵입니다.
+      <h3 className="text-xl text-[#00AAF0] mb-6 mt-4">
+      시장을 흔드는 9가지 경제 지표와 11개 섹터의 치열한 상관관계, 그 판도를 히트맵 하나에 담아냈습니다!
       </h3>
 
       <HeatmapControlPanel
