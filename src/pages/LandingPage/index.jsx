@@ -7,10 +7,6 @@ import TopMovers from "./components/TopMovers";
 import ScrollBackBtn from "../../components/ScrollBackBtn";
 import HeroSection from "./components/HeroSection";
 export default function LandingPage() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <>
       <HeroSection />
