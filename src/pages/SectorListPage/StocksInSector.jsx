@@ -87,7 +87,7 @@ const dummyStocks = [
 ];
 
 export default function StocksInSector({ sector = "기술" }) {
-  const [viewMode, setViewMode] = useState("LIST");
+  const [viewMode, setViewMode] = useState("TREEMAP");
   const [stocks, setStocks] = useState(dummyStocks);
   const navigate = useNavigate();
 
@@ -100,46 +100,44 @@ export default function StocksInSector({ sector = "기술" }) {
   }, [sector]);
 
   return (
-    <div className="p-8 bg-white">
-      {/* ✅ 상단 섹터 타이틀 */}
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">
-          기술 <span className="font-normal text-gray-500">Technology</span>
-        </h2>
-        <p className="text-sm text-gray-500 mt-1">
-          소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터
-        </p>
-      </div>
+    <div className="mt-40 bg-white">
+      <div className="flex w-full justify-between items-end">
+        <div className="mb-6">
+          <h2 className="text-4xl font-semibold">
+            기술 <span className="font-semibold text-orange">Technology</span>
+          </h2>
+          <p className="text-lg mt-4">
+            소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터
+          </p>
+        </div>
 
-      {/* ✅ 토글 버튼 */}
-      <div className="flex justify-end items-center mb-6">
-        <div className="flex bg-gray-300 rounded-full p-1">
-          <button
-            onClick={() => setViewMode("LIST")}
-            className={`px-4 py-1 rounded-full transition-all ${
-              viewMode === "LIST" ? "bg-white text-black shadow" : "text-black"
-            }`}
-          >
-            LIST
-          </button>
-          <button
-            onClick={() => setViewMode("TREEMAP")}
-            className={`px-4 py-1 rounded-full transition-all ${
-              viewMode === "TREEMAP"
-                ? "bg-white text-black shadow"
-                : "text-black"
-            }`}
-          >
-            TreeMap
-          </button>
+        {/* ✅ 토글 버튼 */}
+        <div className="flex justify-end items-center mb-6">
+          <div className="flex bg-gray-light rounded-full p-1">
+            <button
+              onClick={() => setViewMode("LIST")}
+              className={`px-4 py-1 rounded-full transition-all ${
+                viewMode === "LIST" ? "bg-red-md text-white" : "text-black"
+              }`}
+            >
+              LIST
+            </button>
+            <button
+              onClick={() => setViewMode("TREEMAP")}
+              className={`px-4 py-1 rounded-full transition-all ${
+                viewMode === "TREEMAP" ? "bg-red-md text-white" : "text-black"
+              }`}
+            >
+              TreeMap
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* ✅ 컨텐츠 영역 */}
       {viewMode === "LIST" ? (
-        <table className="w-full text-left border-t border-gray-300 table-fixed">
+        <table className="w-full text-left border-t border-gray-light table-fixed">
           <thead>
-            <tr className="text-sm text-gray-600">
+            <tr className="text-sm text-gray-md">
               <th className="w-[10%] py-3"></th>
               <th className="w-[25%] py-3">종목명</th>
               <th className="w-[15%] py-3">현재가</th>
@@ -152,7 +150,7 @@ export default function StocksInSector({ sector = "기술" }) {
             {stocks.map((stock, idx) => (
               <tr
                 key={idx}
-                className="border-t border-gray-200 text-sm"
+                className="border-t border-gray-light cursor-pointer hover:bg-gray-light"
                 onClick={() => {
                   navigate(`./${stock.ticker}`);
                 }}
@@ -162,7 +160,7 @@ export default function StocksInSector({ sector = "기술" }) {
                     src={`${import.meta.env.VITE_STOCK_LOGO_URL}${
                       stock.ticker
                     }.png`}
-                    className="w-10 h-10 rounded-full mr-2 bg-gray-light"
+                    className="w-10 h-10 rounded-full mr-2 bg-gray-light ml-4"
                     alt={stock.ticker}
                   />
                 </td>

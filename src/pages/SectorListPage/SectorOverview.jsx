@@ -92,8 +92,6 @@ const sectors = [
   },
 ];
 
-
-
 const sectorImages = {
   기술: sector_tech,
   금융: sector_finance,
@@ -110,13 +108,14 @@ const sectorImages = {
 
 export default function SectorOverview({ onSelectSector }) {
   return (
-    <div className="p-5">
+    <div className="mt-20">
       <h1 className="text-5xl font-bold mb-3">Sectors</h1>
-      <p className="text-xl text-[#00AAF0] font-semibold mb-6">
-      11개 핵심 시장 섹터와 그 속을 이끄는 대표 종목들, 시장을 움직이는 주역들을 지금 만나보세요!
+      <p className="text-xl font-semibold mb-12">
+        11개 핵심 시장 섹터와 그 속을 이끄는 대표 종목들, 시장을 움직이는
+        주역들을 지금 만나보세요!
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {sectors.map((sector, idx) => {
           const colIndex = idx % 4;
           const isOffsetCard = colIndex === 1 || colIndex === 3;
@@ -127,7 +126,8 @@ export default function SectorOverview({ onSelectSector }) {
           else if (rowIndex === 1) bgColor = "#F6FDEC";
           else if (rowIndex === 2) bgColor = "#FF8341";
 
-          const textColor = rowIndex === 1 ? "#FE4700" : "#F6FDEC";
+          // const textColor = rowIndex === 1 ? "#FE4700" : "#F6FDEC";
+          const textColor = rowIndex === 1 ? "#000" : "#FFF";
           const stockBgColor = "#FE4700";
           const moreClolr = "#FE4700";
 
@@ -140,77 +140,69 @@ export default function SectorOverview({ onSelectSector }) {
 
           return (
             <div
-  key={idx}
-  className="rounded-xl shadow px-10 py-6 hover:cursor-pointer mb-3 flex flex-col justify-between"
-  onClick={() => onSelectSector(sector.name)}
-  style={{
-    height: "480px",
-    position: "relative",
-    top: isOffsetCard ? "60px" : "0",
-    backgroundColor: bgColor,
-    color: textColor,
-  }}
->
-  {/* 카드 콘텐츠 전체를 감싸는 wrapper */}
-  <div className="flex flex-col h-full justify-between">
-    <div>
-      <div className="mb-2">
-        <h2 className="text-3xl font-semibold mb-2">{sector.name}</h2>
-        <div
-          style={{
-            backgroundColor: changeBgColor,
-            color: changeTextColor,
-            display: "inline-block",
-            padding: "4px 12px",
-            borderRadius: "9999px",
-            fontWeight: "600",
-            fontSize: "1.125rem",
-            userSelect: "none",
-            minWidth: "60px",
-            textAlign: "center",
-          }}
-        >
-          {sector.change}
-        </div>
-      </div>
+              key={idx}
+              className="hover:scale-105 duration-300 rounded-2xl shadow p-6 hover:cursor-pointer flex flex-col justify-between"
+              onClick={() => onSelectSector(sector.name)}
+              style={{
+                position: "relative",
+                top: isOffsetCard ? "60px" : "0",
+                backgroundColor: bgColor,
+                color: textColor,
+              }}
+            >
+              {/* 카드 콘텐츠 전체를 감싸는 wrapper */}
+              <div className="flex flex-col h-full justify-between">
+                <div>
+                  <div className="mb-2 flex justify-between">
+                    <h2 className="text-3xl font-semibold mb-2">
+                      {sector.name}
+                    </h2>
+                    <div
+                      className="text-lg flex justify-center items-center px-4 rounded-full font-semibold"
+                      style={{
+                        backgroundColor: changeBgColor,
+                        color: changeTextColor,
+                      }}
+                    >
+                      {sector.change}
+                    </div>
+                  </div>
 
-      <p className="text-md mb-3 mt-4">{sector.description}</p>
-    </div>
+                  <p className="text-md mb-3 mt-4">{sector.description}</p>
+                </div>
 
-    <div className="flex flex-col items-center">
-    <img
-  src={imageSrc}
-  alt={`${sector.name} 이미지`}
-  className="mb-5"
-  style={{
-    width: "180px",
-    height: "180px",
-    objectFit: "contain",
-  }}
-/>
+                <div className="flex flex-col items-center">
+                  <img
+                    src={imageSrc}
+                    alt={`${sector.name} 이미지`}
+                    className="mb-5"
+                    style={{
+                      width: "180px",
+                      height: "180px",
+                      objectFit: "contain",
+                    }}
+                  />
 
-
-      <div className="flex flex-wrap justify-center gap-2">
-        {sector.stocks.map((stock, sIdx) => (
-          <span
-            key={sIdx}
-            className="px-3 py-1 text-sm rounded-full"
-            style={{ backgroundColor: stockBgColor, color: "#fff" }}
-          >
-            {stock}
-          </span>
-        ))}
-        <span
-          className="px-3 py-1 text-sm rounded-full"
-          style={{ backgroundColor: moreClolr, color: "#fff" }}
-        >
-          +{sector.more}
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {sector.stocks.map((stock, sIdx) => (
+                      <span
+                        key={sIdx}
+                        className="px-3 py-1 text-sm rounded-full"
+                        style={{ backgroundColor: stockBgColor, color: "#fff" }}
+                      >
+                        {stock}
+                      </span>
+                    ))}
+                    {/* <span
+                      className="px-3 py-1 text-sm rounded-full"
+                      style={{ backgroundColor: moreClolr, color: "#fff" }}
+                    >
+                      +{sector.more}
+                    </span> */}
+                  </div>
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>
