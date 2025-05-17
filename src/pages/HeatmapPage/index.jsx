@@ -11,10 +11,9 @@ export default function HeatmapPage() {
 
   return (
     <div className="p-6">
-      <h1 className="font-bold text-xl mb-2">경제 지표와 섹터 상관관계 분석</h1>
-      <h3 className="mb-6">
-        미국 주요 경제 지표와 11개 시장 섹터 간의 상관관계를 시각화한
-        히트맵입니다.
+      <h1 className="font-bold text-4xl mb-2"> 섹터 X 경제 지표</h1>
+      <h3 className="text-xl mb-6 mt-4">
+        9가지 주요 경제 지표와 11개 시장 섹터 간의 상관관계를 나타낸 히트맵입니다.
       </h3>
 
       <HeatmapControlPanel
