@@ -3,7 +3,6 @@ import ReactApexChart from "react-apexcharts";
 import { useState } from "react";
 
 export default function NumberCompare({ checkedItems, selectedSubOptions }) {
-  console.log("check", selectedSubOptions);
   const [state, setState] = useState({
     series: [
       {
