@@ -22,7 +22,9 @@ export default function CurrentIndicators() {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
         <div className="flex-col gap-2 items-end">
-          <h3 className="text-3xl font-semibold">최근 지표 이벤트 주가 변화</h3>
+          <h3 className="text-3xl font-semibold">
+            최근 지표 이벤트에 대한 주가 변화
+          </h3>
           <p className="text-lg mt-4">
             최근 경제지표 발표에서 주가가 얼마나 변동되었는지 확인하세요
           </p>

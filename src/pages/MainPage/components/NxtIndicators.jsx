@@ -37,7 +37,7 @@ export default function NxtIndicators() {
             예정된 지표 이벤트에 대한 주가 변화
           </h3>
           <p className="text-lg mt-4">
-            최근 경제지표 발표에서 주가가 얼마나 변동되었는지 확인하세요
+            예정된 경제지표 발표에 대해 주가가 어떻게 변화할 지 예상해보세요
           </p>
         </div>
         <div className="flex gap-2 items-end">
