@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { formatFomcTitle } from "./titleFormatter";
 
 export default function VoteCompare({ checkedItems }) {
+  const labelList = ["찬성", "반대", "중립"];
   // parsedItems 생성
   const parsedItems = useMemo(() => {
     return checkedItems.map((item) => ({
@@ -60,10 +61,44 @@ export default function VoteCompare({ checkedItems }) {
       categories: parsedItems.map((item) => formatFomcTitle(item.date)),
     },
     tooltip: {
-      y: {
-        formatter: function (val) {
-          return val + "명";
-        },
+      custom: function ({ seriesIndex, dataPointIndex }) {
+        const targetItem = parsedItems[dataPointIndex];
+        if (!targetItem) return '<div style="padding: 6px;">해당 없음</div>';
+
+        let members = [];
+        let reason = "";
+
+        if (seriesIndex === 0) {
+          members = targetItem.parsed.votes.approve.members;
+          reason = targetItem.parsed.votes.approve.reason;
+        } else if (seriesIndex === 1) {
+          members = targetItem.parsed.votes.oppose.members;
+          reason = targetItem.parsed.votes.oppose.reason;
+        } else if (seriesIndex === 2) {
+          members = targetItem.parsed.votes.abstain.members;
+          reason = targetItem.parsed.votes.abstain.reason;
+        }
+
+        if (!members || members.length === 0) {
+          return '<div style="padding: 6px;">해당 없음</div>';
+        }
+
+        return `
+            <div style="padding: 8px;">
+              <div style="font-weight: bold;">${
+                labelList[seriesIndex]
+              } 명단</div>
+              <hr />
+              <ol style="margin: 0; padding: 0 8px;">
+                ${members.map((name) => `<li>${name}</li>`).join("")}
+              </ol>
+              ${
+                reason
+                  ? `<hr /><div style="margin-top: 4px;">이유: ${reason}</div>`
+                  : ""
+              }
+            </div>
+          `;
       },
     },
     fill: {
