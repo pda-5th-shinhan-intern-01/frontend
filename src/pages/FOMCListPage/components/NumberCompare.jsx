@@ -1,8 +1,16 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export default function NumberCompare({ checkedItems, selectedSubOptions }) {
+  // parsedItems 생성
+  const parsedItems = useMemo(() => {
+    return checkedItems.map((item) => ({
+      ...item,
+      parsed: JSON.parse(item.summary),
+    }));
+  }, [checkedItems]);
+
   const [state, setState] = useState({
     series: [
       {
@@ -50,12 +58,12 @@ export default function NumberCompare({ checkedItems, selectedSubOptions }) {
 
   return (
     <div>
-      <div id="chart">
+      <div id="chart" className="mx-auto h-2/3">
         <ReactApexChart
           options={state.options}
           series={state.series}
           type="line"
-          height={250}
+          height={300}
         />
       </div>
       <div id="html-dist"></div>

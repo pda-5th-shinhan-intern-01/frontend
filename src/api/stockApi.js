@@ -8,7 +8,20 @@ const stockApi = {
       sector,
       searchParam,
     }),
-  // 종목 관련 api는 아래에 추가
+
+  //주가 차트 데이터 조회
+  getStockChart: (ticker, from, to) =>
+    api.get(`stocks/${ticker}/chart`, {
+      from,
+      to,
+    }),
+
+  //종목의 지표별 민감도 조회
+  getStockSensitivity: (ticker) => api.get(`sensitivities/${ticker}`),
+
+  //종목의 지표별 주가 변화 조회
+  getStockChangeWithSesitivity: (ticker) =>
+    api.get(`sensitivities/rate/${ticker}`),
 };
 
 export { stockApi };
