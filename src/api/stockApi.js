@@ -8,7 +8,13 @@ const stockApi = {
       sector,
       searchParam,
     }),
-  // 종목 관련 api는 아래에 추가
+
+  //주가 차트 데이터 조회
+  getStockChart: (ticker, from, to) =>
+    api.get(`stocks/${ticker}/chart`, {
+      from,
+      to,
+    }),
 };
 
 export { stockApi };
