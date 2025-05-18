@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import ScrollToTop from "./ScrollToTop";
 
 export default function Layout() {
   const location = useLocation();
@@ -22,6 +23,7 @@ export default function Layout() {
 
   return (
     <div className="flex flex-col items-center min-h-screen w-full font-medium">
+      <ScrollToTop />
       <header
         className={`w-full fixed top-0 z-10 h-16 transition-colors duration-300 ${
           isOrange ? "bg-orange" : "bg-white"
