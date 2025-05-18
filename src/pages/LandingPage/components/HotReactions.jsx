@@ -29,7 +29,7 @@ export default function HotReactions() {
   };
 
   return (
-    <div className="hidden xl:block fixed top-[19%] right-32 shadow-md rounded-3xl bg-white px-6 py-6 w-[30%] z-50">
+    <div className="hidden xl:block fixed top-[19%] right-32 shadow-md rounded-3xl bg-white px-6 py-6 w-[30%] z-0">
       <div className="flex justify-between items-center mb-2 px-2">
         <h3 className="font-semibold text-3xl text-black">Hot Reactions</h3>
         <button
