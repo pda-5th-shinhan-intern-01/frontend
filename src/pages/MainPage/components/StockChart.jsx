@@ -213,8 +213,8 @@ export default function StockChart({ ticker }) {
   //차트 api 호출
   useEffect(() => {
     console.log(seriesData);
-    setChartData(seriesData);
-    // getChartData();
+    // setChartData(seriesData);
+    getChartData();
   }, []);
 
   const getChartData = async () => {
@@ -223,7 +223,7 @@ export default function StockChart({ ticker }) {
       console.log(response.data);
       setChartData(response.data);
     } catch (error) {
-      console.error("차트데이터 조회 실패", error.message());
+      console.error("차트데이터 조회 실패", error);
     }
   };
 
