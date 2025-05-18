@@ -23,7 +23,7 @@ export default function FOMCDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-20">
       {/* 기본 정보 */}
       <span
         onClick={() => navigate("/main/fomcs")}

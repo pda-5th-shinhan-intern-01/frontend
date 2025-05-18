@@ -6,10 +6,17 @@ import CustomDateInput from "../../components/CustomDatePicker";
 import PaginationBtn from "../../components/PaginationBtn";
 import dummy from "./dummies/dummy.json";
 import CompareModal from "./components/CompareModal";
+import { motion, AnimatePresence } from "framer-motion";
+import { fomcApi } from "../../api/fomcApi";
 
 // FOMC 목록 페이지
 export default function FOMCListPage() {
-  const interestRateMap = ["인하", "동결", "인상"];
+  const interestRateMap = ["Lower", "Freeze", "Raise"];
+  const interestRateLabelMap = {
+    Lower: "인하",
+    Freeze: "동결",
+    Raise: "인상",
+  };
   const navigate = useNavigate();
 
   const [selectedRateIndex, setSelectedRateIndex] = useState(null);
@@ -20,31 +27,38 @@ export default function FOMCListPage() {
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState([]);
   const [searchDate, setSearchDate] = useState(false);
+  const [fomcList, setFomcList] = useState([]);
 
   const ITEMS_PER_PAGE = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
   const [compareModalOpen, setCompareModalOpen] = useState(false);
 
+  // 검색 버튼 누를때
+  useEffect(() => {
+    if (searchDate) {
+      setSearchDate(false);
+    }
+  }, [searchDate]);
+
   // 필터링 로직
   const filteredData = useMemo(() => {
-    const filtered = dummy.filter((item) => {
+    const filtered = fomcList.filter((item) => {
       const matchRate =
         selectedRateIndex !== null
-          ? item.interestRate === interestRateMap[selectedRateIndex]
+          ? item.policyBias === interestRateMap[selectedRateIndex]
           : true;
       const matchStart = startDate ? item.date >= startDate : true;
       const matchEnd = endDate ? item.date <= endDate : true;
       return matchRate && matchStart && matchEnd;
     });
-    setSearchDate(false);
 
     return filtered.sort((a, b) =>
       sortOrder === "asc"
         ? a.date.localeCompare(b.date)
         : b.date.localeCompare(a.date)
     );
-  }, [selectedRateIndex, searchDate, sortOrder]);
+  }, [fomcList, selectedRateIndex, sortOrder, startDate, endDate]);
 
   // 페이지네이션
   const paginatedData = useMemo(() => {
@@ -55,26 +69,43 @@ export default function FOMCListPage() {
 
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
 
-  // 비교하기
+  //비교하기
   const toggleChecked = (item) => {
     setCheckedItems((prev) => {
-      const isChecked = prev?.includes(item);
-      if (isChecked) {
-        return prev.filter((i) => i !== item);
-      } else {
-        return [...prev, item];
+      const isChecked = prev.includes(item);
+      const newItems = isChecked
+        ? prev.filter((i) => i !== item)
+        : [...prev, item];
+
+      if (newItems.length === 0) {
+        setCompareModalOpen(false);
       }
+
+      return newItems;
     });
   };
+
+  // 전체 리스트 호출 api
+  useEffect(() => {
+    fomcApi.getFomcList().then((res) => {
+      console.log(res.data);
+      setFomcList(res.data);
+    });
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [sortOrder, selectedRateIndex, startDate, endDate]);
 
+  const formatFomcTitle = (dateStr) => {
+    const [year, month] = dateStr.split("-");
+    return `${year}년 ${parseInt(month)}월 회의록`;
+  };
+
   return (
-    <div className="flex flex-col gap-3 p-4">
-      <div className="font-bold text-3xl">FOMC 회의</div>
-      <div className="bg-ivory p-5 text-md shadow-md">
+    <div className="flex flex-col gap-3 p-4 mt-20">
+      <div className="font-bold text-5xl">FOMC 회의</div>
+      <div className="bg-ivory p-5 text-lg font-semibold shadow-md">
         FOMC(연방공개시장위원회)는 미국 연준의 통화정책을 최종 결정하는 기구로,
         매 정례회의에서 기준금리를 인상·동결·인하합니다.
         <br />
@@ -89,14 +120,14 @@ export default function FOMCListPage() {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className=" px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
+            className="cursor-pointer px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
           />
           <span>~</span>
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
+            className="cursor-pointer px-4 py-2 text-sm font-medium border border-gray-light rounded-md shadow-sm focus:outline-none focus:ring-0 text-center"
           />
           <div
             onClick={() => setSearchDate(true)}
@@ -116,13 +147,13 @@ export default function FOMCListPage() {
           </div>
         </div>
 
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 ">
           {/* 정렬 드롭다운 */}
           <div className="text-left">
             <div>
               <button
                 type="button"
-                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm font-medium  hover:bg-gray-50"
+                className="cursor-pointer inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm font-medium  hover:bg-gray-50"
                 onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
               >
                 {sortOrder === "desc" ? "최신순" : "오래된 순"}
@@ -162,11 +193,13 @@ export default function FOMCListPage() {
             <div>
               <button
                 type="button"
-                className="inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm  hover:bg-gray-hover "
+                className="cursor-pointer inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm  hover:bg-gray-hover "
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 {selectedRateIndex !== null
-                  ? `금리 ${interestRateMap[selectedRateIndex]}`
+                  ? `금리 ${
+                      interestRateLabelMap[interestRateMap[selectedRateIndex]]
+                    }`
                   : "금리 전체"}
                 <FaChevronDown />
               </button>
@@ -184,16 +217,17 @@ export default function FOMCListPage() {
                   >
                     전체
                   </div>
-                  {interestRateMap.map((rate, idx) => (
+
+                  {interestRateMap.map((code, idx) => (
                     <div
-                      key={idx}
-                      className="px-4 py-2 hover:bg-gray-hover cursor-pointer "
+                      key={code}
+                      className="px-4 py-2 hover:bg-gray-hover cursor-pointer"
                       onClick={() => {
                         setSelectedRateIndex(idx);
                         setDropdownOpen(false);
                       }}
                     >
-                      금리 {rate}
+                      금리 {interestRateLabelMap[code]}
                     </div>
                   ))}
                 </div>
@@ -223,32 +257,36 @@ export default function FOMCListPage() {
                 key={idx}
                 className="hover:bg-gray-hover cursor-pointer transition-colors duration-300"
               >
-                <td className="py-5 px-4">
+                <td className="py-6 px-4">
                   <div className="flex items-center gap-5">
                     <input
                       type="checkbox"
                       checked={checkedItems?.includes(data)}
                       onChange={() => toggleChecked(data)}
-                      className="mt-1 accent-gray-500"
+                      className="mt-1 accent-gray-500 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
                       disabled={checkedItems.length >= 3}
                     />
-                    <div onClick={() => navigate(`${idx}`)} className="w-full">
-                      <div className="">{data.title}</div>
-                      <div className="text-sm text-gray-md">
-                        ❤️‍🔥 : 경제 전망에 대한 불확실성 증가, 연준은 물가와 고용
-                        목표 모두를 주시
+                    <div
+                      onClick={() => navigate(`${data.id}`)}
+                      className="w-full"
+                    >
+                      <div className="text-lg">
+                        {formatFomcTitle(data.date)}
+                      </div>
+                      <div className="text-sm text-orange font-bold">
+                        · {data.title}
                       </div>
                     </div>
                   </div>
                 </td>
                 <td className="py-5">{data.date}</td>
                 <td className="py-5 flex justify-center">
-                  {data.interestRate === "인상" ? (
+                  {data.policyBias === "Raise" ? (
                     <FaCaretUp className="text-red-md text-2xl" />
-                  ) : data.interestRate === "인하" ? (
+                  ) : data.policyBias === "Lower" ? (
                     <FaCaretDown className="text-blue-md text-2xl" />
                   ) : (
                     <MdHorizontalRule className="w-4" />
@@ -261,49 +299,54 @@ export default function FOMCListPage() {
       </table>
 
       {/* 비교하기 버튼 */}
-      {checkedItems?.length >= 1 && (
-        <div
-          className={`z-30 bg-orange flex flex-row justify-between px-16 py-1
-          fixed bottom-4 w-11/12 left-1/2 -translate-x-1/2 rounded-lg shadow-lg
-          transform
-          transition-transform transition-opacity duration-500 ease-out
-          ${
-            checkedItems.length >= 1
-              ? "translate-y-0 opacity-100"
-              : "translate-y-full opacity-0 pointer-events-none"
-          }
-        `}
-        >
-          <div className="flex flex-row gap-5">
-            {checkedItems?.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex flex-row gap-2 items-center px-5 text-sm text-white"
+      <AnimatePresence>
+        {checkedItems?.length >= 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="z-30 bg-orange flex flex-row flex-wrap justify-between px-10 py-3
+        fixed  bottom-[4vh] w-11/12 left-1/2 -translate-x-1/2 rounded-lg shadow-lg text-white"
+          >
+            <div className="flex flex-row gap-5 flex-wrap">
+              <AnimatePresence initial={false}>
+                {checkedItems?.map((item, idx) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 50 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="flex flex-row gap-2 items-center px-5 text-md"
+                  >
+                    {formatFomcTitle(item.date)}
+                    <MdOutlineCancel
+                      className="cursor-pointer text-lg"
+                      onClick={() => toggleChecked(item)}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            <div className="flex flex-row gap-10 flex-wrap">
+              <button
+                className="text-md text-ivory cursor-pointer"
+                onClick={() => setCheckedItems([])}
               >
-                {item.title}{" "}
-                <MdOutlineCancel
-                  className="cursor-pointer text-lg"
-                  onClick={() => toggleChecked(item)}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="flex flex-row gap-10">
-            <button
-              className="text-sm text-ivory cursor-pointer"
-              onClick={() => setCheckedItems([])}
-            >
-              전체취소
-            </button>
-            <button
-              className="border border-gray-light bg-white px-3 py-1 rounded-md shadow-lg text-sm hover:bg-gray-hover cursor-pointer"
-              onClick={() => setCompareModalOpen(true)}
-            >
-              비교하기 ({checkedItems.length}개)
-            </button>
-          </div>
-        </div>
-      )}
+                전체취소
+              </button>
+              <button
+                className="border border-gray-light bg-white px-3 py-1 rounded-md shadow-lg text-md hover:bg-gray-hover cursor-pointer text-orange"
+                onClick={() => setCompareModalOpen(true)}
+              >
+                비교하기 ({checkedItems.length}개)
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {compareModalOpen && checkedItems.length >= 1 && (
         <CompareModal
