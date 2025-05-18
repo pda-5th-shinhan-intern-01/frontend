@@ -4,7 +4,7 @@ import dummy from "./dummies/dummy.json";
 import PolicyDecision from "./components/PolicyDecision";
 import Votes from "./components/Votes";
 import CommonSection from "./components/CommonSection";
-import miniLogo from "../../assets/miniLogo.png";
+import miniLogo from "../../assets/logo.png";
 
 const economicLabel = {
   labor_market: "노동 시장",

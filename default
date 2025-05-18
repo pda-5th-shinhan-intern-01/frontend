@@ -1,0 +1,20 @@
+server {
+    listen 80;
+    server_name 125.6.36.185;
+
+    # 프론트 빌드 파일 위치
+    root /home/ubuntu/hotsignal-frontend/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 리버스 프록시로 백엔드 API 요청 전달
+    location /api/ {
+        proxy_pass http://180.210.83.95:8080/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+

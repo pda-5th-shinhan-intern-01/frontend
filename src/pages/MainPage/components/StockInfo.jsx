@@ -21,22 +21,22 @@ export default function StockInfo({ ticker }) {
     <div className="flex w-full items-center gap-2">
       <img
         src={`${import.meta.env.VITE_STOCK_LOGO_URL}${ticker}.png`}
-        className="w-12 h-12 rounded-full mr-2 bg-gray-light"
+        className="w-20 h-20 rounded-full mr-2 bg-gray-light"
       />
       <div>
-        <div className="text-[15px] font-semibold flex gap-2">
+        <div className="text-xl font-semibold flex gap-2">
           <p className="">{stock.name}</p>
           <p className="text-gray-md">{ticker}</p>
         </div>
-        <div className="flex gap-2 items-center">
-          <p className="text-xl font-semibold">
+        <div className="flex gap-2 items-end">
+          <p className="text-3xl font-semibold">
             {formatNumberForMoney(stock.price_kr)}원
           </p>
-          <p className="text-gray-md text-sm">
+          <p className="text-gray-md text-2xl">
             ${formatNumberForMoney(stock.price_us)}
           </p>
           <div
-            className={`flex gap-1 items-center text-sm ${
+            className={`flex gap-1 items-center text-2xl ${
               stock.change_amt > 0
                 ? "text-red-md"
                 : stock.change_amt < 0
