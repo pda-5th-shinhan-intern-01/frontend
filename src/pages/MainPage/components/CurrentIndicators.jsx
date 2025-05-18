@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import StockMiniChart from "../../../components/StockMiniChart";
-import { IoIosCalendar } from "react-icons/io";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
-import { currentIndicatorsData } from "../dummies/currentIndicatorData";
 import HorizontalScroller from "../../../components/HorizontalScroller";
+import { formatNumberForMoney } from "../../../utils/formatNumber";
 import { stockApi } from "../../../api/stockApi";
 
 export default function CurrentIndicators({ ticker }) {
@@ -24,12 +23,13 @@ export default function CurrentIndicators({ ticker }) {
         })
         .replaceAll(". ", "년 ")
         .replace(".", "일"),
-      prevData: item.prev.toFixed(2),
-      currData: item.actual.toFixed(2),
+      prevData: item.prev,
+      currData: item.actual,
       chartData: item.price.map((p) => ({
         x: p.date,
         y: p.close,
       })),
+      unit: item.unit,
     }));
 
     setEvents(parsed);
@@ -84,35 +84,41 @@ export default function CurrentIndicators({ ticker }) {
         {events.map((event, id) => (
           <div
             key={id}
-            className="hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 rounded-2xl min-w-[350px]"
+            className="justify-between hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 rounded-2xl min-w-[350px]"
           >
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="text-2xl font-semibold">{event.name}</h4>
-              <p className="text-sm flex gap-1 items-center">{event.date}</p>
-            </div>
             <div>
-              <p className="flex items-center text-sm">
-                예상치 <FaArrowRight className="text-xs" /> 발표치
-              </p>
-              <h2 className="flex items-end text-xl  font-semibold">
-                <span className="flex items-center text-sm">
-                  {event.prevData}% <FaArrowRight className="text-xs" />
-                </span>
-                {event.currData}%(
-                <span
-                  className={`${
-                    event.currData > event.prevData
-                      ? "text-red-md"
-                      : event.currData == event.prevData
-                      ? ""
-                      : "text-blue-md"
-                  }`}
-                >
-                  {(event.currData - event.prevData).toFixed(2)}%
-                </span>
-                )
-              </h2>
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-2xl font-semibold">{event.name}</h4>
+                <p className="text-sm flex gap-1 items-center">{event.date}</p>
+              </div>
+              <div>
+                <p className="flex items-center text-sm">
+                  예상치 <FaArrowRight className="text-xs" /> 발표치
+                </p>
+                <h2 className="flex items-end text-xl  font-semibold">
+                  <span className="flex items-center text-sm">
+                    {formatNumberForMoney(event.prevData)}
+                    {event.unit} <FaArrowRight className="text-xs" />
+                  </span>
+                  {formatNumberForMoney(event.currData)}
+                  {event.unit}(
+                  <span
+                    className={`${
+                      event.currData > event.prevData
+                        ? "text-red-md"
+                        : event.currData == event.prevData
+                        ? ""
+                        : "text-blue-md"
+                    }`}
+                  >
+                    {formatNumberForMoney(event.currData - event.prevData)}
+                    {event.unit}
+                  </span>
+                  )
+                </h2>
+              </div>
             </div>
+
             {/* 주가 차트를 이벤트 전후 3일을 보여주는 게 나을까, 이벤트 후 일주일을 보여주는 게 나을까 */}
             <div>
               <div className="flex justify-between items-center">
@@ -120,22 +126,22 @@ export default function CurrentIndicators({ ticker }) {
                 {event.chartData[event.chartData.length - 1].y >
                 event.chartData[0].y ? (
                   <div className="flex gap-1 text-2xl items-center justify-center text-red-md">
-                    <FaArrowTrendUp />
-                    {(
+                    <FaArrowTrendUp />$
+                    {formatNumberForMoney(
                       event.chartData[event.chartData.length - 1].y -
-                      event.chartData[0].y
-                    ).toFixed(2)}
+                        event.chartData[0].y
+                    )}
                   </div>
                 ) : event.chartData[event.chartData.length - 1].y ==
                   event.chartData[0].y ? (
                   <div className="flex gap-1 items-center">-</div>
                 ) : (
                   <div className="flex gap-1 items-center text-blue-md text-2xl">
-                    <FaArrowTrendDown />
-                    {(
+                    <FaArrowTrendDown />$
+                    {formatNumberForMoney(
                       event.chartData[event.chartData.length - 1].y -
-                      event.chartData[0].y
-                    ).toFixed(2)}
+                        event.chartData[0].y
+                    )}
                   </div>
                 )}
               </div>
