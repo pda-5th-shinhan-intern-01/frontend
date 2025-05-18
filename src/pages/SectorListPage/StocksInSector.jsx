@@ -3,14 +3,21 @@ import { formatNumberForMoney } from "../../utils/formatNumber";
 import TechTreemap from "./Treemap";
 import { useNavigate } from "react-router-dom";
 
-const dummyStocks = [
+const dummyStocks = 
+{
+  "sectorName": "기술",
+  "sectorENname": "Technology",
+  "sectorChangeRate": 4.27,
+  "sectorDescription":"소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터",
+  "stocks": [
+  
   {
     name: "마이크로소프트",
     ticker: "MSFT",
     price: 412.56,
     changeRate: 3.57,
     volume: 18000000,
-    marketCap: 2800000000000,  // 단위 맞춰서 조정 가능
+    marketCap: 2800000000000,
   },
   {
     name: "애플",
@@ -84,7 +91,7 @@ const dummyStocks = [
     volume: 35000000,
     marketCap: 190000000000,
   },
-];
+]};
 export default function StocksInSector({ sector = "기술" }) {
   const [viewMode, setViewMode] = useState("TREEMAP");
   const [stocks, setStocks] = useState(dummyStocks);
@@ -102,25 +109,16 @@ export default function StocksInSector({ sector = "기술" }) {
     <div className="mt-40 bg-white">
       <div className="flex w-full justify-between items-end">
         <div className="mb-6">
-          <h2 className="text-4xl font-semibold">
-            {sector} <span className="font-semibold text-orange">Technology</span>
-          </h2>
-          <p className="text-lg mt-4">
-            소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터
-          </p>
+        <h2 className="text-4xl font-semibold">
+  {stocks.sectorName} <span className="font-semibold text-orange">{stocks.sectorENname}</span>
+</h2>
+<p className="text-lg mt-4">{stocks.sectorDescription}</p>
         </div>
 
-        {/* ✅ 토글 버튼 */}
+        
         <div className="flex justify-end items-center mb-6">
           <div className="flex bg-gray-light rounded-full p-1">
-            <button
-              onClick={() => setViewMode("LIST")}
-              className={`px-4 py-1 rounded-full transition-all ${
-                viewMode === "LIST" ? "bg-red-md text-white" : "text-black"
-              }`}
-            >
-              LIST
-            </button>
+            
             <button
               onClick={() => setViewMode("TREEMAP")}
               className={`px-4 py-1 rounded-full transition-all ${
@@ -128,6 +126,14 @@ export default function StocksInSector({ sector = "기술" }) {
               }`}
             >
               TreeMap
+            </button>
+            <button
+              onClick={() => setViewMode("LIST")}
+              className={`px-4 py-1 rounded-full transition-all ${
+                viewMode === "LIST" ? "bg-red-md text-white" : "text-black"
+              }`}
+            >
+              LIST
             </button>
           </div>
         </div>
@@ -146,34 +152,37 @@ export default function StocksInSector({ sector = "기술" }) {
             </tr>
           </thead>
           <tbody>
-            {stocks.map((stock, idx) => {
-              const isPositive = stock.changeRate >= 0;
-              return (
-                <tr
-                  key={idx}
-                  className="border-t border-gray-light cursor-pointer hover:bg-gray-light"
-                  onClick={() => {
-                    navigate(`./${stock.ticker}`);
-                  }}
-                >
-                  <td className="py-4">
-                    <img
-                      src={`${import.meta.env.VITE_STOCK_LOGO_URL}${stock.ticker}.png`}
-                      className="w-10 h-10 rounded-full mr-2 bg-gray-light ml-4"
-                      alt={stock.ticker}
-                    />
-                  </td>
-                  <td className="truncate">{stock.name}</td>
-                  <td>{formatNumberForMoney(stock.price)}원</td>
-                  <td className={isPositive ? "text-green-600" : "text-red-600"}>
-                    {stock.changeRate.toFixed(2)}%
-                  </td>
-                  <td className="truncate">{formatNumberForMoney(stock.volume)}</td>
-                  <td className="truncate">{formatNumberForMoney(stock.marketCap)}억원</td>
-                </tr>
-              );
-            })}
-          </tbody>
+  {stocks.map((stock, idx) => {
+    const isPositive = stock.changeRate >= 0;
+    return (
+      <tr
+        key={idx}
+        className="border-t border-gray-light cursor-pointer hover:bg-gray-light"
+        onClick={() => {
+          navigate(`./${stock.ticker}`);
+        }}
+      >
+        <td className="py-4">
+          <img
+            src={`${import.meta.env.VITE_STOCK_LOGO_URL}${stock.ticker}.png`}
+            className="w-10 h-10 rounded-full mr-2 bg-gray-light ml-4"
+            alt={stock.ticker}
+          />
+        </td>
+        <td className="truncate">{stock.name}</td>
+        <td>{formatNumberForMoney(stock.price)}원</td>
+        <td className={isPositive ? "text-red-600" : "text-blue-600"}>
+          {stock.changeRate.toFixed(2)}%
+        </td>
+        <td className="truncate">{formatNumberForMoney(stock.volume)}주</td>
+        <td className="truncate">
+          {formatNumberForMoney(stock.marketCap / 100000000)}억원
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
         </table>
       ) : (
         <TechTreemap sector={sector} stocks={stocks} />
