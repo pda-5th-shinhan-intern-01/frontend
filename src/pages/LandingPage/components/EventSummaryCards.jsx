@@ -62,7 +62,7 @@ export default function EventSummaryCards() {
             <div
               key={i}
               onClick={() => handleClick(event.key)}
-              className="relative flex-shrink-0 w-1/4 bg-gray-light rounded-xl py-4 px-6 text-lg cursor-pointer hover:bg-white"
+              className="relative flex-shrink-0 w-1/4 bg-gray-light rounded-xl py-4 px-6 text-lg cursor-pointer hover:bg-orange/10"
             >
               <div className="font-semibold text-black">
                 {meta?.name || event.key}
