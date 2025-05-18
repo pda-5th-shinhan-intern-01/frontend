@@ -7,11 +7,11 @@ export default function SectorListPage() {
   const stockSectionRef = useRef(null);
 
   const handleSelectSector = (sectorName) => {
-    // 클릭 시 동일 섹터면 닫기 (토글)
+    
     setSelectedSector((prev) => (prev === sectorName ? null : sectorName));
   };
 
-  // 섹터가 선택될 때마다 부드럽게 이동
+  
   useEffect(() => {
     if (selectedSector && stockSectionRef.current) {
       stockSectionRef.current.scrollIntoView({ behavior: "smooth" });

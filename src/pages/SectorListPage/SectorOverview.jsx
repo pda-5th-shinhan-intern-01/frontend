@@ -16,63 +16,63 @@ const sectors = [
     name: "기술",
     change: "+6.15%",
     description: "소프트웨어, 하드웨어, 반도체, IT 서비스를 포함하는 섹터",
-    stocks: ["AAPL", "GOOGL", "MSFT", "AAPL"],
+    stocks: ["AAPL", "MSFT", "NVDA", "ORCL"],
     more: 5,
   },
   {
     name: "금융",
     change: "+3.40%",
     description: "은행, 보험, 자산관리, 금융 서비스를 포함하는 섹터",
-    stocks: ["JPM", "BAC", "WFC", "WFC"],
+    stocks: ["JPM", "BAC", "WFC", "BRK.B"],
     more: 5,
   },
   {
     name: "헬스케어",
     change: "+5.55%",
     description: "제약, 바이오테크, 의료기기, 의료서비스를 포함하는 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["LLY", "JNJ", "UNH", "ABBV"],
     more: 8,
   },
   {
     name: "에너지",
     change: "+5.55%",
     description: "석유, 가스, 석탄, 신재생 에너지 등을 포함하는 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["XOM", "CVX", "COP", "WMB"],
     more: 8,
   },
   {
     name: "자유소비재",
     change: "+5.55%",
     description: "자동차, 의류, 미디어, 호텔, 레저 등 선택적 소비재 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["AMZN", "TSLA", "HD", "MCD"],
     more: 8,
   },
   {
     name: "필수소비재",
     change: "+5.55%",
     description: "식품, 음료, 가정용품, 개인용품 등 필수 소비재 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["WMT", "COST", "KO", "PEP"],
     more: 8,
   },
   {
     name: "커뮤니티",
     change: "+5.55%",
     description: "통신, 미디어, 엔터테인먼트, 소셜 미디어 등을 포함하는 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["META", "GOOG", "NFLX", "TMUS"],
     more: 8,
   },
   {
     name: "산업재",
     change: "-5.55%",
     description: "항공우주, 방위산업, 건설, 기계, 운송 등을 포함하는 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["GE", "UBER", "RTX", "DE"],
     more: 8,
   },
   {
     name: "유틸리티",
     change: "+5.55%",
     description: "전기, 가스, 수도, 재생에너지 등 공공 서비스 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["NEE", "SO", "DUK", "CEG"],
     more: 8,
   },
   {
@@ -80,14 +80,14 @@ const sectors = [
     change: "+5.55%",
     description:
       "부동산 투자 신탁(REITs), 부동산 개발, 관리 등을 포함하는 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["AMT", "PLD", "WELL", "EQIX"],
     more: 8,
   },
   {
     name: "소재",
     change: "+5.55%",
     description: "화학, 금속, 광업, 종이, 포장재 등을 포함하는 섹터",
-    stocks: ["JNJ", "PFE", "MRK", "MRK"],
+    stocks: ["LIN", "SHW", "ECL", "NEM"],
     more: 8,
   },
 ];
@@ -108,7 +108,7 @@ const sectorImages = {
 
 export default function SectorOverview({ onSelectSector }) {
   return (
-    <div className="mt-20">
+    <div>
       <h1 className="text-5xl font-bold mb-3">Sectors</h1>
       <p className="text-xl font-semibold mb-12">
         11개 핵심 시장 섹터와 그 속을 이끄는 대표 종목들, 시장을 움직이는
