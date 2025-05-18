@@ -1,28 +1,30 @@
-export function transformStockData(initData) {
-  const seriesData = initData.map((d) => ({
-    x: new Date(d.date).getTime(),
-    y: [d.open, d.high, d.low, d.close],
+export function transformStockData(rawData) {
+  if (!rawData || rawData.length === 0)
+    return {
+      seriesData: [],
+      seriesDataWithColor: [],
+      seriesDataLinear: [],
+    };
+
+  const seriesData = rawData.map((item) => ({
+    x: new Date(item.date).getTime(),
+    y: [item.open, item.high, item.low, item.close],
   }));
 
-  const seriesDataLinear = initData.map((d) => ({
-    x: new Date(d.date).getTime(),
-    y: d.volume,
+  const seriesDataWithColor = rawData.map((item) => ({
+    x: new Date(item.date).getTime(),
+    y: item.volume,
+    fillColor: item.close >= item.open ? "#fe4700" : "#00aaf0",
   }));
 
-  const seriesDataWithColor = seriesDataLinear.map((volumeData) => {
-    const priceData = seriesData.find((d) => d.x === volumeData.x);
-    if (!priceData) return volumeData;
+  const seriesDataLinear = rawData.map((item) => ({
+    x: new Date(item.date).getTime(),
+    y: item.close,
+  }));
 
-    const [open, , , close] = priceData.y;
-    const color =
-      close > open
-        ? "#fe4700" // 상승
-        : close < open
-        ? "#00aaf0" // 하락
-        : "#999999"; // 보합
-
-    return { ...volumeData, color };
-  });
-
-  return { seriesData, seriesDataLinear, seriesDataWithColor };
+  return {
+    seriesData,
+    seriesDataWithColor,
+    seriesDataLinear,
+  };
 }
