@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import dummy from "./dummies/dummy.json";
 import PolicyDecision from "./components/PolicyDecision";
 import Votes from "./components/Votes";
 import CommonSection from "./components/CommonSection";
 import miniLogo from "../../assets/logo.png";
+import { fomcApi } from "../../api/fomcApi";
 
 const economicLabel = {
   labor_market: "노동 시장",
@@ -22,6 +24,15 @@ const futureLabel = {
 export default function FOMCDetailPage() {
   const navigate = useNavigate();
   const params = useParams();
+  const [fomc, setFomc] = useState();
+
+  // 전체 리스트 호출 api
+  useEffect(() => {
+    fomcApi.getFomcList(params.id).then((res) => {
+      console.log(res.data);
+      setFomc(res.data);
+    });
+  }, []);
   return (
     <div className="flex flex-col mt-20">
       {/* 기본 정보 */}
