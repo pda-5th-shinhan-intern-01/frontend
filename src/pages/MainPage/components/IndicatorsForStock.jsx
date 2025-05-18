@@ -25,7 +25,6 @@ export default function IndicatorsForStock({ ticker }) {
         const categoryList = data.map(
           (item) => item.indicatorCode || "UNKNOWN"
         );
-        console.log(categoryList);
         const sensitivityList = data.map((item) => item.sensitivity || 0);
 
         const negatives = sensitivityList.map((v) => (v < 0 ? v : 0));
@@ -52,7 +51,6 @@ export default function IndicatorsForStock({ ticker }) {
         click: function (_event, _chartContext, config) {
           const index = config.dataPointIndex;
           if (index !== -1 && categories[index]) {
-            console.log(categories[index]);
             const selectedLabel = categories[index];
             if (selectedLabel === selected) {
               setIsEconomicChartVisible((prev) => !prev);
