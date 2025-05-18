@@ -134,7 +134,7 @@ export default function StocksInSector({ sector }) {
             <button
               onClick={() => setViewMode("TREEMAP")}
               className={`px-4 py-1 rounded-full transition-all ${
-                viewMode === "TREEMAP" ? "bg-red-md text-white" : "text-black"
+                viewMode === "TREEMAP" ? "bg-orange text-white" : "text-black"
               }`}
             >
               TreeMap
@@ -142,7 +142,7 @@ export default function StocksInSector({ sector }) {
             <button
               onClick={() => setViewMode("LIST")}
               className={`px-4 py-1 rounded-full transition-all ${
-                viewMode === "LIST" ? "bg-red-md text-white" : "text-black"
+                viewMode === "LIST" ? "bg-orange text-white" : "text-black"
               }`}
             >
               LIST
