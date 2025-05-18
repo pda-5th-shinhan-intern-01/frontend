@@ -43,6 +43,7 @@ export default function StockChart({ ticker }) {
       try {
         const response = await eventApi.getEventList();
         setEvents(response.data || []);
+        console.log(response.data);
       } catch (error) {
         console.error("이벤트 리스트 조회 실패", error);
       }
