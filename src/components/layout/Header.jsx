@@ -147,7 +147,9 @@ export default function Header({ isOrange }) {
               to={el.id}
               key={el.id}
               className={`ml-10 transition-colors duration-300 ${
-                isOrange ? "text-white" : "text-black"
+                isOrange
+                  ? "text-white hover:text-black"
+                  : "text-black hover:text-orange"
               }`}
             >
               {el.title}
