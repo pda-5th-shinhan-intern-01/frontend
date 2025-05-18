@@ -1,31 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 import { formatNumberForMoney } from "../../../utils/formatNumber";
-import { economicEvents } from "../dummies/economicEventData";
 import { stockApi } from "../../../api/stockApi";
-
-// ✅ eventMarkers → timestamp 기준
-const eventMarkers = economicEvents.map((event) => ({
-  x: new Date(event.date).getTime(),
-  marker: {
-    size: 6,
-    fillColor: "#fe4700",
-    strokeColor: "#fff",
-    strokeWidth: 2,
-    shape: "circle",
-  },
-  label: {
-    borderColor: "#fe4700",
-    offsetY: 0,
-    style: {
-      color: "#fff",
-      background: "#fe4700",
-      fontSize: "10px",
-      whiteSpace: "pre-line",
-    },
-    text: event.label,
-  },
-}));
+import { eventApi } from "../../../api/eventApi";
 
 function transformStockData(rawData) {
   if (!rawData || rawData.length === 0)
@@ -49,6 +26,7 @@ function transformStockData(rawData) {
 
 export default function StockChart({ ticker }) {
   const [chartData, setChartData] = useState(null);
+  const [events, setEvents] = useState([]);
   const [state, setState] = useState(null);
 
   useEffect(() => {
@@ -60,8 +38,72 @@ export default function StockChart({ ticker }) {
         console.error("차트데이터 조회 실패", error);
       }
     };
+
+    const getEventList = async () => {
+      try {
+        const response = await eventApi.getEventList();
+        setEvents(response.data || []);
+      } catch (error) {
+        console.error("이벤트 리스트 조회 실패", error);
+      }
+    };
+
     getChartData();
+    getEventList();
   }, [ticker]);
+
+  // ✅ 이벤트 마커 구성
+  const eventMarkers = useMemo(() => {
+    const grouped = events.reduce((acc, event) => {
+      const x = new Date(event.date).getTime();
+      const name = event.indicator?.code || event.name;
+
+      const details = [
+        event.actualValue ? `실제 ${event.actualValue}` : null,
+        event.expectedValue ? `예상 ${event.expectedValue}` : null,
+        event.prevValue ? `이전 ${event.prevValue}` : null,
+      ]
+        .filter(Boolean)
+        .join(" / ");
+
+      const text = `${name} - ${details}`;
+
+      if (!acc[x]) {
+        acc[x] = {
+          x,
+          labelCodes: [name],
+          details: [text],
+        };
+      } else {
+        acc[x].labelCodes.push(name);
+        acc[x].details.push(text);
+      }
+
+      return acc;
+    }, {});
+
+    return Object.values(grouped).map(({ x, labelCodes }) => ({
+      x,
+      marker: {
+        size: 6,
+        fillColor: "#fe4700",
+        strokeColor: "#fff",
+        strokeWidth: 2,
+        shape: "circle",
+      },
+      label: {
+        borderColor: "#fe4700",
+        offsetY: 0,
+        style: {
+          color: "#fff",
+          background: "#fe4700",
+          fontSize: "10px",
+          whiteSpace: "pre-line",
+        },
+        text: labelCodes.join(", "),
+      },
+    }));
+  }, [events]);
 
   useEffect(() => {
     if (!chartData) return;
@@ -76,7 +118,6 @@ export default function StockChart({ ticker }) {
     const minVolume = Math.min(...volumeY);
     const maxVolume = Math.max(...volumeY);
 
-    // ✅ 초기 보여줄 범위 (2025년 1월~4월)
     const initialMin = new Date("2025-01-01").getTime();
     const initialMax = new Date("2025-04-01").getTime();
 
@@ -127,14 +168,23 @@ export default function StockChart({ ticker }) {
               w.globals.initialSeries[seriesIndex].data[dataPointIndex].y;
             const x =
               w.globals.initialSeries[seriesIndex].data[dataPointIndex].x;
-            const matchedEvents = economicEvents.filter(
+
+            const matchedEvents = events.filter(
               (e) => new Date(e.date).getTime() === x
             );
+
             const eventsHtml = matchedEvents
-              .map(
-                (e) =>
-                  `<div><strong>📌 ${e.label}</strong>: ${e.description}</div>`
-              )
+              .map((e) => {
+                const name = e.indicator?.code || e.name;
+                const detail = [
+                  e.actualValue ? `실제 ${e.actualValue}` : null,
+                  e.expectedValue ? `예상 ${e.expectedValue}` : null,
+                  e.prevValue ? `이전 ${e.prevValue}` : null,
+                ]
+                  .filter(Boolean)
+                  .join(" / ");
+                return `<div><strong>📌 ${name}</strong>: ${detail}</div>`;
+              })
               .join("");
 
             return `
@@ -216,7 +266,7 @@ export default function StockChart({ ticker }) {
         stroke: { width: 0 },
       },
     });
-  }, [chartData]);
+  }, [chartData, events]);
 
   return (
     <div className="w-full">
