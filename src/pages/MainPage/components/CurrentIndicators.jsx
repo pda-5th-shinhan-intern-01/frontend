@@ -12,7 +12,7 @@ export default function CurrentIndicators({ ticker }) {
 
   const tryGetCurrEvents = async () => {
     const response = await stockApi.getStockChangeWithSesitivity(ticker);
-    console.log(response.data);
+
     const parsed = response.data.map((item) => ({
       name: item.indicatorCode,
       date: new Date(item.date)
@@ -37,7 +37,6 @@ export default function CurrentIndicators({ ticker }) {
 
   useEffect(() => {
     tryGetCurrEvents();
-    // setEvents(currentIndicatorsData);
   }, []);
 
   return (
@@ -51,10 +50,10 @@ export default function CurrentIndicators({ ticker }) {
             최근 경제지표 발표에서 주가가 얼마나 변동되었는지 확인하세요
           </p>
         </div>
-        <div className="flex gap-2 items-end">
+        {/* <div className="flex gap-2 items-end">
           <div
             onClick={() => {
-              setSortedBy("민감도순");
+              handleSortby("민감도순");
             }}
             className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
               sortedBy == "민감도순"
@@ -66,7 +65,7 @@ export default function CurrentIndicators({ ticker }) {
           </div>
           <div
             onClick={() => {
-              setSortedBy("최신순");
+              handleSortby("최신순");
             }}
             className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
               sortedBy == "최신순"
@@ -76,7 +75,7 @@ export default function CurrentIndicators({ ticker }) {
           >
             최신순
           </div>
-        </div>
+        </div> */}
       </div>
       {/* 카드 목록 */}
 
