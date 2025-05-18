@@ -1,13 +1,11 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import dummy from "./dummies/dummy.json";
 import PolicyDecision from "./components/PolicyDecision";
 import Votes from "./components/Votes";
 import CommonSection from "./components/CommonSection";
 import miniLogo from "../../assets/miniLogo.png";
 import { fomcApi } from "../../api/fomcApi";
-import { formatFomcTitle } from "../FOMCListPage/components/titleFormatter";
 
 const economicLabel = {
   labor_market: "노동 시장",
@@ -27,18 +25,20 @@ export default function FOMCDetailPage() {
   const params = useParams();
   const [fomc, setFomc] = useState();
   const [parsedFomc, setParsedFomc] = useState();
+  const location = useLocation();
+  const fomcStart = location.state ? location.state.start : 0;
+  const fomcEnd = location.state ? location.state.end : 0;
 
-  // 전체 리스트 호출 api
+  // fomc 디테일
   useEffect(() => {
     fomcApi.getFomcList(params.id).then((res) => {
       console.log(res.data);
-      setFomc(res.data);
+      setFomc(res.data[0]);
       setParsedFomc(JSON.parse(res.data[0].summary));
     });
-  }, []);
+  }, [params.id]);
   // 로딩 중 처리
   if (!fomc || !parsedFomc) return <div className="mt-20">로딩 중...</div>;
-  console.log("p", parsedFomc);
 
   return (
     <div className="flex flex-col mt-20">
@@ -56,9 +56,9 @@ export default function FOMCDetailPage() {
       <div className="flex flex-row justify-between">
         <div
           className={`${
-            dummy.policy_decision.rate_policy.direction == "raise"
+            parsedFomc.policy_decision.rate_policy.direction == "raise"
               ? "bg-orange"
-              : dummy.rateChange == "lower"
+              : parsedFomc.policy_decision.rate_policy.direction == "lower"
               ? "bg-blue-md"
               : "bg-gray-md"
           } text-white text-xl px-5 py-1 rounded-2xl shadow-sm`}
@@ -67,10 +67,16 @@ export default function FOMCDetailPage() {
           {parsedFomc.policy_decision.rate_policy.range} )
         </div>
         <div className="flex flex-row gap-2 items-center">
-          <div className="bg-ivory px-2 rounded-2xl cursor-pointer shadow-sm hover:bg-gray-light">
+          <div
+            className="bg-ivory px-2 rounded-2xl cursor-pointer shadow-sm hover:bg-gray-light"
+            onClick={() => window.open(fomc.videoUrl)}
+          >
             영상 보기
           </div>
-          <div className="bg-ivory px-2 rounded-2xl cursor-pointer shadow-sm hover:bg-gray-light">
+          <div
+            className="bg-ivory px-2 rounded-2xl cursor-pointer shadow-sm hover:bg-gray-light"
+            onClick={() => window.open(fomc.sourceUrl)}
+          >
             원본 회의록으로 가기
           </div>
         </div>
@@ -106,26 +112,40 @@ export default function FOMCDetailPage() {
         <Votes data={parsedFomc.votes} />
       </div>
       <div className="flex justify-between items-center mt-10">
-        {dummy.prev ? (
+        {Number(params.id) - 1 >= fomcStart ? (
           <button
-            onClick={() => navigate(`/main/fomcs/${parseInt(params.id) - 1}`)}
+            onClick={() =>
+              navigate(`/main/fomcs/${Number(params.id) - 1}`, {
+                state: {
+                  start: fomcStart,
+                  end: fomcEnd,
+                },
+              })
+            }
             className="text-sm text-gray-md hover:underline"
           >
-            ← 이전 회의록: {dummy.prev.title}
+            ← 이전 회의록
           </button>
         ) : (
-          <div />
+          <div></div>
         )}
 
-        {dummy.next ? (
+        {Number(params.id) + 1 <= fomcEnd ? (
           <button
-            onClick={() => navigate(`/main/fomcs/${parseInt(params.id) + 1}`)}
+            onClick={() =>
+              navigate(`/main/fomcs/${Number(params.id) + 1}`, {
+                state: {
+                  start: fomcStart,
+                  end: fomcEnd,
+                },
+              })
+            }
             className="text-sm text-gray-md hover:underline"
           >
-            다음 회의록: {dummy.next.title} →
+            다음 회의록 →
           </button>
         ) : (
-          <div />
+          <div></div>
         )}
       </div>
     </div>

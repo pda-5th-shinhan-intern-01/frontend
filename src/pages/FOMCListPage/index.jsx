@@ -266,7 +266,14 @@ export default function FOMCListPage() {
                       disabled={checkedItems.length >= 3}
                     />
                     <div
-                      onClick={() => navigate(`${data.id}`)}
+                      onClick={() =>
+                        navigate(`${data.id}`, {
+                          state: {
+                            start: fomcList[0].id,
+                            end: fomcList[fomcList.length - 1].id,
+                          },
+                        })
+                      }
                       className="w-full"
                     >
                       <div className="text-lg">
