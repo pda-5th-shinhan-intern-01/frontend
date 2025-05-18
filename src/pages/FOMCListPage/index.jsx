@@ -4,10 +4,11 @@ import { FaCaretUp, FaCaretDown, FaChevronDown } from "react-icons/fa";
 import { MdHorizontalRule, MdOutlineCancel } from "react-icons/md";
 import CustomDateInput from "../../components/CustomDatePicker";
 import PaginationBtn from "../../components/PaginationBtn";
-import dummy from "./dummies/dummy.json";
 import CompareModal from "./components/CompareModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { fomcApi } from "../../api/fomcApi";
+import { formatFomcTitle } from "./components/titleFormatter";
+import miniLogo from "../../assets/miniLogo.png";
 
 // FOMC 목록 페이지
 export default function FOMCListPage() {
@@ -33,6 +34,14 @@ export default function FOMCListPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [compareModalOpen, setCompareModalOpen] = useState(false);
+
+  // 전체 리스트 호출 api
+  useEffect(() => {
+    fomcApi.getFomcList().then((res) => {
+      console.log(res.data);
+      setFomcList(res.data);
+    });
+  }, []);
 
   // 검색 버튼 누를때
   useEffect(() => {
@@ -85,27 +94,14 @@ export default function FOMCListPage() {
     });
   };
 
-  // 전체 리스트 호출 api
-  useEffect(() => {
-    fomcApi.getFomcList().then((res) => {
-      console.log(res.data);
-      setFomcList(res.data);
-    });
-  }, []);
-
   useEffect(() => {
     setCurrentPage(1);
   }, [sortOrder, selectedRateIndex, startDate, endDate]);
 
-  const formatFomcTitle = (dateStr) => {
-    const [year, month] = dateStr.split("-");
-    return `${year}년 ${parseInt(month)}월 회의록`;
-  };
-
   return (
     <div className="flex flex-col gap-3 p-4 mt-20">
       <div className="font-bold text-5xl">FOMC 회의</div>
-      <div className="bg-ivory p-5 text-lg font-semibold shadow-md">
+      <div className="bg-ivory p-5 text-lg text-black-md shadow-md">
         FOMC(연방공개시장위원회)는 미국 연준의 통화정책을 최종 결정하는 기구로,
         매 정례회의에서 기준금리를 인상·동결·인하합니다.
         <br />
@@ -113,7 +109,7 @@ export default function FOMCListPage() {
         자금조달 비용 등에 즉각적인 영향을 미칩니다.
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mt-3">
         {/* 기간 -> 수정하고 공통 컴포넌트로 빼기 */}
         <div className="flex items-center gap-2">
           <input
@@ -276,8 +272,9 @@ export default function FOMCListPage() {
                       <div className="text-lg">
                         {formatFomcTitle(data.date)}
                       </div>
-                      <div className="text-sm text-orange font-bold">
-                        · {data.title}
+                      <div className="text-sm text-gray-md font-bold flex flex-row items-center">
+                        <img src={miniLogo} className="w-4 h-4 mr-2" />{" "}
+                        {data.title}
                       </div>
                     </div>
                   </div>
@@ -333,7 +330,10 @@ export default function FOMCListPage() {
             <div className="flex flex-row gap-10 flex-wrap">
               <button
                 className="text-md text-ivory cursor-pointer"
-                onClick={() => setCheckedItems([])}
+                onClick={() => {
+                  setCheckedItems([]);
+                  setCompareModalOpen(false);
+                }}
               >
                 전체취소
               </button>
