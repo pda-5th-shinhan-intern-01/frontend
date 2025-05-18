@@ -107,7 +107,7 @@ export default function Header({ isOrange }) {
 
   return (
     <div
-      className={`w-full h-full transition-colors duration-500 ${
+      className={`w-full h-full transition-colors duration-300 ${
         isOrange ? "bg-orange" : "bg-white shadow-md"
       }`}
     >
