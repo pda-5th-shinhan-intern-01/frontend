@@ -8,7 +8,7 @@ import { stockApi } from "../../../api/stockApi";
 
 export default function CurrentIndicators({ ticker }) {
   const [events, setEvents] = useState([]);
-  const [sortedBy, setSortedBy] = useState("민감도순");
+  // const [sortedBy, setSortedBy] = useState("민감도순");
 
   const tryGetCurrEvents = async () => {
     const response = await stockApi.getStockChangeWithSesitivity(ticker);
