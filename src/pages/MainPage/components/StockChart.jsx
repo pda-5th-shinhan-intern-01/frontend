@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-import { seriesData, seriesDataLinear } from "../dummies/stockChartData";
+import { dummyData } from "../dummies/stockChartData";
 import { formatNumberForMoney } from "../../../utils/formatNumber";
 import { economicEvents } from "../dummies/economicEventData";
+import { stockApi } from "../../../api/stockApi";
+import { transformStockData } from "../../../utils/formatChartData";
 
 // 날짜별 그룹핑
 const groupedEvents = economicEvents.reduce((acc, event) => {
@@ -37,27 +39,10 @@ const eventMarkers = Object.entries(groupedEvents).map(
   })
 );
 
-export default function StockChart() {
-  // TODO: 차트 API 연동 추가
-  // TODO: 날짜 형식 수정(백엔드에서 날짜 형태 확인 후)
-  // TODO: 이벤트 마커 개선
-
-  //색상 계산
-  const seriesDataWithColor = seriesDataLinear.map((volumeData) => {
-    const priceData = seriesData.find((d) => d.x === volumeData.x);
-    if (!priceData) return volumeData; // 방어 로직
-
-    const [open, , , close] = priceData.y;
-    const color =
-      close > open
-        ? "##fe4700" // 상승: 빨강
-        : close < open
-        ? "##00aaf0" // 하락: 파랑
-        : "#999999"; // 보합: 회색
-
-    return { ...volumeData, color };
-  });
-
+export default function StockChart({ ticker }) {
+  const [chartData, setChartData] = useState();
+  const { seriesData, seriesDataLinear, seriesDataWithColor } =
+    transformStockData(dummyData);
   //차트 설정
   const [state, setState] = useState({
     series: [
@@ -224,6 +209,23 @@ export default function StockChart() {
       },
     },
   });
+
+  //차트 api 호출
+  useEffect(() => {
+    console.log(seriesData);
+    setChartData(seriesData);
+    // getChartData();
+  }, []);
+
+  const getChartData = async () => {
+    try {
+      const response = await stockApi.getStockChart(ticker);
+      console.log(response.data);
+      setChartData(response.data);
+    } catch (error) {
+      console.error("차트데이터 조회 실패", error.message());
+    }
+  };
 
   return (
     <div className="w-full">

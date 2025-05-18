@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { path: "fomcs/:id", element: <FOMCDetailPage /> },
       { path: "heatmap", element: <HeatmapPage /> },
       { path: "sectors", element: <SectorListPage /> },
-      { path: "sectors/:id", element: <MainPage /> },
+      { path: "sectors/:ticker", element: <MainPage /> },
     ],
   },
 ]);
