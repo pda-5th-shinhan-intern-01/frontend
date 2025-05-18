@@ -5,18 +5,39 @@ import { IoIosCalendar } from "react-icons/io";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { currentIndicatorsData } from "../dummies/currentIndicatorData";
 import HorizontalScroller from "../../../components/HorizontalScroller";
+import { stockApi } from "../../../api/stockApi";
 
-export default function CurrentIndicators() {
+export default function CurrentIndicators({ ticker }) {
   const [events, setEvents] = useState([]);
   const [sortedBy, setSortedBy] = useState("민감도순");
 
-  const tryGetCurrEvents = () => {
-    // api 호출 함수
+  const tryGetCurrEvents = async () => {
+    const response = await stockApi.getStockChangeWithSesitivity(ticker);
+    console.log(response.data);
+    const parsed = response.data.map((item) => ({
+      name: item.indicatorCode,
+      date: new Date(item.date)
+        .toLocaleDateString("ko-KR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+        .replaceAll(". ", "년 ")
+        .replace(".", "일"),
+      prevData: item.prev.toFixed(2),
+      currData: item.actual.toFixed(2),
+      chartData: item.price.map((p) => ({
+        x: p.date,
+        y: p.close,
+      })),
+    }));
+
+    setEvents(parsed);
   };
 
   useEffect(() => {
-    // tryGetCurrEvents();
-    setEvents(currentIndicatorsData);
+    tryGetCurrEvents();
+    // setEvents(currentIndicatorsData);
   }, []);
 
   return (
@@ -87,7 +108,7 @@ export default function CurrentIndicators() {
                       : "text-blue-md"
                   }`}
                 >
-                  {event.currData - event.prevData}%
+                  {(event.currData - event.prevData).toFixed(2)}%
                 </span>
                 )
               </h2>
@@ -100,8 +121,10 @@ export default function CurrentIndicators() {
                 event.chartData[0].y ? (
                   <div className="flex gap-1 text-2xl items-center justify-center text-red-md">
                     <FaArrowTrendUp />
-                    {event.chartData[event.chartData.length - 1].y -
-                      event.chartData[0].y}
+                    {(
+                      event.chartData[event.chartData.length - 1].y -
+                      event.chartData[0].y
+                    ).toFixed(2)}
                   </div>
                 ) : event.chartData[event.chartData.length - 1].y ==
                   event.chartData[0].y ? (
@@ -109,16 +132,15 @@ export default function CurrentIndicators() {
                 ) : (
                   <div className="flex gap-1 items-center text-blue-md text-2xl">
                     <FaArrowTrendDown />
-                    {event.chartData[event.chartData.length - 1].y -
-                      event.chartData[0].y}
+                    {(
+                      event.chartData[event.chartData.length - 1].y -
+                      event.chartData[0].y
+                    ).toFixed(2)}
                   </div>
                 )}
               </div>
 
-              <StockMiniChart
-                indicator={event.name}
-                chartData={event.chartData}
-              />
+              <StockMiniChart chartData={event.chartData} />
             </div>
           </div>
         ))}

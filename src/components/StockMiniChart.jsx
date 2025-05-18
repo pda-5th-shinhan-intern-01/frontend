@@ -1,7 +1,7 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-export default function StockMiniChart({ indicator, chartData }) {
+export default function StockMiniChart({ chartData }) {
   const middleIndex = Math.floor(chartData.length / 2);
   const middlePoint = chartData[middleIndex];
 
@@ -12,7 +12,7 @@ export default function StockMiniChart({ indicator, chartData }) {
 
   const series = [
     {
-      name: indicator,
+      name: "주가",
       data: chartData.map((d) => ({
         x: typeof d.x === "string" ? new Date(d.x).getTime() : d.x,
         y: d.y,

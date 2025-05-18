@@ -88,12 +88,12 @@ export default function IndicatorsForStock({ ticker }) {
     colors: ["#00aaf0", "#fe4700"],
     dataLabels: { enabled: false },
     xaxis: {
+      categories: categories,
       labels: {
         style: { fontSize: "12px" },
       },
     },
     yaxis: {
-      categories: categories,
       labels: {
         style: { fontSize: "12px" },
       },
@@ -171,9 +171,9 @@ export default function IndicatorsForStock({ ticker }) {
 
       {isEconomicChartVisible && economicIndicatorMap[selected] && (
         <div className="w-1/2">
-          <h3 className="text-3xl font-semibold mb-4">
+          <h3 className="text-3xl font-semibold mb-4 mr-2">
             {selected}
-            <span className="ml-2 text-lg text-gray-md">
+            <span className=" text-lg text-gray-md">
               {economicIndicatorMap[selected].name}
             </span>
           </h3>
