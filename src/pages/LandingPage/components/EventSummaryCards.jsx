@@ -1,14 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 import economicEventsData from "../dummies/economicEventsData";
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import HorizontalScroller from "../../../components/HorizontalScroller";
 
 export default function EventSummaryCards() {
   const [events, setEvents] = useState([]);
-  const [showLeftBtn, setShowLeftBtn] = useState(false);
-  const [showRightBtn, setShowRightBtn] = useState(false);
-  const scrollRef = useRef(null);
   const { setFocusedIndicator, focusedIndicator, setLastClickedY } =
     useIndicator();
 
@@ -47,55 +44,16 @@ export default function EventSummaryCards() {
     }
   };
 
-  const handleScroll = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setShowLeftBtn(el.scrollLeft > 0);
-    setShowRightBtn(el.scrollLeft + el.offsetWidth < el.scrollWidth - 5);
-  };
-
-  const scrollByAmount = 200;
-  const scrollLeft = () =>
-    scrollRef.current?.scrollBy({ left: -scrollByAmount, behavior: "smooth" });
-  const scrollRight = () =>
-    scrollRef.current?.scrollBy({ left: scrollByAmount, behavior: "smooth" });
-
-  useEffect(() => {
-    handleScroll();
-  }, [events]);
-
   return (
     <div className="relative bg-white w-full py-6">
-      <h2 className="leading-snug mt-14 text-4xl font-semibold text-black">
+      <h2 className="leading-snug mt-10 text-4xl font-semibold text-black">
         중요한 발표만 쏙쏙
         <br />
         다음 일정, 놓치지 마세요
       </h2>
 
       <div className="relative mt-10 px-6">
-        {showLeftBtn && (
-          <button
-            onClick={scrollLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer text-gray-md"
-          >
-            <FaChevronLeft />
-          </button>
-        )}
-
-        {showRightBtn && (
-          <button
-            onClick={scrollRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 cursor-pointer text-gray-md"
-          >
-            <FaChevronRight />
-          </button>
-        )}
-
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="relative flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth"
-        >
+        <HorizontalScroller scrollOffset={300}>
           {events.map((event, i) => {
             const meta = economicIndicatorMap[event.key];
             return (
@@ -128,7 +86,7 @@ export default function EventSummaryCards() {
               </div>
             );
           })}
-        </div>
+        </HorizontalScroller>
       </div>
     </div>
   );
