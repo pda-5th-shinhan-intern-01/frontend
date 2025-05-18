@@ -15,6 +15,9 @@ const stockApi = {
       from,
       to,
     }),
+
+  //종목의 지표별 민감도 조회
+  getStockSensitivity: (ticker) => api.get(`sensitivities/${ticker}`),
 };
 
 export { stockApi };
