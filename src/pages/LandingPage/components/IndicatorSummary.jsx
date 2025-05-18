@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 import { indicatorSummaryData } from "../dummies/indicatorSummaryData";
@@ -12,22 +12,30 @@ export default function IndicatorSummary() {
   const meta = focusedIndicator && economicIndicatorMap[focusedIndicator];
 
   useEffect(() => {
-    if (focusedIndicator) {
-      setData(indicatorSummaryData[focusedIndicator] || null);
+    if (focusedIndicator && indicatorSummaryData[focusedIndicator]) {
+      setData(indicatorSummaryData[focusedIndicator]);
+    } else {
+      setData(null);
     }
   }, [focusedIndicator]);
 
   useEffect(() => {
-    if (!data) return;
-    const el = document.getElementById("indicator-summary-section");
-    if (el) {
-      const offset = 50;
-      const y = el.getBoundingClientRect().top + window.scrollY - offset;
-      setTimeout(() => {
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }, 50);
-    }
-  }, [data]);
+    if (!focusedIndicator || !meta || !data) return;
+
+    const timer = setTimeout(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById("indicator-summary-section");
+        if (el) {
+          const headerHeight = 50;
+          const y =
+            el.getBoundingClientRect().top + window.scrollY - headerHeight;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      });
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [focusedIndicator, meta, data]);
 
   if (!focusedIndicator || !meta || !data) return null;
 
@@ -89,16 +97,17 @@ export default function IndicatorSummary() {
             {data.ranking.map((item, i) => (
               <li key={i} className="flex justify-between py-1">
                 <span>
-                  {i + 1}. {item.name}
+                  {i + 1}. {item.stockName} ({item.stockTicker})
                 </span>
                 <span>
-                  {item.price}
+                  ${item.price.toFixed(2)}
                   <span
                     className={`ml-1 ${
-                      item.change.includes("+") ? "text-red-md" : "text-blue-md"
+                      item.change > 0 ? "text-red-md" : "text-blue-md"
                     }`}
                   >
-                    ({item.change})
+                    ({item.change > 0 ? "+" : ""}
+                    {item.change.toFixed(2)}%)
                   </span>
                 </span>
               </li>
