@@ -26,7 +26,7 @@ export default function StockInfo({ ticker }) {
   };
 
   useEffect(() => {
-    // getStockInfo();
+    getStockInfo();
   }, [ticker]);
   return (
     <div className="flex w-full items-center gap-2">
