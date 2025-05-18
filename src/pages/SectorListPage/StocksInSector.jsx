@@ -13,7 +13,7 @@ const dummyStocks = {
       name: "마이크로소프트",
       ticker: "MSFT",
       price: 412.56,
-      changeRate: +3.57,
+      changeRate: 3.57,
       volume: 18000000,
       marketCap: 2800000000000,
     },
@@ -21,7 +21,7 @@ const dummyStocks = {
       name: "애플",
       ticker: "AAPL",
       price: 191.12,
-      changeRate: +1.54,
+      changeRate: 1.54,
       volume: 22000000,
       marketCap: 2700000000000,
     },
@@ -29,7 +29,7 @@ const dummyStocks = {
       name: "엔비디아",
       ticker: "NVDA",
       price: 927.35,
-      changeRate: +6.74,
+      changeRate: 6.74,
       volume: 30000000,
       marketCap: 1600000000000,
     },
@@ -45,7 +45,7 @@ const dummyStocks = {
       name: "오라클",
       ticker: "ORCL",
       price: 121.49,
-      changeRate: +5.21,
+      changeRate: 5.21,
       volume: 9000000,
       marketCap: 380000000000,
     },
@@ -53,7 +53,7 @@ const dummyStocks = {
       name: "IBM",
       ticker: "IBM",
       price: 168.23,
-      changeRate: +1.55,
+      changeRate: 1.55,
       volume: 7000000,
       marketCap: 120000000000,
     },
@@ -69,7 +69,7 @@ const dummyStocks = {
       name: "시스코",
       ticker: "CSCO",
       price: 48.71,
-      changeRate: +4.48,
+      changeRate: 4.48,
       volume: 17000000,
       marketCap: 210000000000,
     },
@@ -77,7 +77,7 @@ const dummyStocks = {
       name: "어도비",
       ticker: "ADBE",
       price: 512.67,
-      changeRate: +2.19,
+      changeRate: 2.19,
       volume: 6200000,
       marketCap: 270000000000,
     },
@@ -99,7 +99,7 @@ export default function StocksInSector({ sector }) {
 
   async function fetchSectorData(sectorName) {
     try {
-      const response = await fetch(`/api/sector?name=${sectorName}`);
+      const response = await fetch(`/api/sectors/${sectorName}/stocks`);
       if (!response.ok) throw new Error("API 호출 실패");
       const data = await response.json();
       setSectorData(data);
@@ -108,6 +108,7 @@ export default function StocksInSector({ sector }) {
       // 실패 시 기존 dummyStocks 유지
     }
   }
+  
 
   useEffect(() => {
     if (sector) {
@@ -122,7 +123,7 @@ export default function StocksInSector({ sector }) {
           <h2 className="text-4xl font-semibold">
             {sectorData.sectorName}{" "}
             <span className="font-semibold text-orange">
-              {sectorData.sectorENname || "Technology"}
+              {sectorData.sectorENname}
             </span>
           </h2>
           <p className="text-lg mt-4">{sectorData.sectorDescription}</p>
