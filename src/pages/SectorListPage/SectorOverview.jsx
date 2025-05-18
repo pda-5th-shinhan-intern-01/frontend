@@ -108,7 +108,7 @@ const sectorImages = {
 
 export default function SectorOverview({ onSelectSector }) {
   return (
-    <div className="mt-20">
+    <div>
       <h1 className="text-5xl font-bold mb-3">Sectors</h1>
       <p className="text-xl font-semibold mb-12">
         11개 핵심 시장 섹터와 그 속을 이끄는 대표 종목들, 시장을 움직이는
