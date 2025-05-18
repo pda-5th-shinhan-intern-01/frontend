@@ -1,4 +1,4 @@
-export const topMoversData = {
+export const hotReactionsData = {
   CPI: {
     phrase: "CPI에 민감하게 반응한 종목은?",
     stocks: [

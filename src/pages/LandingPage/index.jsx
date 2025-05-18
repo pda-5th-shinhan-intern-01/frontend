@@ -3,7 +3,7 @@ import { IndicatorProvider } from "../../context/IndicatorContext";
 import EventSummaryCards from "./components/EventSummaryCards";
 import EconomicCalendar from "./components/EconomicCalendar";
 import IndicatorSummary from "./components/IndicatorSummary";
-import TopMovers from "./components/TopMovers";
+import HotReactions from "./components/HotReactions";
 import ScrollBackBtn from "../../components/ScrollBackBtn";
 import HeroSection from "./components/HeroSection";
 export default function LandingPage() {
@@ -18,7 +18,7 @@ export default function LandingPage() {
             <IndicatorSummary />
           </div>
 
-          <TopMovers />
+          <HotReactions />
           <ScrollBackBtn />
         </div>
       </IndicatorProvider>
