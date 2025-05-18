@@ -24,11 +24,13 @@ const economicIndicatorMap = {
     description:
       "경제활동인구 중 일자리를 가지지 못한 비율을 나타내며, 고용 시장의 건강성과 경기 침체 여부를 판단할 수 있어요.",
   },
+
   INDUSTRIAL_PRODUCTION: {
     name: "산업생산",
     description:
       "광공업, 제조업 등 산업 전반의 생산 수준을 측정하며, 생산 활동의 변화로 경기 상황을 가늠할 수 있어요.",
   },
+
   RETAIL_SALES: {
     name: "근원 소매판매",
     description:
