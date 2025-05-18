@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import ReactApexChart from "react-apexcharts";
 import { formatNumberForMoney } from "../../../utils/formatNumber";
 import { stockApi } from "../../../api/stockApi";
@@ -28,6 +28,7 @@ export default function StockChart({ ticker }) {
   const [chartData, setChartData] = useState(null);
   const [events, setEvents] = useState([]);
   const [state, setState] = useState(null);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     const getChartData = async () => {
@@ -128,7 +129,27 @@ export default function StockChart({ ticker }) {
         chart: {
           id: "candles",
           type: "candlestick",
-          zoom: { enabled: true, type: "x", autoScaleYaxis: true },
+          zoom: { enabled: true, type: "x" },
+          events: {
+            zoomed: function (chartContext, { xaxis }) {
+              const visible = transformStockData(chartData).seriesData.filter(
+                (item) => item.x >= xaxis.min && item.x <= xaxis.max
+              );
+
+              if (visible.length === 0) return;
+
+              const yRange = visible.flatMap((d) => d.y);
+              const minY = Math.min(...yRange);
+              const maxY = Math.max(...yRange);
+
+              chartContext.updateOptions({
+                yaxis: {
+                  min: minY - 5,
+                  max: maxY + 5,
+                },
+              });
+            },
+          },
           toolbar: {
             show: true,
             tools: {

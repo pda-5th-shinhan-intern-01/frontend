@@ -30,6 +30,7 @@ export default function CurrentIndicators({ ticker }) {
         y: p.close,
       })),
       unit: item.unit,
+      stockRate: item.stockRate,
     }));
 
     setEvents(parsed);
