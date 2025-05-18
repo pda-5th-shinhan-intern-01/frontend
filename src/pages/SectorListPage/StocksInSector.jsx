@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { formatNumberForMoney } from "../../utils/formatNumber";
-import TechTreemap from "./Treemap";
+import Treemap from "./Treemap";
 import { useNavigate } from "react-router-dom";
 
 const dummyStocks = {
@@ -10,7 +10,7 @@ const dummyStocks = {
   sectorDescription: "소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터",
   stocks: [
     {
-      name: "마이크로소프트",
+      name: "마마마",
       ticker: "MSFT",
       price: 412.56,
       changeRate: +3.57,
@@ -116,7 +116,7 @@ export default function StocksInSector({ sector }) {
   }, [sector]);
 
   return (
-    <div className="mt-40 bg-white">
+    <div className="mt-20 bg-white">
       <div className="flex w-full justify-between items-end">
         <div className="mb-6">
           <h2 className="text-4xl font-semibold">
@@ -133,7 +133,7 @@ export default function StocksInSector({ sector }) {
           <div className="flex bg-gray-light rounded-full p-1">
             <button
               onClick={() => setViewMode("TREEMAP")}
-              className={`px-4 py-1 rounded-full transition-all ${
+              className={`px-4 py-1 cursor-pointer rounded-full transition-all ${
                 viewMode === "TREEMAP" ? "bg-orange text-white" : "text-black"
               }`}
             >
@@ -141,7 +141,7 @@ export default function StocksInSector({ sector }) {
             </button>
             <button
               onClick={() => setViewMode("LIST")}
-              className={`px-4 py-1 rounded-full transition-all ${
+              className={`px-4 py-1 cursor-pointer rounded-full transition-all ${
                 viewMode === "LIST" ? "bg-orange text-white" : "text-black"
               }`}
             >
@@ -194,7 +194,8 @@ export default function StocksInSector({ sector }) {
           </tbody>
         </table>
       ) : (
-        <TechTreemap sector={sectorData.sectorName} stocks={sectorData.stocks} />
+        <Treemap sectorData={sectorData} />
+
       )}
     </div>
   );
