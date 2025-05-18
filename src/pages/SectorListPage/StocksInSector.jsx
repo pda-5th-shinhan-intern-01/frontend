@@ -10,7 +10,7 @@ const dummyStocks = {
   sectorDescription: "소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터",
   stocks: [
     {
-      name: "마마마",
+      name: "마이크로소프트",
       ticker: "MSFT",
       price: 412.56,
       changeRate: +3.57,

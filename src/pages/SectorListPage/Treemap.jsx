@@ -74,7 +74,10 @@ function CustomContent({ root, navigate }) {
                   }}
                 >
                   <div>{name}</div>
-                  <div>{formattedChange}%</div>
+                  <div style={{ color: change > 0 ? '#fe4700' : change < 0 ? '#00aaf0' : '#000' }}>
+  {formattedChange}%
+</div>
+
                 </div>
               </foreignObject>
             )}
