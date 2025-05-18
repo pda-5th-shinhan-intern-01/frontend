@@ -90,15 +90,12 @@ export default function IndicatorsForStock({ ticker }) {
     colors: ["#00aaf0", "#fe4700"],
     dataLabels: { enabled: false },
     xaxis: {
-      categories: categories, // ✅ 지표 이름들 (indicatorCode)
       labels: {
         style: { fontSize: "12px" },
       },
     },
     yaxis: {
-      min: -2,
-      max: 2,
-      tickAmount: 4,
+      categories: categories,
       labels: {
         style: { fontSize: "12px" },
       },
