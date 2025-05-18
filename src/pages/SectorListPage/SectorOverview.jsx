@@ -16,7 +16,7 @@ const sectors = [
     name: "기술",
     change: "+6.15%",
     description: "소프트웨어, 하드웨어, 반도체, IT 서비스를 포함하는 섹터",
-    stocks: ["AAPL", "GOOGL", "MSFT", "NVDA"],
+    stocks: ["AAPL", "MSFT", "NVDA", "ORCL"],
     more: 5,
   },
   {
@@ -58,7 +58,7 @@ const sectors = [
     name: "커뮤니티",
     change: "+5.55%",
     description: "통신, 미디어, 엔터테인먼트, 소셜 미디어 등을 포함하는 섹터",
-    stocks: ["META", "GOOGL", "NFLX", "TMUS"],
+    stocks: ["META", "GOOG", "NFLX", "TMUS"],
     more: 8,
   },
   {
