@@ -27,8 +27,9 @@ export default function FOMCDetailPage() {
   const [fomc, setFomc] = useState();
   const [parsedFomc, setParsedFomc] = useState();
   const location = useLocation();
-  const fomcStart = location.state ? location.state.start : 0;
-  const fomcEnd = location.state ? location.state.end : 0;
+
+  const fomcIdList = location.state?.fomcIdList || [];
+  const currentIndex = fomcIdList.findIndex((id) => id === Number(params.id));
 
   // fomc 디테일
   useEffect(() => {
@@ -114,13 +115,12 @@ export default function FOMCDetailPage() {
         <Votes data={parsedFomc.votes} />
       </div>
       <div className="flex justify-between items-center mt-10">
-        {Number(params.id) - 1 >= fomcStart ? (
+        {currentIndex > 0 ? (
           <button
             onClick={() =>
-              navigate(`/main/fomcs/${Number(params.id) - 1}`, {
+              navigate(`/main/fomcs/${fomcIdList[currentIndex - 1]}`, {
                 state: {
-                  start: fomcStart,
-                  end: fomcEnd,
+                  fomcIdList: fomcIdList,
                 },
               })
             }
@@ -132,13 +132,12 @@ export default function FOMCDetailPage() {
           <div></div>
         )}
 
-        {Number(params.id) + 1 <= fomcEnd ? (
+        {currentIndex < fomcIdList.length - 1 ? (
           <button
             onClick={() =>
-              navigate(`/main/fomcs/${Number(params.id) + 1}`, {
+              navigate(`/main/fomcs/${fomcIdList[currentIndex + 1]}`, {
                 state: {
-                  start: fomcStart,
-                  end: fomcEnd,
+                  fomcIdList: fomcIdList,
                 },
               })
             }

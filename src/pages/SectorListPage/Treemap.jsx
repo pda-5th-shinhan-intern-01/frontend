@@ -91,6 +91,7 @@ function CustomContent({ root, navigate }) {
                       fontSize: "1rem",
                     }}
                   >
+                    <span>{formattedChange > 0 && "+"}</span>
                     {formattedChange}%
                   </div>
                 </div>
