@@ -91,16 +91,16 @@ export default function NxtIndicators({ ticker }) {
         {events.map((event, id) => (
           <div
             key={id}
-            className="hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 rounded-2xl min-w-[350px]"
+            className="hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 py-4 rounded-2xl min-w-[350px]"
           >
             {/* 헤더 */}
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="text-2xl font-semibold">{event.indicatorCode}</h4>
-              <p className="text-sm text-gray-md flex gap-1 items-center">
+            <div className="flex-col mb-4">
+              <p className="text-sm text-gray-md flex gap-1 items-start justify-end">
                 {dayjs(`${event.date}T${event.time}`).format(
                   "YYYY년 MM월 DD일 HH:mm:ss"
                 )}
               </p>
+              <h4 className="text-2xl font-semibold">{event.indicatorCode}</h4>
             </div>
             {/* 이전치 -> 예상치 */}
             <div className="flex justify-between items-center">

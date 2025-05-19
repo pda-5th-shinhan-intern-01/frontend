@@ -84,12 +84,14 @@ export default function CurrentIndicators({ ticker }) {
         {events.map((event, id) => (
           <div
             key={id}
-            className="justify-between hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 rounded-2xl min-w-[350px]"
+            className="justify-between hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 py-4 rounded-2xl min-w-[380px]"
           >
             <div>
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex-col justify-between items-center mb-4">
+                <p className="text-sm flex gap-1 justify-end text-gray-md">
+                  {event.date}
+                </p>
                 <h4 className="text-2xl font-semibold">{event.name}</h4>
-                <p className="text-sm flex gap-1 items-center">{event.date}</p>
               </div>
               <div>
                 <p className="flex items-center text-sm">
