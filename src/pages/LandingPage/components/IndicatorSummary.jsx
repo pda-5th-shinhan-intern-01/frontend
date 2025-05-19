@@ -3,6 +3,7 @@ import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 import StockMiniChart from "../../../components/StockMiniChart";
 import { eventApi } from "../../../api/eventApi";
+import { indicatorToIndustryMap } from "../dummies/indicatorToIndustryMap";
 import axios from "axios";
 
 export default function IndicatorSummary() {
@@ -136,14 +137,16 @@ export default function IndicatorSummary() {
               영향을 받는 주요 산업군
             </span>
             <div className="text-md mt-4">
-              {data.industries.map((ind, i) => (
-                <span
-                  key={i}
-                  className="inline-block px-4 py-2 bg-white rounded-2xl shadow font-medium mr-1"
-                >
-                  {ind}
-                </span>
-              ))}
+              {(indicatorToIndustryMap[focusedIndicator] || []).map(
+                (industry, i) => (
+                  <span
+                    key={i}
+                    className="inline-block px-4 py-2 bg-white rounded-2xl shadow font-medium mr-1"
+                  >
+                    {industry}
+                  </span>
+                )
+              )}
             </div>
           </div>
 
@@ -154,7 +157,7 @@ export default function IndicatorSummary() {
             {ranking.map((item, i) => (
               <li key={i} className="flex justify-between py-1">
                 <span>
-                  {i + 1}. {item.stockName}
+                  {i + 1}. {item.stockName} ({item.stockTicker})
                 </span>
                 <span>
                   ${item.stockPrice?.toFixed(2)}
