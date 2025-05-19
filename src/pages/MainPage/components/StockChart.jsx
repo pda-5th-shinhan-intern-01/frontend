@@ -57,8 +57,10 @@ export default function StockChart({ ticker }) {
       const x = new Date(new Date(event.date).toDateString()).getTime();
       const name = event.code || event.name;
       const valueText = `${event.value}${event.unit || ""}`;
+      const previous = `${event.previous}${event.unit || ""}`;
+      const forecast = `${event.forecast}${event.unit || ""}`;
 
-      const text = `${name} - ${valueText}`;
+      const text = `${name}`;
 
       if (!acc[x]) {
         acc[x] = {
@@ -74,7 +76,7 @@ export default function StockChart({ ticker }) {
       return acc;
     }, {});
 
-    return Object.values(grouped).map(({ x, labelCodes }) => ({
+    return Object.values(grouped).map(({ x, details }) => ({
       x,
       marker: {
         size: 6,
@@ -92,7 +94,7 @@ export default function StockChart({ ticker }) {
           fontSize: "10px",
           whiteSpace: "pre-line",
         },
-        text: labelCodes.join(", "),
+        text: details.join("\n"),
       },
     }));
   }, [events]);
@@ -188,8 +190,8 @@ export default function StockChart({ ticker }) {
             const eventsHtml = matchedEvents
               .map((e) => {
                 const name = e.code || e.name;
-                const detail = `${e.value}${e.unit || ""}`;
-                return `<div><strong>- ${name}</strong>: ${detail}</div>`;
+
+                return `<div><strong>- ${name}</strong> 발표치: ${e.value}${e.unit} / 이전치: ${e.previous}${e.unit} / 예상치: ${e.forecast}${e.unit}</div>`;
               })
               .join("");
 
