@@ -42,12 +42,12 @@ export default function FOMCDetailPage() {
   return (
     <div className="flex flex-col">
       {/* 기본 정보 */}
-      <span
+      <div
         onClick={() => navigate("/main/fomcs")}
-        className="cursor-pointer flex flex-row items-center mb-3 hover:underline"
+        className="cursor-pointer items-center mb-3 hover:underline flex"
       >
         ← 목록으로
-      </span>
+      </div>
       <div className="items-center  text-4xl font-bold mb-4 text-black">
         {parsedFomc.announcement.datetime.split(" ")[0]}&nbsp;
         {parsedFomc.announcement.datetime.split(" ")[1]} FOMC 회의 요약
