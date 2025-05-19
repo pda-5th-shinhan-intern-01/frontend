@@ -93,7 +93,7 @@ export default function Votes({ data }) {
 
   return (
     <div className="flex flex-col">
-      <h2 className="font-semibold mb-3 text-xl">투표 결과</h2>
+      <h2 className="font-semibold mb-3 text-2xl">투표 결과</h2>
       <div className="p-4 rounded-lg bg-white border border-gray-light flex flex-col">
         <div id="chart">
           <ReactApexChart
