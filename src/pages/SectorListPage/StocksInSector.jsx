@@ -3,125 +3,27 @@ import { formatNumberForMoney } from "../../utils/formatNumber";
 import Treemap from "./Treemap";
 import { useNavigate } from "react-router-dom";
 import { sectorApi } from "../../api/sectorApi";
-
-const dummyStocks = {
-  sectorName: "기술",
-  sectorENname: "Technology",
-  sectorChangeRate: 4.27,
-  sectorDescription:
-    "소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터",
-  stocks: [
-    {
-      name: "마이크로소프트",
-      ticker: "MSFT",
-      price: 412.56,
-      changeRate: 3.57,
-      volume: 18000000,
-      marketCap: 2800000000000,
-    },
-    {
-      name: "애플",
-      ticker: "AAPL",
-      price: 191.12,
-      changeRate: 1.54,
-      volume: 22000000,
-      marketCap: 2700000000000,
-    },
-    {
-      name: "엔비디아",
-      ticker: "NVDA",
-      price: 927.35,
-      changeRate: 6.74,
-      volume: 30000000,
-      marketCap: 1600000000000,
-    },
-    {
-      name: "브로드컴",
-      ticker: "AVGO",
-      price: 1342.78,
-      changeRate: -1.27,
-      volume: 6500000,
-      marketCap: 500000000000,
-    },
-    {
-      name: "오라클",
-      ticker: "ORCL",
-      price: 121.49,
-      changeRate: 5.21,
-      volume: 9000000,
-      marketCap: 380000000000,
-    },
-    {
-      name: "IBM",
-      ticker: "IBM",
-      price: 168.23,
-      changeRate: 1.55,
-      volume: 7000000,
-      marketCap: 120000000000,
-    },
-    {
-      name: "액센츄어 A",
-      ticker: "ACN",
-      price: 297.84,
-      changeRate: -2.12,
-      volume: 8000000,
-      marketCap: 220000000000,
-    },
-    {
-      name: "시스코",
-      ticker: "CSCO",
-      price: 48.71,
-      changeRate: 4.48,
-      volume: 17000000,
-      marketCap: 210000000000,
-    },
-    {
-      name: "어도비",
-      ticker: "ADBE",
-      price: 512.67,
-      changeRate: 2.19,
-      volume: 6200000,
-      marketCap: 270000000000,
-    },
-    {
-      name: "AMD",
-      ticker: "AMD",
-      price: 152.33,
-      changeRate: -3.21,
-      volume: 35000000,
-      marketCap: 190000000000,
-    },
-  ],
-};
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function StocksInSector({ sector }) {
-  const [sectorData, setSectorData] = useState(dummyStocks); // 초기값 dummyStocks
+  const [sectorData, setSectorData] = useState(null);
   const [viewMode, setViewMode] = useState("TREEMAP");
   const navigate = useNavigate();
 
-  // async function fetchSectorData(sectorName) {
-  //   try {
-  //     const response = await fetch(`/api/sectors/${sectorName}/stocks`);
-  //     if (!response.ok) throw new Error("API 호출 실패");
-  //     const data = await response.json();
-  //     setSectorData(data);
-  //   } catch (error) {
-  //     console.warn("API 호출 실패, 더미데이터 유지", error);
-  //     // 실패 시 기존 dummyStocks 유지
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (sector) {
-  //     fetchSectorData(sector);
-  //   }
-  // }, [sector]);
-
   useEffect(() => {
+    setSectorData(null); // sector 바뀔 때 초기화
     sectorApi.getStocksBySector(sector).then((res) => {
       setSectorData(res.data);
     });
   }, [sector]);
+
+  if (!sectorData) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="mt-20 bg-white">
@@ -141,7 +43,7 @@ export default function StocksInSector({ sector }) {
           <div className="flex bg-gray-light rounded-full p-1">
             <button
               onClick={() => setViewMode("TREEMAP")}
-              className={`px-4 py-1 cursor-pointer rounded-full transition-all ${
+              className={`px-4 py-1 rounded-full transition-all ${
                 viewMode === "TREEMAP" ? "bg-orange text-white" : "text-black"
               }`}
             >
@@ -149,7 +51,7 @@ export default function StocksInSector({ sector }) {
             </button>
             <button
               onClick={() => setViewMode("LIST")}
-              className={`px-4 py-1 cursor-pointer rounded-full transition-all ${
+              className={`px-4 py-1 rounded-full transition-all ${
                 viewMode === "LIST" ? "bg-orange text-white" : "text-black"
               }`}
             >

@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Treemap, ResponsiveContainer } from "recharts";
 
+// 색상 조건 지정
 const getColor = (change) => {
-  if (change >= 10) return "var(--color-red-md)";
-  if (change >= 5) return "var(--color-orange)";
-  if (change >= 3) return "#ffad87";
+  if (change >= 10) return "#cc3300";
+  if (change >= 5) return "var(--color-red-md)";
+  if (change >= 3) return "var(--color-orange)";
   if (change >= 1) return "#ffc8b4";
   if (change >= 0.5) return "#ffe0da";
+  if (change > 0) return "#fff2ee"; // 연분홍 추가 가능
   if (change === 0) return "#f3f4f6";
   if (change > -0.5) return "#e5f7ff";
   if (change > -1) return "#cdeffc";
@@ -16,6 +18,7 @@ const getColor = (change) => {
   return "var(--color-blue-md)";
 };
 
+// Treemap용 데이터 변환
 const toTreemapData = (stocks, sector) => [
   {
     name: sector,
@@ -24,14 +27,13 @@ const toTreemapData = (stocks, sector) => [
       ticker: stock.ticker,
       change: stock.changeRate,
       marketCap: stock.marketCap,
-      children: [],
     })),
   },
 ];
 
-
+// 커스텀 셀 렌더링
 function CustomContent({ root, navigate }) {
-  const [hoveredIndex, setHoveredIndex] = React.useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
     <g>
@@ -41,16 +43,22 @@ function CustomContent({ root, navigate }) {
         const formattedChange = change?.toFixed(2);
         const isHovered = hoveredIndex === i;
 
+        // 텍스트 색 & 배경 설정
+        const textColor =
+          change > 0 ? "#fe4700" : change < 0 ? "#00aaf0" : "#000000";
+        // const textBg =
+        //   change > 0 ? "#ffe0da" : change < 0 ? "#e1f5fe" : "#f3f4f6";
+
         return (
           <g
-            key={`cell-${i}`}
+            key={i}
             onMouseEnter={() => setHoveredIndex(i)}
             onMouseLeave={() => setHoveredIndex(null)}
             onClick={() => navigate(`./${ticker}`)}
             style={{
               cursor: "pointer",
               transition: "transform 0.3s ease-in-out",
-              transform: isHovered ? "scale(1.3)" : "scale(1)",
+              transform: isHovered ? "scale(1.03)" : "scale(1)",
               transformBox: "fill-box",
               transformOrigin: "center center",
             }}
@@ -70,14 +78,21 @@ function CustomContent({ root, navigate }) {
                     fontSize: "1.3rem",
                     fontWeight: "bold",
                     lineHeight: "1.3",
-                    color:"#000"
+                    color: "#000",
                   }}
                 >
                   <div>{name}</div>
-                  <div style={{ color: change > 0 ? '#fe4700' : change < 0 ? '#00aaf0' : '#000' }}>
-  {formattedChange}%
-</div>
-
+                  <div
+                    style={{
+                      color: textColor,
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      fontWeight: 600,
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {formattedChange}%
+                  </div>
                 </div>
               </foreignObject>
             )}
@@ -90,15 +105,15 @@ function CustomContent({ root, navigate }) {
 
 export default function SectorTreemap({ sectorData }) {
   const { sectorName, stocks } = sectorData;
-  const treemapData = toTreemapData(stocks, sectorName);
   const navigate = useNavigate();
+  const treemapData = toTreemapData(stocks, sectorName);
 
   const legendColors = [
     { label: "-10%", color: "var(--color-blue-md)" },
     { label: "-5%", color: "var(--color-blue-light)" },
-    { label: "-3%", color: "#b3dcfa" },
-    { label: "-1%", color: "#d6edfb" },
-    { label: "-0.5%", color: "#eaf6fc" },
+    { label: "-3%", color: "#aee0fb" },
+    { label: "-1%", color: "#cdeffc" },
+    { label: "-0.5%", color: "#e5f7ff" },
     { label: "0%", color: "#f3f4f6" },
     { label: "0.5%", color: "#ffe0da" },
     { label: "1%", color: "#ffc8b4" },

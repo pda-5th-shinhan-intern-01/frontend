@@ -10,18 +10,15 @@ export default function LandingPage() {
   return (
     <>
       <HeroSection />
-      <IndicatorProvider>
-        <div className="relative flex gap-4">
-          <div className="flex-1 flex flex-col gap-6 md:pr-0 xl:pr-[38%]">
-            <EventSummaryCards />
-            <EconomicCalendar />
-            <IndicatorSummary />
-          </div>
-
-          <HotReactions />
-          <ScrollBackBtn />
+      <div className="relative flex gap-4">
+        <div className="flex-1 flex flex-col gap-6 md:pr-0 xl:pr-[38%]">
+          <EventSummaryCards />
+          <EconomicCalendar />
+          <IndicatorSummary />
         </div>
-      </IndicatorProvider>
+
+        <HotReactions />
+      </div>
     </>
   );
 }

@@ -6,6 +6,7 @@ import Votes from "./components/Votes";
 import CommonSection from "./components/CommonSection";
 import miniLogo from "../../assets/miniLogo.png";
 import { fomcApi } from "../../api/fomcApi";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const economicLabel = {
   labor_market: "노동 시장",
@@ -36,8 +37,8 @@ export default function FOMCDetailPage() {
       setParsedFomc(JSON.parse(res.data[0].summary));
     });
   }, [params.id]);
-  // 로딩 중 처리
-  if (!fomc || !parsedFomc) return <div className="mt-20">로딩 중...</div>;
+
+  if (!fomc || !parsedFomc) return <LoadingSpinner />;
 
   return (
     <div className="flex flex-col">

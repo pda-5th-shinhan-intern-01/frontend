@@ -3,15 +3,13 @@ import SectorOverview from "./SectorOverview";
 import StocksInSector from "./StocksInSector";
 
 export default function SectorListPage() {
-  const [selectedSector, setSelectedSector] = useState(null);
+  const [selectedSector, setSelectedSector] = useState("기술");
   const stockSectionRef = useRef(null);
 
   const handleSelectSector = (sectorName) => {
-    
     setSelectedSector((prev) => (prev === sectorName ? null : sectorName));
   };
 
-  
   useEffect(() => {
     if (selectedSector && stockSectionRef.current) {
       stockSectionRef.current.scrollIntoView({ behavior: "smooth" });

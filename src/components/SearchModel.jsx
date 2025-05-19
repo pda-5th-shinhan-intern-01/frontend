@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatNumberForMoney } from "../utils/formatNumber";
 
@@ -11,7 +11,6 @@ export default function SearchModel({ results, onClose }) {
     onClose();
   };
 
-  // 바깥 클릭 감지
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -38,6 +37,7 @@ export default function SearchModel({ results, onClose }) {
           <img
             src={`${import.meta.env.VITE_STOCK_LOGO_URL}${item.ticker}.png`}
             className="w-8 h-8 bg-gray-light rounded-full"
+            alt={item.ticker}
           />
           <div className="flex-1">
             <div className="font-medium text-sm">
@@ -45,14 +45,14 @@ export default function SearchModel({ results, onClose }) {
               <span className="ml-1 text-gray-md">{item.ticker}</span>
             </div>
             <div className="flex gap-2 text-sm">
-              <div>${formatNumberForMoney(item.price)}</div>
+              <div>${formatNumberForMoney(item.currentPrice)}</div>
               <div
                 className={`${
-                  item.change > 0 ? "text-red-md" : "text-blue-md"
+                  item.changeRate > 0 ? "text-red-md" : "text-blue-md"
                 }`}
               >
-                ({item.change > 0 ? "+" : ""}
-                {item.change.toFixed(2)}%)
+                ({item.changeRate > 0 ? "+" : ""}
+                {item.changeRate.toFixed(2)}%)
               </div>
             </div>
           </div>
