@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 export default function MainPage() {
   const { ticker } = useParams();
   return (
-    <div className="flex flex-col gap-12 mt-20">
+    <div className="flex flex-col gap-12">
       {/* 종목 기본 정보 */}
       <div className="">
         <StockInfo ticker={ticker} />
@@ -29,7 +29,7 @@ export default function MainPage() {
       </div>
       {/* 미래 지표 이벤트 */}
       <div className="mt-20">
-        <NxtIndicators ticker={ticker}/>
+        <NxtIndicators ticker={ticker} />
       </div>
     </div>
   );

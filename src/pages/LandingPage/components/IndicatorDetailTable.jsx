@@ -1,6 +1,17 @@
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 
+const mappableIndicators = [
+  "CORE_CPI",
+  "CORE_PPI",
+  "CORE_PCE",
+  "NFP",
+  "UNEMPLOYMENT",
+  "RETAIL_SALES",
+  "GDP",
+  "INDUSTRIAL_PRODUCTION",
+];
+
 export default function IndicatorDetailTable({ weeklyData }) {
   const { focusedIndicator, setFocusedIndicator, setLastClickedY } =
     useIndicator();
@@ -28,34 +39,43 @@ export default function IndicatorDetailTable({ weeklyData }) {
                 </tr>
               </thead>
               <tbody>
-                {day.events.map((event) => {
+                {day.events.map((event, idx) => {
+                  const code = event.indicator?.code;
+                  const isMappable = mappableIndicators.includes(code);
                   const indicatorName =
-                    economicIndicatorMap[event.indicator]?.name ||
-                    event.indicator;
+                    economicIndicatorMap[code]?.name || event.name;
 
                   return (
                     <tr
-                      key={`${day.date}-${event.indicator}`}
-                      className="hover:bg-orange/10 transition"
+                      key={`${day.date}-${code}-${idx}`}
+                      className={`transition ${
+                        isMappable ? "hover:bg-orange/10" : ""
+                      }`}
                     >
                       <td className="p-2">{event.time}</td>
                       <td className="p-2">{event.country}</td>
                       <td
-                        className="p-2 cursor-pointer flex justify-between items-center"
-                        onClick={() => {
-                          const currentY = window.scrollY;
+                        className={`p-2 flex justify-between items-center ${
+                          isMappable ? "cursor-pointer" : "cursor-default"
+                        }`}
+                        onClick={
+                          isMappable
+                            ? () => {
+                                const currentY = window.scrollY;
 
-                          if (focusedIndicator === event.indicator) {
-                            setFocusedIndicator(null);
-                            setTimeout(() => {
-                              setLastClickedY(currentY);
-                              setFocusedIndicator(event.indicator);
-                            }, 0);
-                          } else {
-                            setLastClickedY(currentY);
-                            setFocusedIndicator(event.indicator);
-                          }
-                        }}
+                                if (focusedIndicator === code) {
+                                  setFocusedIndicator(null);
+                                  setTimeout(() => {
+                                    setLastClickedY(currentY);
+                                    setFocusedIndicator(code);
+                                  }, 0);
+                                } else {
+                                  setLastClickedY(currentY);
+                                  setFocusedIndicator(code);
+                                }
+                              }
+                            : undefined
+                        }
                       >
                         <span>{indicatorName}</span>
                       </td>

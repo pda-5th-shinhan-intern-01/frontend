@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { formatNumberForMoney } from "../../utils/formatNumber";
 import Treemap from "./Treemap";
 import { useNavigate } from "react-router-dom";
+import { sectorApi } from "../../api/sectorApi";
 
 const dummyStocks = {
   sectorName: "기술",
   sectorENname: "Technology",
   sectorChangeRate: 4.27,
-  sectorDescription: "소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터",
+  sectorDescription:
+    "소프트웨어, 하드웨어, 반도체, IT 서비스 등을 포함하는 섹터",
   stocks: [
     {
       name: "마이크로소프트",
@@ -97,23 +99,28 @@ export default function StocksInSector({ sector }) {
   const [viewMode, setViewMode] = useState("TREEMAP");
   const navigate = useNavigate();
 
-  async function fetchSectorData(sectorName) {
-    try {
-      const response = await fetch(`/api/sectors/${sectorName}/stocks`);
-      if (!response.ok) throw new Error("API 호출 실패");
-      const data = await response.json();
-      setSectorData(data);
-    } catch (error) {
-      console.warn("API 호출 실패, 더미데이터 유지", error);
-      // 실패 시 기존 dummyStocks 유지
-    }
-  }
-  
+  // async function fetchSectorData(sectorName) {
+  //   try {
+  //     const response = await fetch(`/api/sectors/${sectorName}/stocks`);
+  //     if (!response.ok) throw new Error("API 호출 실패");
+  //     const data = await response.json();
+  //     setSectorData(data);
+  //   } catch (error) {
+  //     console.warn("API 호출 실패, 더미데이터 유지", error);
+  //     // 실패 시 기존 dummyStocks 유지
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (sector) {
+  //     fetchSectorData(sector);
+  //   }
+  // }, [sector]);
 
   useEffect(() => {
-    if (sector) {
-      fetchSectorData(sector);
-    }
+    sectorApi.getStocksBySector(sector).then((res) => {
+      setSectorData(res.data);
+    });
   }, [sector]);
 
   return (
@@ -175,17 +182,24 @@ export default function StocksInSector({ sector }) {
                 >
                   <td className="py-4">
                     <img
-                      src={`${import.meta.env.VITE_STOCK_LOGO_URL}${stock.ticker}.png`}
+                      src={`${import.meta.env.VITE_STOCK_LOGO_URL}${
+                        stock.ticker
+                      }.png`}
                       className="w-10 h-10 rounded-full mr-2 bg-gray-light ml-4"
                       alt={stock.ticker}
                     />
                   </td>
-                  <td className="truncate">{stock.name} <span className="text-gray-md">{stock.ticker}</span></td>
+                  <td className="truncate">
+                    {stock.name}{" "}
+                    <span className="text-gray-md">{stock.ticker}</span>
+                  </td>
                   <td>{formatNumberForMoney(stock.price)}원</td>
                   <td className={isPositive ? "text-red-md" : "text-blue-md"}>
                     {stock.changeRate.toFixed(2)}%
                   </td>
-                  <td className="truncate">{formatNumberForMoney(stock.volume)}주</td>
+                  <td className="truncate">
+                    {formatNumberForMoney(stock.volume)}주
+                  </td>
                   <td className="truncate">
                     {formatNumberForMoney(stock.marketCap / 100000000)}억원
                   </td>
@@ -196,7 +210,6 @@ export default function StocksInSector({ sector }) {
         </table>
       ) : (
         <Treemap sectorData={sectorData} />
-
       )}
     </div>
   );

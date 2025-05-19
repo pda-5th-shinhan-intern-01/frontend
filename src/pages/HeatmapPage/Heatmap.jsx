@@ -1,41 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import { sectorApi } from "../../api/sectorApi";
 
-export default function HeatmapChart() {
+export default function Heatmap({ returnWindow }) {
+  const returnWindowLabel = ["day", "1d", "3d"];
+  const [matrix, setMatrix] = useState();
+  const thresholds = [
+    { limit: -0.3, color: "#00aaf0" },
+    { limit: -0.25, color: "#4fc3f7" },
+    { limit: -0.2, color: "#81d4fa" },
+    { limit: -0.15, color: "#b3e5fc" },
+    { limit: -0.1, color: "#e1f5fe" },
+    { limit: -0.05, color: "#f0f9ff" },
+    { limit: 0.0, color: "#ffffff" },
+    { limit: 0.05, color: "#ffe5e0" },
+    { limit: 0.1, color: "#ffc1b3" },
+    { limit: 0.15, color: "#ff9980" },
+    { limit: 0.2, color: "#ff7052" },
+    { limit: 0.25, color: "#ff4726" },
+    { limit: 0.3, color: "#fb2c0d" },
+  ];
+
+  useEffect(() => {
+    sectorApi
+      .getHeatmapData(`${returnWindowLabel[returnWindow]}`)
+      .then((res) => {
+        setMatrix(res.data.matrix);
+        console.log("ㅇㅇ", res.data);
+      });
+  }, [returnWindow]);
+
   const xLabels = [
-    "기술",
     "금융",
-    "헬스케어",
-    "자유소비재",
-    "필수소비재",
-    "에너지",
+    "기술",
+    "부동산",
     "산업재",
     "소재",
-    "부동산",
+    "에너지",
     "유틸리티",
+    "자유소비재",
     "커뮤니케이션",
+    "필수소비재",
+    "헬스케어",
   ];
 
   const yLabels = [
-    "CPI",
-    "PPI",
+    "CORE_CPI",
+    "CORE_PCE",
+    "CORE_PPI",
     "GDP",
-    "실업률",
-    "비농업부문 고용지수",
-    "Core PCE",
-    "소매판매",
-    "산업생산",
-    "ISM 제조업 PMI",
+    "INDUSTRIAL_PRODUCTION",
+    "NFP",
+    "RETAIL_SALES",
+    "UNEMPLOYMENT",
   ];
 
-  // 더미 데이터: -1 ~ +1 사이 z-score 값
-  const series = yLabels.map((indicator) => ({
+  if (!matrix) return null;
+  const series = yLabels.map((indicator, i) => ({
     name: indicator,
-    data: xLabels.map((sector) => ({
+    data: xLabels.map((sector, j) => ({
       x: sector,
-      y: parseFloat((Math.random() * 2 - 1).toFixed(2)),
+      y: Number(matrix[i][j].toFixed(2)),
     })),
   }));
+
+  console.log("ss", series);
 
   const options = {
     chart: {
@@ -50,6 +79,7 @@ export default function HeatmapChart() {
     },
     xaxis: {
       type: "category",
+      position: "top",
       categories: xLabels,
       labels: {
         rotate: -45,
@@ -61,44 +91,32 @@ export default function HeatmapChart() {
         style: { fontSize: "15px" },
       },
     },
-    colors: [
-      ({ value }) => {
-        const clamp = Math.max(-1, Math.min(1, value));
-        const percent = (clamp + 1) / 2;
-
-        const blue = [0, 170, 240]; // #00AAF0
-        const red = [254, 71, 0]; // #FE4700
-
-        let r, g, b;
-
-        if (percent < 0.5) {
-          const t = percent / 0.5;
-          r = Math.round(blue[0] + (255 - blue[0]) * t);
-          g = Math.round(blue[1] + (255 - blue[1]) * t);
-          b = Math.round(blue[2] + (255 - blue[2]) * t);
-        } else {
-          const t = (percent - 0.5) / 0.5;
-          r = Math.round(255 + (red[0] - 255) * t);
-          g = Math.round(255 + (red[1] - 255) * t);
-          b = Math.round(255 + (red[2] - 255) * t);
-        }
-
-        return `rgb(${r}, ${g}, ${b})`;
-      },
-    ],
     plotOptions: {
       heatmap: {
+        shadeIntensity: 0.5,
+        radius: 4,
         colorScale: {
           min: -1,
           max: 1,
+          ranges: [
+            { from: -1.0, to: -0.4, color: "#00aaf0" },
+            { from: -0.4, to: -0.3, color: "#4fc3f7" },
+            { from: -0.3, to: -0.25, color: "#81d4fa" },
+            { from: -0.25, to: -0.2, color: "#b3e5fc" },
+            { from: -0.2, to: -0.1, color: "#e1f5fe" },
+            { from: -0.1, to: 0.0, color: "#ffffff" },
+            { from: 0.0, to: 0.1, color: "#ffe5e0" },
+            { from: 0.1, to: 0.2, color: "#ffc1b3" },
+            { from: 0.2, to: 0.3, color: "#ff9980" },
+            { from: 0.3, to: 0.4, color: "#ff7052" },
+            { from: 0.4, to: 0.5, color: "#ff4726" },
+            { from: 0.5, to: 1.0, color: "#fe4700" },
+          ],
         },
-        shadeIntensity: 0.5,
-        radius: 4,
       },
     },
-    legend: {
-      show: false,
-    },
+
+    legend: { show: false },
     tooltip: {
       y: {
         formatter: (val) => val.toFixed(2),

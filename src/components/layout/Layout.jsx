@@ -22,11 +22,11 @@ export default function Layout() {
   const isOrange = isMainPage && isTop;
 
   return (
-    <div className="mt-8 flex flex-col items-center min-h-screen w-full font-medium">
+    <div className="mt-10 px-4 flex flex-col items-center min-h-screen w-full font-medium">
       <ScrollToTop />
       <header
         className={`w-full fixed top-0 z-10 h-16 transition-colors duration-300 ${
-          isOrange ? "h-24 bg-orange" : "bg-white"
+          isOrange ? "h-26 bg-orange" : "bg-white"
         }`}
       >
         <Header isOrange={isOrange} />

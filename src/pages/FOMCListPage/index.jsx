@@ -30,7 +30,7 @@ export default function FOMCListPage() {
   const [searchDate, setSearchDate] = useState(false);
   const [fomcList, setFomcList] = useState([]);
 
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 8;
   const [currentPage, setCurrentPage] = useState(1);
 
   const [compareModalOpen, setCompareModalOpen] = useState(false);
@@ -38,7 +38,6 @@ export default function FOMCListPage() {
   // 전체 리스트 호출 api
   useEffect(() => {
     fomcApi.getFomcList().then((res) => {
-      console.log(res.data);
       setFomcList(res.data);
     });
   }, []);
@@ -99,9 +98,9 @@ export default function FOMCListPage() {
   }, [sortOrder, selectedRateIndex, startDate, endDate]);
 
   return (
-    <div className="flex flex-col gap-3 p-4 mt-20">
-      <div className="font-bold text-5xl">FOMC 회의</div>
-      <div className="bg-ivory p-5 text-lg text-black-md shadow-md">
+    <div className="flex flex-col">
+      <div className="text-4xl font-bold">FOMC 회의</div>
+      <div className="text-lg text-black  mb-6 mt-4">
         FOMC(연방공개시장위원회)는 미국 연준의 통화정책을 최종 결정하는 기구로,
         매 정례회의에서 기준금리를 인상·동결·인하합니다.
         <br />
@@ -127,9 +126,9 @@ export default function FOMCListPage() {
           />
           <div
             onClick={() => setSearchDate(true)}
-            className="text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
+            className="text-sm border-light bg-red-md w-[72px] flex justify-center text-white px-4 py-2 rounded-full cursor-pointer hover:bg-orange"
           >
-            조회{" "}
+            조회
           </div>
           <div
             onClick={() => {
@@ -137,7 +136,7 @@ export default function FOMCListPage() {
               setEndDate("");
               setSearchDate(true);
             }}
-            className="text-sm border border-gray-light px-2 py-1 rounded-2xl cursor-pointer hover:bg-gray-hover"
+            className="text-sm border-light bg-gray-light w-[72px] flex justify-center text-black px-4 py-2 rounded-full cursor-pointer hover:bg-gray-300"
           >
             초기화{" "}
           </div>
@@ -149,7 +148,7 @@ export default function FOMCListPage() {
             <div>
               <button
                 type="button"
-                className="cursor-pointer inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm font-medium  hover:bg-gray-50"
+                className="cursor-pointer inline-flex justify-between items-center w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm font-medium  hover:bg-gray-50"
                 onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
               >
                 {sortOrder === "desc" ? "최신순" : "오래된 순"}
@@ -189,7 +188,7 @@ export default function FOMCListPage() {
             <div>
               <button
                 type="button"
-                className="cursor-pointer inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm  hover:bg-gray-hover "
+                className="cursor-pointer items-center inline-flex justify-between w-40 rounded-md border border-gray-light shadow-sm px-4 py-2 bg-white text-sm  hover:bg-gray-hover "
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 {selectedRateIndex !== null
@@ -233,74 +232,64 @@ export default function FOMCListPage() {
         </div>
       </div>
       {/* 회의록 리스트 */}
-      <table className="w-full table-fixed">
-        <colgroup>
-          <col className="w-4/6" />
-          <col className="w-1/6" />
-          <col className="w-1/6" />
-        </colgroup>
-
-        <tbody>
-          {filteredData.length === 0 ? (
-            <tr>
-              <td colSpan="3" className="text-center py-4 text-gray-md ">
-                해당 조건의 회의가 없습니다.
-              </td>
-            </tr>
-          ) : (
-            paginatedData.map((data, idx) => (
-              <tr
-                key={idx}
-                className="hover:bg-gray-hover cursor-pointer transition-colors duration-300"
-              >
-                <td className="py-6 px-4">
-                  <div className="flex items-center gap-5">
-                    <input
-                      type="checkbox"
-                      checked={checkedItems?.includes(data)}
-                      onChange={() => toggleChecked(data)}
-                      className="mt-1 accent-gray-500 cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                      disabled={checkedItems.length >= 3}
-                    />
-                    <div
-                      onClick={() =>
-                        navigate(`${data.id}`, {
-                          state: {
-                            start: fomcList[0].id,
-                            end: fomcList[fomcList.length - 1].id,
-                          },
-                        })
-                      }
-                      className="w-full"
-                    >
-                      <div className="text-lg">
-                        {formatFomcTitle(data.date)}
-                      </div>
-                      <div className="text-sm text-gray-md font-bold flex flex-row items-center">
-                        <img src={miniLogo} className="w-4 h-4 mr-2" />{" "}
-                        {data.title}
-                      </div>
-                    </div>
+      <div className="w-full mt-4 flex flex-col gap-2">
+        {filteredData.length === 0 ? (
+          <div className="text-center py-4 text-gray-md border-t border-b border-gray-md">
+            해당 조건의 회의가 없습니다.
+          </div>
+        ) : (
+          paginatedData.map((data, idx) => (
+            <div
+              key={idx}
+              className="flex border border-gray-light rounded-2xl hover:bg-gray-hover cursor-pointer transition-colors duration-300 py-6 px-4"
+            >
+              {/* 첫 번째 컬럼: 체크박스 + 타이틀 */}
+              <div className="flex w-4/6 items-start gap-5">
+                <input
+                  type="checkbox"
+                  checked={checkedItems?.includes(data)}
+                  onChange={() => toggleChecked(data)}
+                  className="mt-1 accent-red-md cursor-pointer"
+                  onClick={(e) => e.stopPropagation()}
+                  disabled={checkedItems.length >= 3}
+                />
+                <div
+                  onClick={() =>
+                    navigate(`${data.id}`, {
+                      state: {
+                        start: fomcList[0].id,
+                        end: fomcList[fomcList.length - 1].id,
+                      },
+                    })
+                  }
+                  className="w-full"
+                >
+                  <div>
+                    <span className="text-gray-md mr-2">
+                      [{formatFomcTitle(data.date)}]
+                    </span>
+                    {data.title}
                   </div>
-                </td>
-                <td className="py-5">{data.date}</td>
-                <td className="py-5 flex justify-center">
-                  {data.policyBias === "Raise" ? (
-                    <FaCaretUp className="text-red-md text-2xl" />
-                  ) : data.policyBias === "Lower" ? (
-                    <FaCaretDown className="text-blue-md text-2xl" />
-                  ) : (
-                    <MdHorizontalRule className="w-4" />
-                  )}
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+                </div>
+              </div>
+
+              {/* 두 번째 컬럼: 날짜 */}
+              <div className="flex items-center w-1/6">{data.date}</div>
+
+              {/* 세 번째 컬럼: policyBias 아이콘 */}
+              <div className="flex items-center justify-end w-1/6 mr-4">
+                {data.policyBias === "Raise" ? (
+                  <FaCaretUp className="text-red-md text-2xl" />
+                ) : data.policyBias === "Lower" ? (
+                  <FaCaretDown className="text-blue-md text-2xl" />
+                ) : (
+                  <MdHorizontalRule className="w-4" />
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
 
       {/* 비교하기 버튼 */}
       <AnimatePresence>
@@ -311,7 +300,7 @@ export default function FOMCListPage() {
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="z-30 bg-orange flex flex-row flex-wrap justify-between px-10 py-3
-        fixed  bottom-[4vh] w-11/12 left-1/2 -translate-x-1/2 rounded-lg shadow-lg text-white"
+        fixed  bottom-[4vh] w-11/12 left-1/2 -translate-x-1/2 rounded-2xl shadow-lg text-white"
           >
             <div className="flex flex-row gap-5 flex-wrap">
               <AnimatePresence initial={false}>

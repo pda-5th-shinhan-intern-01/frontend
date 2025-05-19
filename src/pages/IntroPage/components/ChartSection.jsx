@@ -29,7 +29,7 @@ export default function ChartSection() {
           <img
             src={chart}
             alt="지표와 S&P500 그래프"
-            className="w-[90%] max-w-[500px] h-auto p-8 bg-white rounded-2xl shadow-lg"
+            className="w-[100%] max-w-[600px] h-auto p-5 bg-white rounded-2xl shadow-lg"
           />
         </div>
       </motion.div>

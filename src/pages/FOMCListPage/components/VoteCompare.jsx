@@ -118,7 +118,7 @@ export default function VoteCompare({ checkedItems }) {
   };
 
   return (
-    <div className="overflow-auto h-full w-full">
+    <div className="overflow-auto h-full w-full flex items-center">
       <div id="chart" className="w-full mx-auto">
         <ReactApexChart
           options={chartOptions}

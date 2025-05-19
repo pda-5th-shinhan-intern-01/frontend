@@ -17,7 +17,7 @@ export default function PaginationBtn({
             onClick={() => onPageChange(pageNum)}
             className={`w-7 h-7 rounded text-sm ${
               currentPage === pageNum
-                ? "bg-gray-hover"
+                ? "bg-red-md text-white"
                 : "border border-gray-light text-gray-md"
             }`}
           >
