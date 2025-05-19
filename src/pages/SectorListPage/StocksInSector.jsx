@@ -95,7 +95,7 @@ const dummyStocks = {
 };
 
 export default function StocksInSector({ sector }) {
-  const [sectorData, setSectorData] = useState(dummyStocks); // 초기값 dummyStocks
+  const [sectorData, setSectorData] = useState(); // 초기값 dummyStocks
   const [viewMode, setViewMode] = useState("TREEMAP");
   const navigate = useNavigate();
 
@@ -122,7 +122,7 @@ export default function StocksInSector({ sector }) {
       setSectorData(res.data);
     });
   }, [sector]);
-
+  if (!sectorData) return null;
   return (
     <div className="mt-20 bg-white">
       <div className="flex w-full justify-between items-end">
