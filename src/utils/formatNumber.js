@@ -5,4 +5,5 @@ function formatNumberForMoney(num) {
     maximumFractionDigits: 2,
   });
 }
+
 export { formatNumberForMoney };
