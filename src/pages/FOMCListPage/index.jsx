@@ -32,13 +32,18 @@ export default function FOMCListPage() {
 
   const ITEMS_PER_PAGE = 8;
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [fomcIdList, setFomcIdList] = useState();
   const [compareModalOpen, setCompareModalOpen] = useState(false);
 
   // 전체 리스트 호출 api
   useEffect(() => {
     fomcApi.getFomcList().then((res) => {
       setFomcList(res.data);
+      setFomcIdList(res.data.map((item) => item.id));
+      console.log(
+        "fomc",
+        res.data.map((item) => item.id)
+      );
     });
   }, []);
 
@@ -257,8 +262,9 @@ export default function FOMCListPage() {
                   onClick={() =>
                     navigate(`${data.id}`, {
                       state: {
-                        start: fomcList[0].id,
-                        end: fomcList[fomcList.length - 1].id,
+                        fomcIdList: fomcIdList,
+                        // start: fomcList[0].id,
+                        // end: fomcList[fomcList.length - 1].id,
                       },
                     })
                   }
