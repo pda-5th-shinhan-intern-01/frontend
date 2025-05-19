@@ -99,9 +99,9 @@ export default function FOMCListPage() {
   }, [sortOrder, selectedRateIndex, startDate, endDate]);
 
   return (
-    <div className="flex flex-col gap-3 p-4 mt-20">
-      <div className="font-bold text-5xl">FOMC 회의</div>
-      <div className="bg-ivory p-5 text-lg text-black-md shadow-md">
+    <div className="flex flex-col">
+      <div className="text-4xl font-bold">FOMC 회의</div>
+      <div className="text-lg text-black  mb-6 mt-4">
         FOMC(연방공개시장위원회)는 미국 연준의 통화정책을 최종 결정하는 기구로,
         매 정례회의에서 기준금리를 인상·동결·인하합니다.
         <br />

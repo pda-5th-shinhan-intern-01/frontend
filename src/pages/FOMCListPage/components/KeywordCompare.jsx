@@ -7,8 +7,8 @@ export default function KeywordCompare({ checkedItems }) {
 
   // 색 어케할지 추천 받아요....... 모르겠음 진ㅈ심 ..ㅜㅜㅜㅜㅜㅜㅜ
   const colorPalette = [
-    "#fe4700",
-    "#ffa76d",
+    "#ffc1bc",
+    "#ffd59b",
     "#ffd000",
     "#4fcb7c",
     "#00aaf0",
@@ -104,18 +104,16 @@ export default function KeywordCompare({ checkedItems }) {
               <div className="p-4 flex flex-wrap gap-2 overflow-y-auto max-h-52 justify-center">
                 {combinedKeywords.map((keyword, idx) => {
                   const isShared = keywordCountMap[keyword] > 1;
-                  const borderColor = isShared
-                    ? keywordColorMap[keyword]
-                    : "#fff";
+                  const bgColor = isShared ? keywordColorMap[keyword] : "#fff";
                   const isActive = activeKeyword === keyword;
 
                   return (
                     <span
                       key={idx}
-                      className={`rounded-xl px-3 py-1 text-sm text-black cursor-pointer border-2 ${
+                      className={`rounded-full px-3 py-1 text-sm text-black cursor-pointer  ${
                         isActive ? "bg-gray-light " : "bg-white"
                       }`}
-                      style={{ borderColor: borderColor }}
+                      style={{ backgroundColor: bgColor }}
                       onClick={() =>
                         setActiveKeyword((prev) =>
                           prev === keyword ? null : keyword

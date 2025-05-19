@@ -41,7 +41,7 @@ export default function FOMCDetailPage() {
   if (!fomc || !parsedFomc) return <div className="mt-20">로딩 중...</div>;
 
   return (
-    <div className="flex flex-col mt-20">
+    <div className="flex flex-col">
       {/* 기본 정보 */}
       <span
         onClick={() => navigate("/main/fomcs")}
