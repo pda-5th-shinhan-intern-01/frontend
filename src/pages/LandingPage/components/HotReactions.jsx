@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import axios from "axios";
-import { ClipLoader } from "react-spinners";
 
 export default function HotReactions() {
   const navigate = useNavigate();
@@ -57,9 +57,7 @@ export default function HotReactions() {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-[452px]">
-          <ClipLoader size={40} color="#FF6600" />
-        </div>
+        <LoadingSpinner height="h-[452px]" />
       ) : (
         <>
           <AnimatePresence mode="wait">
