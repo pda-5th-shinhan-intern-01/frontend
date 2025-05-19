@@ -41,7 +41,7 @@ export default function EventSummaryCards() {
             key: e.indicator.code,
             name: e.indicator.name,
             datetime: dayjs(e.date).format("YYYY-MM-DD"),
-            time: e.time, // ✅ 추가
+            time: e.time,
             previous: prev,
             expected: expected,
             unit: e.unit,
@@ -122,9 +122,7 @@ export default function EventSummaryCards() {
                     event.diff >= 0 ? "text-red-md" : "text-blue-md"
                   }`}
                 >
-                  {event.diff != null
-                    ? `${event.diff.toFixed(1)}% 예상`
-                    : "예상치 미정"}
+                  {event.diff != null ? `${event.diff.toFixed(1)}% 예상` : " "}
                 </div>
               </div>
             );
