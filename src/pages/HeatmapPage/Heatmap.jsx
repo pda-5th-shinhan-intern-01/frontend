@@ -5,12 +5,28 @@ import { sectorApi } from "../../api/sectorApi";
 export default function Heatmap({ returnWindow }) {
   const returnWindowLabel = ["day", "1d", "3d"];
   const [matrix, setMatrix] = useState();
+  const thresholds = [
+    { limit: -0.3, color: "#00aaf0" },
+    { limit: -0.25, color: "#4fc3f7" },
+    { limit: -0.2, color: "#81d4fa" },
+    { limit: -0.15, color: "#b3e5fc" },
+    { limit: -0.1, color: "#e1f5fe" },
+    { limit: -0.05, color: "#f0f9ff" },
+    { limit: 0.0, color: "#ffffff" },
+    { limit: 0.05, color: "#ffe5e0" },
+    { limit: 0.1, color: "#ffc1b3" },
+    { limit: 0.15, color: "#ff9980" },
+    { limit: 0.2, color: "#ff7052" },
+    { limit: 0.25, color: "#ff4726" },
+    { limit: 0.3, color: "#fb2c0d" },
+  ];
+
   useEffect(() => {
     sectorApi
       .getHeatmapData(`${returnWindowLabel[returnWindow]}`)
       .then((res) => {
         setMatrix(res.data.matrix);
-        console.log(res.data);
+        console.log("ㅇㅇ", res.data);
       });
   }, [returnWindow]);
 
@@ -44,9 +60,11 @@ export default function Heatmap({ returnWindow }) {
     name: indicator,
     data: xLabels.map((sector, j) => ({
       x: sector,
-      y: parseFloat(matrix[i][j].toFixed(2)),
+      y: Number(matrix[i][j].toFixed(2)),
     })),
   }));
+
+  console.log("ss", series);
 
   const options = {
     chart: {
@@ -73,36 +91,32 @@ export default function Heatmap({ returnWindow }) {
         style: { fontSize: "15px" },
       },
     },
-    colors: [
-      ({ value }) => {
-        if (value <= -0.5) return "#00aaf0";
-        if (value <= -0.4) return "#4fc3f7";
-        if (value <= -0.3) return "#81d4fa";
-        if (value <= -0.2) return "#b3e5fc";
-        if (value <= -0.1) return "#e1f5fe";
-        if (value <= 0.0) return "#ffffff";
-        if (value <= 0.1) return "#ffe5e0";
-        if (value <= 0.2) return "#ffc1b3";
-        if (value <= 0.3) return "#ff9980";
-        if (value <= 0.4) return "#ff7052";
-        if (value <= 0.5) return "#ff4726";
-        return "#fe4700";
-      },
-    ],
-
     plotOptions: {
       heatmap: {
+        shadeIntensity: 0.5,
+        radius: 4,
         colorScale: {
           min: -1,
           max: 1,
+          ranges: [
+            { from: -1.0, to: -0.4, color: "#00aaf0" },
+            { from: -0.4, to: -0.3, color: "#4fc3f7" },
+            { from: -0.3, to: -0.25, color: "#81d4fa" },
+            { from: -0.25, to: -0.2, color: "#b3e5fc" },
+            { from: -0.2, to: -0.1, color: "#e1f5fe" },
+            { from: -0.1, to: 0.0, color: "#ffffff" },
+            { from: 0.0, to: 0.1, color: "#ffe5e0" },
+            { from: 0.1, to: 0.2, color: "#ffc1b3" },
+            { from: 0.2, to: 0.3, color: "#ff9980" },
+            { from: 0.3, to: 0.4, color: "#ff7052" },
+            { from: 0.4, to: 0.5, color: "#ff4726" },
+            { from: 0.5, to: 1.0, color: "#fe4700" },
+          ],
         },
-        shadeIntensity: 0.5,
-        radius: 4,
       },
     },
-    legend: {
-      show: false,
-    },
+
+    legend: { show: false },
     tooltip: {
       y: {
         formatter: (val) => val.toFixed(2),
