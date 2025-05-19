@@ -17,7 +17,6 @@ export default function StocksInSector({ sector }) {
     });
   }, [sector]);
 
-  // ✅ 로딩 중엔 전체 레이아웃 대신 Spinner만 표시
   if (!sectorData) {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
