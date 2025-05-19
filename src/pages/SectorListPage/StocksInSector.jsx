@@ -95,7 +95,7 @@ export default function StocksInSector({ sector }) {
                     {stock.name}{" "}
                     <span className="text-gray-md">{stock.ticker}</span>
                   </td>
-                  <td>{formatNumberForMoney(stock.price)}원</td>
+                  <td>${formatNumberForMoney(stock.price)}</td>
                   <td className={isPositive ? "text-red-md" : "text-blue-md"}>
                     {stock.changeRate.toFixed(2)}%
                   </td>
