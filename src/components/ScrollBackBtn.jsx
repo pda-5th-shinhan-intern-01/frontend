@@ -6,7 +6,7 @@ export default function ScrollBackBtn() {
 
   return (
     <button
-      className="font-bold text-sm fixed bottom-22 right-11 p-3 rounded-full shadow-lg"
+      className="bg-white font-bold text-sm fixed bottom-22 right-11 p-3 rounded-full shadow-lg"
       onClick={() => {
         const scrollTo = lastClickedY !== null ? lastClickedY : 0;
         window.scrollTo({ top: scrollTo, behavior: "smooth" });

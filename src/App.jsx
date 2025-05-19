@@ -1,12 +1,13 @@
 import "./App.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/router";
+import { IndicatorProvider } from "./context/IndicatorContext";
 
 function App() {
   return (
-    <>
+    <IndicatorProvider>
       <RouterProvider router={router} />
-    </>
+    </IndicatorProvider>
   );
 }
 
