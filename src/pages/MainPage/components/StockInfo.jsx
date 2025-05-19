@@ -1,21 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { formatNumberForMoney } from "../../../utils/formatNumber";
+import { stockApi } from "../../../api/stockApi";
 
 export default function StockInfo({ ticker }) {
   const [stock, setStock] = useState({
-    name: "애플",
-    price_kr: 303063,
-    price_us: 21068.12345,
-    change_amt: 1496,
-    change_rate: 0.4,
+    name: "",
+    ticker: "",
+    currentPrice: 0,
+    changeRate: 0,
+    marketCap: 0,
+    volume: 0,
+    sector: {
+      name: "",
+      changeRate: 0,
+    },
   });
 
-  const getStockInfo = () => {
-    //주식 기본 정보 조회 API 요청
+  const getStockInfo = async () => {
+    try {
+      const response = await stockApi.getStockInfo(ticker);
+      setStock(response.data[0]);
+    } catch (error) {
+      console.error("종목 기본 정보 조회 실패", error);
+    }
   };
 
   useEffect(() => {
-    // getStockInfo();
+    getStockInfo();
   }, [ticker]);
   return (
     <div className="flex w-full items-center gap-2">
@@ -30,22 +41,22 @@ export default function StockInfo({ ticker }) {
         </div>
         <div className="flex gap-2 items-end">
           <p className="text-3xl font-semibold">
-            {formatNumberForMoney(stock.price_kr)}원
+            ${formatNumberForMoney(stock.currentPrice)}
           </p>
-          <p className="text-gray-md text-2xl">
+          {/* <p className="text-gray-md text-2xl">
             ${formatNumberForMoney(stock.price_us)}
-          </p>
+          </p> */}
           <div
             className={`flex gap-1 items-center text-2xl ${
-              stock.change_amt > 0
+              stock.changeRate > 0
                 ? "text-red-md"
-                : stock.change_amt < 0
+                : stock.changeRate < 0
                 ? "text-blue-md"
                 : ""
             }`}
           >
-            <p>{formatNumberForMoney(stock.change_amt)}원</p>
-            <p>({stock.change_rate}%)</p>
+            {/* <p>{formatNumberForMoney(stock.change_amt)}원</p> */}
+            <p>({stock.changeRate}%)</p>
           </div>
         </div>
       </div>

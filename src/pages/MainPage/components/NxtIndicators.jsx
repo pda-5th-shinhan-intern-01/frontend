@@ -5,6 +5,9 @@ import Tooltip from "../../../components/Tooltip";
 import { introduceService } from "../../../data/IntroduceOfService";
 import HorizontalScroller from "../../../components/HorizontalScroller";
 import { TbArrowBigDownFilled, TbArrowBigUpFilled } from "react-icons/tb";
+import { stockApi } from "../../../api/stockApi";
+import { formatNumberForMoney } from "../../../utils/formatNumber";
+import dayjs from "dayjs";
 
 function getPerformanceLabel(score) {
   if (score >= 1.0)
@@ -16,18 +19,22 @@ function getPerformanceLabel(score) {
   return { label: "매우 부정적 영향", className: "text-blue-800" };
 }
 
-export default function NxtIndicators() {
-  const [sortedBy, setSortedBy] = useState("예상 영향도순");
+export default function NxtIndicators({ ticker }) {
+  const [sortedBy, setSortedBy] = useState("performance");
   const [events, setEvents] = useState([]);
 
-  const tryGetNxtEvents = () => {
-    // api 호출 함수
+  const tryGetNxtEvents = async () => {
+    try {
+      const response = await stockApi.getStockWithNxtEvents(ticker, sortedBy);
+      setEvents(response.data);
+    } catch (error) {
+      console.error("미래 지표 이벤트 조회 실패", error);
+    }
   };
 
   useEffect(() => {
-    // tryGetNxtEvents();
-    setEvents(nxtIndicatorsData);
-  }, []);
+    tryGetNxtEvents();
+  }, [sortedBy]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -43,10 +50,10 @@ export default function NxtIndicators() {
         <div className="flex gap-2 items-end">
           <div
             onClick={() => {
-              setSortedBy("예상 영향도순");
+              setSortedBy("performance");
             }}
             className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
-              sortedBy == "예상 영향도순"
+              sortedBy == "performance"
                 ? "bg-red-md text-white"
                 : "bg-gray-light text-black"
             }`}
@@ -55,10 +62,10 @@ export default function NxtIndicators() {
           </div>
           <div
             onClick={() => {
-              setSortedBy("민감도순");
+              setSortedBy("score");
             }}
             className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
-              sortedBy == "민감도순"
+              sortedBy == "score"
                 ? "bg-red-md text-white"
                 : "bg-gray-light text-black"
             }`}
@@ -67,10 +74,10 @@ export default function NxtIndicators() {
           </div>
           <div
             onClick={() => {
-              setSortedBy("최신순");
+              setSortedBy("closet");
             }}
             className={`flex items-center text-xs font-semibold py-2 px-4 rounded-full cursor-pointer ${
-              sortedBy == "최신순"
+              sortedBy == "closet"
                 ? "bg-red-md text-white"
                 : "bg-gray-light text-black"
             }`}
@@ -84,14 +91,16 @@ export default function NxtIndicators() {
         {events.map((event, id) => (
           <div
             key={id}
-            className="hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 rounded-2xl min-w-[350px]"
+            className="hover:scale-102 duration-300 flex flex-col gap-2 bg-gray-light p-6 py-4 rounded-2xl min-w-[350px]"
           >
             {/* 헤더 */}
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="text-2xl font-semibold">{event.name}</h4>
-              <p className="text-sm text-gray-md flex gap-1 items-center">
-                {event.date}
+            <div className="flex-col mb-4">
+              <p className="text-sm text-gray-md flex gap-1 items-start justify-end">
+                {dayjs(`${event.date}T${event.time}`).format(
+                  "YYYY년 MM월 DD일 HH:mm:ss"
+                )}
               </p>
+              <h4 className="text-2xl font-semibold">{event.indicatorCode}</h4>
             </div>
             {/* 이전치 -> 예상치 */}
             <div className="flex justify-between items-center">
@@ -101,29 +110,32 @@ export default function NxtIndicators() {
                 </p>
                 <h2 className="flex items-end text-lg font-semibold gap-1">
                   <span className="flex items-center text-sm">
-                    {event.prevData}% <FaArrowRight className="text-xs" />
+                    {formatNumberForMoney(event.prev)}
+                    {event.unit} <FaArrowRight className="text-xs" />
                   </span>
-                  {event.nxtData}%
+                  {formatNumberForMoney(event.forecast)}
+                  {event.unit}
                   <span
                     className={`${
-                      event.nxtData > event.prevData
+                      event.delta > 0
                         ? "text-red-md"
-                        : event.nxtData == event.prevData
+                        : event.delta == 0
                         ? ""
                         : "text-blue-md"
                     }`}
                   >
-                    ({event.nxtData - event.prevData}%)
+                    ({formatNumberForMoney(event.delta)}
+                    {event.unit})
                   </span>
                 </h2>
               </div>
 
               <div className="flex bg-white h-16 w-16 rounded-full items-center justify-center text-4xl">
-                {event.beta * (event.nxtData - event.prevData) > 0 ? (
+                {event.performance > 0 ? (
                   <div className="text-red-md">
                     <TbArrowBigUpFilled />
                   </div>
-                ) : event.beta * (event.nxtData - event.prevData) == 0 ? (
+                ) : event.performance == 0 ? (
                   "-"
                 ) : (
                   <div className="text-blue-md">
@@ -142,17 +154,18 @@ export default function NxtIndicators() {
                 </span>
               </p>
               <h2 className="flex items-end text-sm font-semibold gap-1">
-                {event.beta} x {event.nxtData - event.prevData}% =
+                {formatNumberForMoney(event.score)} x{" "}
+                {formatNumberForMoney(event.delta)}% =
                 <span
                   className={`text-lg ${
-                    event.beta * (event.nxtData - event.prevData) > 0
+                    event.performance > 0
                       ? "text-red-md"
-                      : event.beta * (event.nxtData - event.prevData) == 0
+                      : event.performance == 0
                       ? ""
                       : "text-blue-md"
                   }`}
                 >
-                  {event.beta * (event.nxtData - event.prevData)}
+                  {formatNumberForMoney(event.performance)}
                 </span>
               </h2>
             </div>
@@ -160,16 +173,10 @@ export default function NxtIndicators() {
             {/* 정성적 평가 */}
             <div
               className={`text-sm font-semibold bg-white flex py-2 px-4 rounded-full justify-center items-center mt-4 ${
-                getPerformanceLabel(
-                  event.beta * (event.nxtData - event.prevData)
-                ).className
+                getPerformanceLabel(event.performance).className
               }`}
             >
-              {
-                getPerformanceLabel(
-                  event.beta * (event.nxtData - event.prevData)
-                ).label
-              }
+              {getPerformanceLabel(event.performance).label}
             </div>
           </div>
         ))}
