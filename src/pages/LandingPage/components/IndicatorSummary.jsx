@@ -49,7 +49,7 @@ export default function IndicatorSummary() {
     const tryGetCurrEvents = async () => {
       try {
         const items = (await eventApi.getEventChart(focusedIndicator)).data;
-
+        console.log(items);
         const chartData = (items || []).map((item) => ({
           x: item.date,
           y: item.value,
@@ -101,16 +101,34 @@ export default function IndicatorSummary() {
   return (
     <div
       id="indicator-summary-section"
-      className="bg-ivory p-6 rounded flex flex-col gap-6 rounded-2xl shadow-xl"
+      className="bg-ivory border-1 border-gray-light shadow-lg p-8 flex flex-col gap-6 rounded-3xl"
     >
-      <div className="text-2xl font-extrabold text-black">
+      <div className="text-3xl font-semibold text-black">
         {meta.name} ({focusedIndicator.replace(/_/g, " ")})
       </div>
+      <p className="text-lg">{meta.description}</p>
 
       <div className="flex flex-col lg:flex-row gap-8 items-stretch">
         <div className="flex-1 flex flex-col gap-6 h-full">
-          <p className="text-xl">{meta.description}</p>
-
+          <div className="text-black">
+            <span className="text-xl font-semibold">
+              영향을 받는 주요 산업군
+            </span>
+            <div className="text-md mt-2">
+              {(indicatorToIndustryMap[focusedIndicator] || []).map(
+                (industry, i) => (
+                  <span
+                    key={i}
+                    className="inline-block px-4 py-2 bg-orange rounded-full text-white font-medium mr-1"
+                  >
+                    {industry}
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 flex flex-col gap-6 h-full">
           <div className="mt-auto flex gap-4">
             {[
               ["예상치", data.expected],
@@ -118,7 +136,7 @@ export default function IndicatorSummary() {
             ].map(([label, value]) => (
               <div
                 key={label}
-                className="flex-1 bg-orange rounded-3xl py-14 text-ivory relative"
+                className="flex-1 bg-orange rounded-2xl py-14 text-ivory relative"
               >
                 <div className="absolute top-4 left-4 text-lg font-bold">
                   {label}
@@ -130,50 +148,31 @@ export default function IndicatorSummary() {
             ))}
           </div>
         </div>
-
-        <div className="flex-1 flex flex-col gap-6 h-full">
-          <div className="text-black">
-            <span className="text-xl font-semibold">
-              영향을 받는 주요 산업군
-            </span>
-            <div className="text-md mt-4">
-              {(indicatorToIndustryMap[focusedIndicator] || []).map(
-                (industry, i) => (
-                  <span
-                    key={i}
-                    className="inline-block px-4 py-2 bg-white rounded-2xl shadow font-medium mr-1"
-                  >
-                    {industry}
-                  </span>
-                )
-              )}
-            </div>
-          </div>
-
-          <div className="font-semibold text-black text-xl">
-            영향력이 높은 종목 순위
-          </div>
-          <ul className="text-lg text-black">
-            {ranking.map((item, i) => (
-              <li key={i} className="flex justify-between py-1">
-                <span>
-                  {i + 1}. {item.stockName} ({item.stockTicker})
-                </span>
-                <span>
-                  ${item.stockPrice?.toFixed(2)}
-                  <span
-                    className={`ml-1 ${
-                      item.stockChange > 0 ? "text-red-md" : "text-blue-md"
-                    }`}
-                  >
-                    ({item.stockChange > 0 ? "+" : ""}
-                    {item.stockChange?.toFixed(2)}%)
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
+      </div>
+      <div className="flex-col w-full">
+        <div className="font-semibold text-black text-xl">
+          영향력이 높은 종목 순위
         </div>
+        <ul className="text-lg text-black mt-2">
+          {ranking.map((item, i) => (
+            <li key={i} className="flex justify-between py-1">
+              <span>
+                {i + 1}. {item.stockName} ({item.stockTicker})
+              </span>
+              <span>
+                ${item.stockPrice?.toFixed(2)}
+                <span
+                  className={`ml-1 ${
+                    item.stockChange > 0 ? "text-red-md" : "text-blue-md"
+                  }`}
+                >
+                  ({item.stockChange > 0 ? "+" : ""}
+                  {item.stockChange?.toFixed(2)}%)
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {matchedEvent?.chartData?.length > 0 && (
