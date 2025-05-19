@@ -92,7 +92,7 @@ export default function KeywordCompare({ checkedItems }) {
   return (
     <div className="flex flex-col items-center h-full">
       {/* 키워드 영역 (스크롤) */}
-      <div className="flex-1 items-center overflow-y-auto w-full flex flex-row justify-evenly gap-6 px-4">
+      <div className="flex-1 mt-16 overflow-y-auto w-full flex flex-row justify-evenly gap-6 px-4">
         {parsedItems.map((item, id) => {
           const combinedKeywords = selectedSubOptions
             .map((optionId) => getKeywordsByOption(item.parsed, optionId))
@@ -108,7 +108,7 @@ export default function KeywordCompare({ checkedItems }) {
               </div>
               <div className="text-sm text-gray-md">{item.title}</div>
 
-              <div className="p-4 flex flex-wrap gap-2 overflow-y-auto max-h-52 justify-center">
+              <div className="mt-4 p-4 flex flex-wrap gap-2 overflow-y-auto max-h-52 justify-center">
                 {combinedKeywords.map((keyword, idx) => {
                   const isShared = keywordCountMap[keyword] > 1;
                   const bgColor = isShared ? keywordColorMap[keyword] : "#fff";
