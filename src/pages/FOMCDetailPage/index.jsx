@@ -123,7 +123,7 @@ export default function FOMCDetailPage() {
                 },
               })
             }
-            className="text-sm text-gray-md hover:underline"
+            className="text-sm text-black bg-gray-light rounded-full px-4 py-2 cursor-pointer"
           >
             ← 이전 회의록
           </button>
@@ -141,7 +141,7 @@ export default function FOMCDetailPage() {
                 },
               })
             }
-            className="text-sm text-gray-md hover:underline"
+            className="text-sm text-black bg-gray-light rounded-full px-4 py-2 cursor-pointer"
           >
             다음 회의록 →
           </button>
