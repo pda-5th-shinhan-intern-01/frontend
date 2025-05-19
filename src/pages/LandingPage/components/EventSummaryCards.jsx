@@ -26,7 +26,6 @@ export default function EventSummaryCards() {
           .slice(0, 10);
 
         const ensured = sliced.length >= 5 ? sliced : sorted.slice(0, 5);
-
         const mapped = ensured.map((e) => {
           const parsePercent = (val) =>
             typeof val === "string" && val.includes("%")
@@ -42,6 +41,7 @@ export default function EventSummaryCards() {
             key: e.indicator.code,
             name: e.indicator.name,
             datetime: dayjs(e.date).format("YYYY-MM-DD"),
+            time: e.time, // ✅ 추가
             previous: prev,
             expected: expected,
             unit: e.unit,
@@ -51,6 +51,7 @@ export default function EventSummaryCards() {
                 : null,
           };
         });
+
         console.log(res.data);
         setEvents(mapped);
       })
@@ -98,7 +99,10 @@ export default function EventSummaryCards() {
                   {meta?.name || event.name}
                 </div>
 
-                <div className="text-[12px] text-gray-md">{event.datetime}</div>
+                <div className="text-[12px] text-gray-md">
+                  {event.datetime}{" "}
+                  {event.time && <span className="ml-1">{event.time}</span>}
+                </div>
 
                 <div className="mt-3 text-gray-md">
                   {typeof event.previous === "number"
