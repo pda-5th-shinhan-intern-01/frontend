@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { formatNumberForMoney } from "../../utils/formatNumber";
 import Treemap from "./Treemap";
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,13 @@ export default function StocksInSector({ sector }) {
   const [sectorData, setSectorData] = useState(null);
   const [viewMode, setViewMode] = useState("TREEMAP");
   const navigate = useNavigate();
+  const prevRef = useRef();
 
   useEffect(() => {
-    setSectorData(null); // sector 바뀔 때 초기화
+    if (!sector) return;
+    if (prevRef.current === sector) return;
+    prevRef.current = sector;
+    setSectorData(null);
     sectorApi.getStocksBySector(sector).then((res) => {
       setSectorData(res.data);
     });
