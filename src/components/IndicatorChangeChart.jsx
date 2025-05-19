@@ -64,10 +64,10 @@ export default function IndicatorChangeChart({ indicator }) {
             },
             tooltip: {
               x: {
-                format: "yyyy년 MM월",
+                format: "yyyy년 MM월 dd일",
               },
               y: {
-                formatter: (val) => `${val.toFixed(2)}%`,
+                formatter: (val) => `${val.toFixed(2)}`,
               },
             },
             xaxis: {
