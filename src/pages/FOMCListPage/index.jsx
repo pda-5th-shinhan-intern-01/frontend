@@ -30,7 +30,7 @@ export default function FOMCListPage() {
   const [searchDate, setSearchDate] = useState(false);
   const [fomcList, setFomcList] = useState([]);
 
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 8;
   const [currentPage, setCurrentPage] = useState(1);
 
   const [compareModalOpen, setCompareModalOpen] = useState(false);
