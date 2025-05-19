@@ -11,6 +11,7 @@ const eventApi = {
   //지표 이벤트 차트 데이터 조회
   getEventChart: (indicator_code = "UNEMPLOYMENT") =>
     api.get(`indicators/${indicator_code}/chart`),
+  getAllEventList: () => api.get(`indicators/all`),
 };
 
 export { eventApi };

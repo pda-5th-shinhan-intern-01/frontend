@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 import { formatNumberForMoney } from "../../../utils/formatNumber";
 import { stockApi } from "../../../api/stockApi";
@@ -28,8 +28,6 @@ export default function StockChart({ ticker }) {
   const [chartData, setChartData] = useState(null);
   const [events, setEvents] = useState([]);
   const [state, setState] = useState(null);
-  const chartRef = useRef(null);
-
   useEffect(() => {
     const getChartData = async () => {
       try {
@@ -42,7 +40,7 @@ export default function StockChart({ ticker }) {
 
     const getEventList = async () => {
       try {
-        const response = await eventApi.getEventList();
+        const response = await eventApi.getAllEventList();
         setEvents(response.data || []);
         console.log(response.data);
       } catch (error) {
@@ -54,21 +52,13 @@ export default function StockChart({ ticker }) {
     getEventList();
   }, [ticker]);
 
-  // ✅ 이벤트 마커 구성
   const eventMarkers = useMemo(() => {
     const grouped = events.reduce((acc, event) => {
-      const x = new Date(event.date).getTime();
-      const name = event.indicator?.code || event.name;
+      const x = new Date(new Date(event.date).toDateString()).getTime();
+      const name = event.code || event.name;
+      const valueText = `${event.value}${event.unit || ""}`;
 
-      const details = [
-        event.actualValue ? `실제 ${event.actualValue}` : null,
-        event.expectedValue ? `예상 ${event.expectedValue}` : null,
-        event.prevValue ? `이전 ${event.prevValue}` : null,
-      ]
-        .filter(Boolean)
-        .join(" / ");
-
-      const text = `${name} - ${details}`;
+      const text = `${name} - ${valueText}`;
 
       if (!acc[x]) {
         acc[x] = {
@@ -172,7 +162,7 @@ export default function StockChart({ ticker }) {
           min: initialMin,
           max: initialMax,
           labels: {
-            format: "yyyy-MM",
+            format: "yyyy-MM-dd",
             style: { fontSize: "11px" },
             datetimeUTC: false,
           },
@@ -197,32 +187,26 @@ export default function StockChart({ ticker }) {
 
             const eventsHtml = matchedEvents
               .map((e) => {
-                const name = e.indicator?.code || e.name;
-                const detail = [
-                  e.actualValue ? `실제 ${e.actualValue}` : null,
-                  e.expectedValue ? `예상 ${e.expectedValue}` : null,
-                  e.prevValue ? `이전 ${e.prevValue}` : null,
-                ]
-                  .filter(Boolean)
-                  .join(" / ");
-                return `<div><strong>📌 ${name}</strong>: ${detail}</div>`;
+                const name = e.code || e.name;
+                const detail = `${e.value}${e.unit || ""}`;
+                return `<div><strong>- ${name}</strong>: ${detail}</div>`;
               })
               .join("");
 
             return `
               <div style="padding: 4px 8px; font-size: 12px;">
-                <div><strong>시가</strong> ${formatNumberForMoney(
+                <div><strong>시가</strong> $${formatNumberForMoney(
                   ohlc[0]
-                )}원</div>
-                <div><strong>고가</strong> ${formatNumberForMoney(
+                )}</div>
+                <div><strong>고가</strong> $${formatNumberForMoney(
                   ohlc[1]
-                )}원</div>
-                <div><strong>저가</strong> ${formatNumberForMoney(
+                )}</div>
+                <div><strong>저가</strong> $${formatNumberForMoney(
                   ohlc[2]
-                )}원</div>
-                <div><strong>종가</strong> ${formatNumberForMoney(
+                )}</div>
+                <div><strong>종가</strong> $${formatNumberForMoney(
                   ohlc[3]
-                )}원</div>
+                )}</div>
                 ${eventsHtml ? `<hr style="margin: 4px 0;">${eventsHtml}` : ""}
               </div>
             `;
@@ -243,7 +227,7 @@ export default function StockChart({ ticker }) {
           min: initialMin,
           max: initialMax,
           labels: {
-            format: "yyyy-MM",
+            format: "yyyy-MM-dd",
             style: { fontSize: "11px" },
           },
         },

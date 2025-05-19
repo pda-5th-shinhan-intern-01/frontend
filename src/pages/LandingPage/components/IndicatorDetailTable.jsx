@@ -1,6 +1,17 @@
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 
+const mappableIndicators = [
+  "CORE_CPI",
+  "CORE_PPI",
+  "CORE_PCE",
+  "NFP",
+  "UNEMPLOYMENT",
+  "RETAIL_SALES",
+  "GDP",
+  "INDUSTRIAL_PRODUCTION",
+];
+
 export default function IndicatorDetailTable({ weeklyData }) {
   const { focusedIndicator, setFocusedIndicator, setLastClickedY } =
     useIndicator();
@@ -30,49 +41,47 @@ export default function IndicatorDetailTable({ weeklyData }) {
               <tbody>
                 {day.events.map((event, idx) => {
                   const code = event.indicator?.code;
-                  const displayName =
+                  const isMappable = mappableIndicators.includes(code);
+                  const indicatorName =
                     economicIndicatorMap[code]?.name || event.name;
-
-                  const formatValue = (val, unit) => {
-                    if (val === "" || val == null) return "-";
-                    return `${val}${unit || ""}`;
-                  };
 
                   return (
                     <tr
-                      key={`${day.date}-${event.name}-${idx}`}
-                      className="hover:bg-orange/10 transition"
+                      key={`${day.date}-${code}-${idx}`}
+                      className={`transition ${
+                        isMappable ? "hover:bg-orange/10" : ""
+                      }`}
                     >
                       <td className="p-2">{event.time}</td>
                       <td className="p-2">{event.country}</td>
                       <td
-                        className="p-2 cursor-pointer flex justify-between items-center"
-                        onClick={() => {
-                          const currentY = window.scrollY;
+                        className={`p-2 flex justify-between items-center ${
+                          isMappable ? "cursor-pointer" : "cursor-default"
+                        }`}
+                        onClick={
+                          isMappable
+                            ? () => {
+                                const currentY = window.scrollY;
 
-                          if (focusedIndicator === code) {
-                            setFocusedIndicator(null);
-                            setTimeout(() => {
-                              setLastClickedY(currentY);
-                              setFocusedIndicator(code);
-                            }, 0);
-                          } else {
-                            setLastClickedY(currentY);
-                            setFocusedIndicator(code);
-                          }
-                        }}
+                                if (focusedIndicator === code) {
+                                  setFocusedIndicator(null);
+                                  setTimeout(() => {
+                                    setLastClickedY(currentY);
+                                    setFocusedIndicator(code);
+                                  }, 0);
+                                } else {
+                                  setLastClickedY(currentY);
+                                  setFocusedIndicator(code);
+                                }
+                              }
+                            : undefined
+                        }
                       >
-                        <span>{displayName}</span>
+                        <span>{indicatorName}</span>
                       </td>
-                      <td className="p-2">
-                        {formatValue(event.expectedValue, event.unit)}
-                      </td>
-                      <td className="p-2">
-                        {formatValue(event.actualValue, event.unit)}
-                      </td>
-                      <td className="p-2">
-                        {formatValue(event.prevValue, event.unit)}
-                      </td>
+                      <td className="p-2">{event.expected}</td>
+                      <td className="p-2">{event.actual}</td>
+                      <td className="p-2">{event.previous}</td>
                     </tr>
                   );
                 })}
