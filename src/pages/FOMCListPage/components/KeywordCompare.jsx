@@ -5,15 +5,22 @@ export default function KeywordCompare({ checkedItems }) {
   const [selectedSubOptions, setSelectedSubOptions] = useState([0, 1, 2]);
   const [activeKeyword, setActiveKeyword] = useState(null);
 
-  // 색 어케할지 추천 받아요....... 모르겠음 진ㅈ심 ..ㅜㅜㅜㅜㅜㅜㅜ
   const colorPalette = [
-    "#ffc1bc",
-    "#ffd59b",
-    "#ffd000",
-    "#4fcb7c",
-    "#00aaf0",
-    "#c06dff",
-    "#6a6a6a",
+    // 🧡 오렌지 계열
+    "#FFE0C7", // 밝은 살구
+    "#FFCBA4", // 크림 오렌지
+
+    // 💛 노랑 계열
+    "#FFF5BA", // 연한 레몬 크림
+    "#FDFD96", // 파스텔 옐로우
+
+    // 💙 하늘색 계열
+    "#CFEFFF", // 아주 연한 하늘색
+    "#A7D8FF", // 스카이블루
+
+    // 🔵 파랑 계열
+    "#B0C4DE", // 라이트 스틸 블루
+    "#9BB1F9", // 연한 인디고 블루
   ];
 
   // 이것도 일단 apexchart랑 똑같이 주석 색 만들었는데.. 넘 정신없어서 어케할지.. 추천받아요
@@ -85,7 +92,7 @@ export default function KeywordCompare({ checkedItems }) {
   return (
     <div className="flex flex-col items-center h-full">
       {/* 키워드 영역 (스크롤) */}
-      <div className="flex-1 overflow-y-auto w-full flex flex-row justify-evenly gap-6 px-4">
+      <div className="flex-1 items-center overflow-y-auto w-full flex flex-row justify-evenly gap-6 px-4">
         {parsedItems.map((item, id) => {
           const combinedKeywords = selectedSubOptions
             .map((optionId) => getKeywordsByOption(item.parsed, optionId))
