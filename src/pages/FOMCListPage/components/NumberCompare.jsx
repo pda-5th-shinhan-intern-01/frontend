@@ -52,13 +52,16 @@ export default function NumberCompare({ checkedItems, selectedSubOptions }) {
       },
       xaxis: {
         categories: checkedItems.map((item) => item.title),
+        labels: {
+          show: false,
+        },
       },
     },
   });
 
   return (
-    <div>
-      <div id="chart" className="mx-auto h-2/3">
+    <div className="w-full h-full items-center flex">
+      <div id="chart" className="w-full mx-32 h-2/3">
         <ReactApexChart
           options={state.options}
           series={state.series}
