@@ -32,7 +32,6 @@ export default function FOMCDetailPage() {
   // fomc 디테일
   useEffect(() => {
     fomcApi.getFomcList(params.id).then((res) => {
-      console.log(res.data);
       setFomc(res.data[0]);
       setParsedFomc(JSON.parse(res.data[0].summary));
     });

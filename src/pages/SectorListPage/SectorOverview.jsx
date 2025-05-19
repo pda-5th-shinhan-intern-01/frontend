@@ -10,6 +10,7 @@ import sector_industrials from "../../assets/sector_industrials.png";
 import sector_utilities from "../../assets/sector_utilities.png";
 import sector_real_estate from "../../assets/sector_real_estate.png";
 import sector_materials from "../../assets/sector_materials.png";
+import { sectorApi } from "../../api/sectorApi";
 
 const sectors = [
   {
@@ -101,19 +102,26 @@ const dummySectorChangeRates = [
 export default function SectorOverview({ onSelectSector }) {
   const [changeRates, setChangeRates] = useState(dummySectorChangeRates);
 
+  // useEffect(() => {
+  //   async function fetchSectorRates() {
+  //     try {
+  //       const res = await fetch("/api/sectors");
+  //       if (!res.ok) throw new Error("API 실패");
+  //       const data = await res.json();
+  //       setChangeRates(data);
+  //       console.log("data", data);
+  //     } catch (e) {
+  //       console.warn("API 연결 실패, 더미데이터 사용 중");
+  //       setChangeRates(dummySectorChangeRates);
+  //     }
+  //   }
+  //   fetchSectorRates();
+  // }, []);
+
   useEffect(() => {
-    async function fetchSectorRates() {
-      try {
-        const res = await fetch("/api/sectors");
-        if (!res.ok) throw new Error("API 실패");
-        const data = await res.json();
-        setChangeRates(data);
-      } catch (e) {
-        console.warn("API 연결 실패, 더미데이터 사용 중");
-        setChangeRates(dummySectorChangeRates);
-      }
-    }
-    fetchSectorRates();
+    sectorApi.getSectorList().then((res) => {
+      setChangeRates(res.data);
+    });
   }, []);
 
   return (
