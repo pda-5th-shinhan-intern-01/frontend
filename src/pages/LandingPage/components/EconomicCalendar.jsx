@@ -5,18 +5,30 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import CalendarSummaryGrid from "./CalendarSummaryGrid";
 import IndicatorDetailTable from "./IndicatorDetailTable";
-import { economicCalendarData } from "../dummies/economicCalendarData";
+import axios from "axios";
 
 const days = ["월", "화", "수", "목", "금"];
 const today = new Date();
 
 export default function EconomicCalendar() {
   const [selectedDate, setSelectedDate] = useState(today);
+  const [calendarData, setCalendarData] = useState([]);
   const [weeklyData, setWeeklyData] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
 
-  const calculateWeek = (baseDate) => {
+  useEffect(() => {
+    axios
+      .get("/api/indicators/calendar")
+      .then((res) => {
+        setCalendarData(res.data || []);
+      })
+      .catch((err) => {
+        console.error("경제 캘린더 로딩 실패:", err);
+      });
+  }, []);
+
+  const calculateWeek = (baseDate, fullData) => {
     const base = new Date(baseDate);
     const startOfWeek = new Date(base);
     startOfWeek.setDate(base.getDate() - base.getDay() + 1);
@@ -25,17 +37,20 @@ export default function EconomicCalendar() {
       const date = new Date(startOfWeek);
       date.setDate(startOfWeek.getDate() + i);
       const dateString = date.toISOString().split("T")[0];
+
       return {
         date: dateString,
         day: days[i],
-        events: economicCalendarData.filter((ev) => ev.date === dateString),
+        events: fullData.filter((ev) => ev.date === dateString),
       };
     });
   };
 
   useEffect(() => {
-    setWeeklyData(calculateWeek(selectedDate));
-  }, [selectedDate]);
+    if (calendarData.length === 0) return;
+    const week = calculateWeek(selectedDate, calendarData);
+    setWeeklyData(week);
+  }, [selectedDate, calendarData]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -50,8 +65,9 @@ export default function EconomicCalendar() {
   return (
     <div className="mb-4 py-12">
       <h2 className="text-3xl font-bold mb-2 text-black">
-        놓치면 아쉬운 <span class="text-orange">이번 주 지표</span> 모음
+        놓치면 아쉬운 <span className="text-orange">이번 주 지표</span> 모음
       </h2>
+
       <div className="mt-8 flex items-center gap-2 relative" ref={calendarRef}>
         <button
           onClick={() => setSelectedDate(new Date())}
@@ -100,6 +116,7 @@ export default function EconomicCalendar() {
               day: "numeric",
             })}`}
         </span>
+
         {showCalendar && (
           <div className="absolute top-full mt-2 w-full max-w-[420px] z-50">
             <DatePicker
