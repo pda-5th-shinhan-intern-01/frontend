@@ -8,10 +8,10 @@ export default function HeatmapControlPanel({
   const returnWindowLabel = ["당일", "±1일", "±3일"];
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="flex justify-centerrounded-2xl">
+    <div className="w-full flex justify-end">
+      <div className="flex w-full justify-center rounded-2xl">
         {/* 수익률 기준 */}
-        <div className="flex flex-row items-end bg-white px-3 py-2 rounded-xl w-full relative">
+        <div className="flex flex-row items-end bg-white rounded-xl w-full relative">
           <div className="flex items-center gap-2">
             <span className="text-2xl">
               <Tooltip
