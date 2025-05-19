@@ -25,12 +25,7 @@ export default function IndicatorSummary() {
         };
         setData(summary);
 
-        const res = await axios.get("/api/sensitivities/top", {
-          headers: {
-            code: focusedIndicator,
-            limit: 3,
-          },
-        });
+        const res = await axios.get("/api/sensitivities/top", {});
 
         const found = res.data.find(
           (item) => item.indicatorCode === focusedIndicator
@@ -72,7 +67,7 @@ export default function IndicatorSummary() {
       className="bg-ivory p-6 rounded flex flex-col gap-6 rounded-2xl shadow-xl"
     >
       <div className="text-2xl font-extrabold text-black">
-        {meta.name} ({focusedIndicator})
+        {meta.name} ({focusedIndicator.replace(/_/g, " ")})
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 items-stretch">
@@ -123,7 +118,7 @@ export default function IndicatorSummary() {
             {ranking.map((item, i) => (
               <li key={i} className="flex justify-between py-1">
                 <span>
-                  {i + 1}. {item.stockName} ({item.stockTicker})
+                  {i + 1}. {item.stockName}
                 </span>
                 <span>
                   ${item.stockPrice?.toFixed(2)}
