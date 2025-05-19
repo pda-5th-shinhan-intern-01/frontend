@@ -4,15 +4,15 @@ import { stockApi } from "../../../api/stockApi";
 
 export default function StockInfo({ ticker }) {
   const [stock, setStock] = useState({
-    name: "애플",
-    ticker: "AAPL",
-    currentPrice: 303063,
-    changeRate: 0.4,
-    marketCap: 10101,
-    volume: 10101,
+    name: "",
+    ticker: "",
+    currentPrice: 0,
+    changeRate: 0,
+    marketCap: 0,
+    volume: 0,
     sector: {
-      name: "기술",
-      changeRate: 0.12,
+      name: "",
+      changeRate: 0,
     },
   });
 
