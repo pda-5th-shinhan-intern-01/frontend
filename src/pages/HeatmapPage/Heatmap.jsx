@@ -1,39 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import { sectorApi } from "../../api/sectorApi";
 
-export default function HeatmapChart() {
+export default function Heatmap({ returnWindow }) {
+  const returnWindowLabel = ["day", "1d", "3d"];
+  const [matrix, setMatrix] = useState();
+  useEffect(() => {
+    sectorApi
+      .getHeatmapData(`${returnWindowLabel[returnWindow]}`)
+      .then((res) => {
+        setMatrix(res.data.matrix);
+        console.log(res.data);
+      });
+  }, [returnWindow]);
+
   const xLabels = [
-    "기술",
     "금융",
-    "헬스케어",
-    "자유소비재",
-    "필수소비재",
-    "에너지",
+    "기술",
+    "부동산",
     "산업재",
     "소재",
-    "부동산",
+    "에너지",
     "유틸리티",
+    "자유소비재",
     "커뮤니케이션",
+    "필수소비재",
+    "헬스케어",
   ];
 
   const yLabels = [
-    "CPI",
-    "PPI",
+    "CORE_CPI",
+    "CORE_PCE",
+    "CORE_PPI",
     "GDP",
-    "실업률",
-    "비농업부문 고용지수",
-    "Core PCE",
-    "소매판매",
-    "산업생산",
-    "ISM 제조업 PMI",
+    "INDUSTRIAL_PRODUCTION",
+    "NFP",
+    "RETAIL_SALES",
+    "UNEMPLOYMENT",
   ];
 
-  // 더미 데이터: -1 ~ +1 사이 z-score 값
-  const series = yLabels.map((indicator) => ({
+  if (!matrix) return null;
+  const series = yLabels.map((indicator, i) => ({
     name: indicator,
-    data: xLabels.map((sector) => ({
+    data: xLabels.map((sector, j) => ({
       x: sector,
-      y: parseFloat((Math.random() * 2 - 1).toFixed(2)),
+      y: parseFloat(matrix[i][j].toFixed(2)),
     })),
   }));
 
@@ -50,6 +61,7 @@ export default function HeatmapChart() {
     },
     xaxis: {
       type: "category",
+      position: "top",
       categories: xLabels,
       labels: {
         rotate: -45,
@@ -63,29 +75,21 @@ export default function HeatmapChart() {
     },
     colors: [
       ({ value }) => {
-        const clamp = Math.max(-1, Math.min(1, value));
-        const percent = (clamp + 1) / 2;
-
-        const blue = [0, 170, 240]; // #00AAF0
-        const red = [254, 71, 0]; // #FE4700
-
-        let r, g, b;
-
-        if (percent < 0.5) {
-          const t = percent / 0.5;
-          r = Math.round(blue[0] + (255 - blue[0]) * t);
-          g = Math.round(blue[1] + (255 - blue[1]) * t);
-          b = Math.round(blue[2] + (255 - blue[2]) * t);
-        } else {
-          const t = (percent - 0.5) / 0.5;
-          r = Math.round(255 + (red[0] - 255) * t);
-          g = Math.round(255 + (red[1] - 255) * t);
-          b = Math.round(255 + (red[2] - 255) * t);
-        }
-
-        return `rgb(${r}, ${g}, ${b})`;
+        if (value <= -0.5) return "#00aaf0";
+        if (value <= -0.4) return "#4fc3f7";
+        if (value <= -0.3) return "#81d4fa";
+        if (value <= -0.2) return "#b3e5fc";
+        if (value <= -0.1) return "#e1f5fe";
+        if (value <= 0.0) return "#ffffff";
+        if (value <= 0.1) return "#ffe5e0";
+        if (value <= 0.2) return "#ffc1b3";
+        if (value <= 0.3) return "#ff9980";
+        if (value <= 0.4) return "#ff7052";
+        if (value <= 0.5) return "#ff4726";
+        return "#fe4700";
       },
     ],
+
     plotOptions: {
       heatmap: {
         colorScale: {

@@ -38,7 +38,6 @@ export default function FOMCListPage() {
   // 전체 리스트 호출 api
   useEffect(() => {
     fomcApi.getFomcList().then((res) => {
-      console.log(res.data);
       setFomcList(res.data);
     });
   }, []);
