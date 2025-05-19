@@ -81,7 +81,7 @@ export default function ProblemSection() {
 
           <motion.div
             className="absolute top-[72%] -translate-y-1/2 whitespace-nowrap text-4xl font-extrabold"
-            animate={{ x: ["-100%", "0%"] }}
+            animate={{ x: ["-50%", "100%"] }}
             transition={{
               repeat: Infinity,
               duration: 300,
