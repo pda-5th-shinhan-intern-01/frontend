@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
-import { economicEventChartData } from "../dummies/economicEventChartData";
-import IndicatorChartCard from "./IndicatorChartCard";
+import StockMiniChart from "../../../components/StockMiniChart";
+import { eventApi } from "../../../api/eventApi";
+import axios from "axios";
 
 export default function IndicatorSummary() {
   const { focusedIndicator } = useIndicator();
   const [data, setData] = useState(null);
   const [ranking, setRanking] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const meta = focusedIndicator && economicIndicatorMap[focusedIndicator];
 
@@ -17,28 +18,59 @@ export default function IndicatorSummary() {
 
     const fetchSummary = async () => {
       try {
+        const latestRes = await axios.get(
+          `/api/indicators/latest/${focusedIndicator}`
+        );
+
         const summary = {
-          expected: 3.5,
-          actual: 3.2,
-          unit: "%",
+          expected: latestRes.data.next,
+          actual: latestRes.data.prev,
+          unit: latestRes.data.unit || "%",
           industries: ["기술", "소비재"],
         };
         setData(summary);
 
-        const res = await axios.get("/api/sensitivities/top", {});
-
+        const res = await axios.get("/api/sensitivities/top");
         const found = res.data.find(
           (item) => item.indicatorCode === focusedIndicator
         );
-
         setRanking((found?.topStocks || []).slice(0, 3));
       } catch (err) {
-        console.error("민감도 종목 데이터 로딩 실패:", err);
+        console.error("요약 정보 로딩 실패:", err);
         setRanking([]);
       }
     };
 
     fetchSummary();
+  }, [focusedIndicator]);
+
+  useEffect(() => {
+    const tryGetCurrEvents = async () => {
+      try {
+        const items = (await eventApi.getEventChart(focusedIndicator)).data;
+
+        const chartData = (items || []).map((item) => ({
+          x: item.date,
+          y: item.value,
+        }));
+
+        const parsed = {
+          name: focusedIndicator,
+          date: chartData[Math.floor(chartData.length / 2)]?.x || null,
+          chartData,
+          unit: "%",
+          prevData: null,
+          currData: null,
+        };
+
+        setEvents([parsed]);
+      } catch (err) {
+        console.error("이벤트 차트 데이터 로딩 실패:", err);
+        setEvents([]);
+      }
+    };
+
+    if (focusedIndicator) tryGetCurrEvents();
   }, [focusedIndicator]);
 
   useEffect(() => {
@@ -48,9 +80,11 @@ export default function IndicatorSummary() {
       requestAnimationFrame(() => {
         const el = document.getElementById("indicator-summary-section");
         if (el) {
-          const headerHeight = 50;
+          const header = document.querySelector("header");
+          const headerHeight = header?.offsetHeight || 64;
           const y =
-            el.getBoundingClientRect().top + window.scrollY - headerHeight;
+            el.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+
           window.scrollTo({ top: y, behavior: "smooth" });
         }
       });
@@ -60,6 +94,8 @@ export default function IndicatorSummary() {
   }, [focusedIndicator, meta, data]);
 
   if (!focusedIndicator || !meta || !data) return null;
+
+  const matchedEvent = events.find((e) => e.name === focusedIndicator);
 
   return (
     <div
@@ -87,7 +123,7 @@ export default function IndicatorSummary() {
                   {label}
                 </div>
                 <div className="absolute bottom-4 right-3 text-4xl font-bold flex items-center gap-1">
-                  {value} {data.unit || ""}
+                  {value.toFixed(1)} {data.unit || ""}
                 </div>
               </div>
             ))}
@@ -137,10 +173,12 @@ export default function IndicatorSummary() {
         </div>
       </div>
 
-      {economicEventChartData[focusedIndicator] && (
-        <IndicatorChartCard
-          indicator={focusedIndicator}
-          data={economicEventChartData[focusedIndicator]}
+      {matchedEvent?.chartData?.length > 0 && (
+        <StockMiniChart
+          chartData={matchedEvent.chartData}
+          eventDate={matchedEvent.date}
+          width={745}
+          height={155}
         />
       )}
     </div>

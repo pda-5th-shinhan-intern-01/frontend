@@ -28,14 +28,19 @@ export default function IndicatorDetailTable({ weeklyData }) {
                 </tr>
               </thead>
               <tbody>
-                {day.events.map((event) => {
-                  const indicatorName =
-                    economicIndicatorMap[event.indicator]?.name ||
-                    event.indicator;
+                {day.events.map((event, idx) => {
+                  const code = event.indicator?.code;
+                  const displayName =
+                    economicIndicatorMap[code]?.name || event.name;
+
+                  const formatValue = (val, unit) => {
+                    if (val === "" || val == null) return "-";
+                    return `${val}${unit || ""}`;
+                  };
 
                   return (
                     <tr
-                      key={`${day.date}-${event.indicator}`}
+                      key={`${day.date}-${event.name}-${idx}`}
                       className="hover:bg-orange/10 transition"
                     >
                       <td className="p-2">{event.time}</td>
@@ -45,23 +50,29 @@ export default function IndicatorDetailTable({ weeklyData }) {
                         onClick={() => {
                           const currentY = window.scrollY;
 
-                          if (focusedIndicator === event.indicator) {
+                          if (focusedIndicator === code) {
                             setFocusedIndicator(null);
                             setTimeout(() => {
                               setLastClickedY(currentY);
-                              setFocusedIndicator(event.indicator);
+                              setFocusedIndicator(code);
                             }, 0);
                           } else {
                             setLastClickedY(currentY);
-                            setFocusedIndicator(event.indicator);
+                            setFocusedIndicator(code);
                           }
                         }}
                       >
-                        <span>{indicatorName}</span>
+                        <span>{displayName}</span>
                       </td>
-                      <td className="p-2">{event.expected}</td>
-                      <td className="p-2">{event.actual}</td>
-                      <td className="p-2">{event.previous}</td>
+                      <td className="p-2">
+                        {formatValue(event.expectedValue, event.unit)}
+                      </td>
+                      <td className="p-2">
+                        {formatValue(event.actualValue, event.unit)}
+                      </td>
+                      <td className="p-2">
+                        {formatValue(event.prevValue, event.unit)}
+                      </td>
                     </tr>
                   );
                 })}
