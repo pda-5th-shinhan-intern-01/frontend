@@ -3,10 +3,12 @@ import calendar from "../../../assets/calendar.png";
 import sector from "../../../assets/sector.png";
 import heatmap from "../../../assets/heatmap.png";
 import fomc from "../../../assets/fomc.png";
+import stockIcon from "../../../assets/icons/stock.png"
 import calendarIcon from "../../../assets/icons/calendar.jpg";
-import stockIcon from "../../../assets/icons/stock.png";
+import sector_finance from "../../../assets/sector_finance.png";
 import ImageSlider from "../../../components/ImageSlider";
 import fomcIcon from "../../../assets/icons/fomc.png";
+import linelinechart from "../../../assets/linelinechart.png"
 
 const features = [
   {
@@ -23,7 +25,7 @@ const features = [
     subtitle: "지표가 종목에 미치는 영향은?",
     description:
       "지표가 발표되기 전 후로 주가가 어떻게 변화되는 지 확인하세요. 지표가 변화하면 주가는 어떻게 변동될까요?",
-    image: sector,
+    image: [sector,linelinechart],
     icon: stockIcon,
     reverse: true,
   },
@@ -33,7 +35,7 @@ const features = [
     description:
       "경제 지표와 섹터에 대한 히트맵을 확인하세요. 각각의 지표가 섹터에 미치는 영향을 한눈에 확인할 수 있어요.",
     image: heatmap,
-    icon: stockIcon,
+    icon: sector_finance,
     reverse: false,
   },
   {
