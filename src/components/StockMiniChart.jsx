@@ -1,7 +1,11 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-export default function StockMiniChart({ chartData, width = 320 }) {
+export default function StockMiniChart({
+  chartData,
+  height = 80,
+  width = 320,
+}) {
   const middleIndex = Math.floor(chartData.length / 2);
   const middlePoint = chartData[middleIndex];
 
@@ -96,7 +100,7 @@ export default function StockMiniChart({ chartData, width = 320 }) {
         series={series}
         options={options}
         type="area"
-        height={80}
+        height={height}
         width={width}
       />
     </div>
