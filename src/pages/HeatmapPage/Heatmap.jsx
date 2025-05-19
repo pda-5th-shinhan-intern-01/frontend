@@ -1,32 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { sectorApi } from "../../api/sectorApi";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function Heatmap({ returnWindow }) {
   const returnWindowLabel = ["day", "1d", "3d"];
   const [matrix, setMatrix] = useState();
-  const thresholds = [
-    { limit: -0.3, color: "#00aaf0" },
-    { limit: -0.25, color: "#4fc3f7" },
-    { limit: -0.2, color: "#81d4fa" },
-    { limit: -0.15, color: "#b3e5fc" },
-    { limit: -0.1, color: "#e1f5fe" },
-    { limit: -0.05, color: "#f0f9ff" },
-    { limit: 0.0, color: "#ffffff" },
-    { limit: 0.05, color: "#ffe5e0" },
-    { limit: 0.1, color: "#ffc1b3" },
-    { limit: 0.15, color: "#ff9980" },
-    { limit: 0.2, color: "#ff7052" },
-    { limit: 0.25, color: "#ff4726" },
-    { limit: 0.3, color: "#fb2c0d" },
-  ];
 
   useEffect(() => {
     sectorApi
       .getHeatmapData(`${returnWindowLabel[returnWindow]}`)
       .then((res) => {
         setMatrix(res.data.matrix);
-        console.log("ㅇㅇ", res.data);
       });
   }, [returnWindow]);
 
@@ -55,7 +40,7 @@ export default function Heatmap({ returnWindow }) {
     "UNEMPLOYMENT",
   ];
 
-  if (!matrix) return null;
+  if (!matrix) return <LoadingSpinner />;
   const series = yLabels.map((indicator, i) => ({
     name: indicator,
     data: xLabels.map((sector, j) => ({
@@ -63,8 +48,6 @@ export default function Heatmap({ returnWindow }) {
       y: Number(matrix[i][j].toFixed(2)),
     })),
   }));
-
-  console.log("ss", series);
 
   const options = {
     chart: {

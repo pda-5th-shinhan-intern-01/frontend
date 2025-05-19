@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import ScrollToTop from "./ScrollToTop";
+import ScrollBackBtn from "../ScrollBackBtn";
 
 export default function Layout() {
   const location = useLocation();
@@ -37,6 +38,7 @@ export default function Layout() {
       <footer className="h-16 w-full">
         <Footer />
       </footer>
+      <ScrollBackBtn />
     </div>
   );
 }

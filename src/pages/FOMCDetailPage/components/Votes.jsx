@@ -77,15 +77,15 @@ export default function Votes({ data }) {
     () => [
       {
         name: "찬성",
-        data: [data.approve.count],
+        data: [data.approve?.count],
       },
       {
         name: "반대",
-        data: [data.oppose.count],
+        data: [data.oppose?.count],
       },
       {
         name: "중립",
-        data: [data.abstain.count],
+        data: [data.abstain?.count],
       },
     ],
     [data]

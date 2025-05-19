@@ -44,7 +44,7 @@ const sectors = [
     stocks: ["WMT", "COST", "KO", "PEP"],
   },
   {
-    sectorName: "커뮤니티",
+    sectorName: "커뮤니케이션",
     description: "통신, 미디어, 엔터테인먼트, 소셜 미디어 등을 포함하는 섹터",
     stocks: ["META", "GOOG", "NFLX", "TMUS"],
   },
@@ -78,7 +78,7 @@ const sectorImages = {
   에너지: sector_energy,
   자유소비재: sector_consumer_discretionary,
   필수소비재: sector_consumer_staples,
-  커뮤니티: sector_communication,
+  커뮤니케이션: sector_communication,
   산업재: sector_industrials,
   유틸리티: sector_utilities,
   부동산: sector_real_estate,
@@ -92,7 +92,7 @@ const dummySectorChangeRates = [
   { sectorName: "에너지", sectorChangeRate: -0.15 },
   { sectorName: "자유소비재", sectorChangeRate: -0.15 },
   { sectorName: "필수소비재", sectorChangeRate: -0.15 },
-  { sectorName: "커뮤니티", sectorChangeRate: -0.15 },
+  { sectorName: "커뮤니케이션", sectorChangeRate: -0.15 },
   { sectorName: "유틸리티", sectorChangeRate: -0.15 },
   { sectorName: "부동산", sectorChangeRate: -0.15 },
   { sectorName: "산업재", sectorChangeRate: -0.15 },
@@ -101,22 +101,6 @@ const dummySectorChangeRates = [
 
 export default function SectorOverview({ onSelectSector }) {
   const [changeRates, setChangeRates] = useState(dummySectorChangeRates);
-
-  // useEffect(() => {
-  //   async function fetchSectorRates() {
-  //     try {
-  //       const res = await fetch("/api/sectors");
-  //       if (!res.ok) throw new Error("API 실패");
-  //       const data = await res.json();
-  //       setChangeRates(data);
-  //       console.log("data", data);
-  //     } catch (e) {
-  //       console.warn("API 연결 실패, 더미데이터 사용 중");
-  //       setChangeRates(dummySectorChangeRates);
-  //     }
-  //   }
-  //   fetchSectorRates();
-  // }, []);
 
   useEffect(() => {
     sectorApi.getSectorList().then((res) => {
