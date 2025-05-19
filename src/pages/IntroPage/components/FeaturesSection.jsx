@@ -25,7 +25,7 @@ const features = [
     subtitle: "지표가 종목에 미치는 영향은?",
     description:
       "지표가 발표되기 전 후로 주가가 어떻게 변화되는 지 확인하세요. 지표가 변화하면 주가는 어떻게 변동될까요?",
-    image: [sector,linelinechart],
+    image: sector,
     icon: stockIcon,
     reverse: true,
   },
@@ -102,7 +102,7 @@ export default function FeaturesSection() {
               transition={{ duration: 0.4 }}
               variants={fadeVariant}
             >
-              <ImageSlider images={[feature.image, feature.image]} />
+              <img src={feature.image} />
             </motion.div>
           </div>
         );
