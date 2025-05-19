@@ -146,9 +146,20 @@ export default function SectorOverview({ onSelectSector }) {
           );
           const changeRate = matching?.sectorChangeRate ?? 0;
           const isNegative = changeRate < 0;
-          const changeBgColor = isNegative ? "#DBEAFE" : "#FEE2E2";
-          const changeTextColor = isNegative ? "#2563EB" : "#DC2626";
-
+          const isZero = changeRate === 0;
+          
+          const changeBgColor = isZero
+            ? "#F9F9F9"
+            : isNegative
+            ? "#DBEAFE"
+            : "#FEE2E2";
+          
+          const changeTextColor = isZero
+            ? "#000000"
+            : isNegative
+            ? "#2563EB"
+            : "#DC2626";
+          
           const imageSrc = sectorImages[sector.sectorName] || sector_tech;
 
           return (
