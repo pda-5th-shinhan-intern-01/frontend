@@ -78,7 +78,7 @@ export default function EventSummaryCards() {
 
   return (
     <div className="relative bg-white w-full py-6">
-      <h2 className="leading-snug mt-10 text-4xl font-semibold text-black">
+      <h2 className="leading-snug mt-8 text-4xl font-semibold text-black">
         중요한 발표만 쏙쏙
         <br />
         최신 일정, 놓치지 마세요

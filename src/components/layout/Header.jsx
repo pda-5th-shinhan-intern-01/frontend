@@ -123,7 +123,7 @@ export default function Header({ isOrange }) {
         <div className="flex items-center">
           <div className="relative ml-4">
             <input
-              className="bg-gray-light px-4 py-2 rounded-2xl text-sm outline-none"
+              className="w-[225px] bg-gray-light px-4 py-2 rounded-2xl text-sm outline-none"
               placeholder="종목명을 입력하세요"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
