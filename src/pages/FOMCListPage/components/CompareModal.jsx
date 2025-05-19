@@ -12,7 +12,7 @@ export default function CompareModal({
 }) {
   const [compareIdx, setCompareIdx] = useState(0);
 
-  const compareIdxList = ["키워드 비교", "투표 결과", "수치 비교"];
+  const compareIdxList = ["키워드 비교", "투표 결과"];
 
   return (
     <div className="fixed inset-0 z-10 flex items-end justify-center">
@@ -63,7 +63,7 @@ export default function CompareModal({
         <div className="w-full flex-1 overflow-y-auto pr-1 items-center">
           {compareIdx === 0 && <KeywordCompare checkedItems={checkedItems} />}
           {compareIdx === 1 && <VoteCompare checkedItems={checkedItems} />}
-          {compareIdx === 2 && <NumberCompare checkedItems={checkedItems} />}
+          {/* {compareIdx === 2 && <NumberCompare checkedItems={checkedItems} />} */}
         </div>
       </motion.div>
     </div>

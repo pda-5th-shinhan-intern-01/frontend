@@ -6,19 +6,15 @@ export default function KeywordCompare({ checkedItems }) {
   const [activeKeyword, setActiveKeyword] = useState(null);
 
   const colorPalette = [
-    // 🧡 오렌지 계열
     "#FFE0C7", // 밝은 살구
     "#FFCBA4", // 크림 오렌지
 
-    // 💛 노랑 계열
     "#FFF5BA", // 연한 레몬 크림
     "#FDFD96", // 파스텔 옐로우
 
-    // 💙 하늘색 계열
     "#CFEFFF", // 아주 연한 하늘색
     "#A7D8FF", // 스카이블루
 
-    // 🔵 파랑 계열
     "#B0C4DE", // 라이트 스틸 블루
     "#9BB1F9", // 연한 인디고 블루
   ];
@@ -92,7 +88,7 @@ export default function KeywordCompare({ checkedItems }) {
   return (
     <div className="flex flex-col items-center h-full">
       {/* 키워드 영역 (스크롤) */}
-      <div className="flex-1 mt-16 overflow-y-auto w-full flex flex-row justify-evenly gap-6 px-4">
+      <div className="flex-1 mt-5 overflow-y-auto w-full flex flex-row justify-evenly gap-6 px-4">
         {parsedItems.map((item, id) => {
           const combinedKeywords = selectedSubOptions
             .map((optionId) => getKeywordsByOption(item.parsed, optionId))
