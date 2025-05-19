@@ -8,8 +8,11 @@ export default function PolicyDecision({ data }) {
       {data.keywords && (
         <div className="flex flex-col gap-1 mb-3">
           <div className="flex flex-row gap-3">
-            {data.keywords.map((word) => (
-              <div className="rounded-full border-1 text-sm py-1 px-4 text-white bg-orange">
+            {data.keywords.map((word, id) => (
+              <div
+                key={id}
+                className="rounded-full border-1 text-sm py-1 px-4 text-white bg-orange"
+              >
                 {word}
               </div>
             ))}

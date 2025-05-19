@@ -8,8 +8,11 @@ export default function CommonSection({ title, data, label }) {
       {data.keywords && (
         <div className="flex flex-col gap-1 mb-3">
           <div className="flex flex-row gap-3">
-            {data.keywords.map((word) => (
-              <div className="rounded-full text-sm py-1 px-4 bg-orange text-white">
+            {data.keywords.map((word, id) => (
+              <div
+                key={id}
+                className="rounded-full text-sm py-1 px-4 bg-orange text-white"
+              >
                 {word}
               </div>
             ))}

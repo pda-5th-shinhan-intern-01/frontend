@@ -101,6 +101,7 @@ export default function StocksInSector({ sector }) {
                   </td>
                   <td>${formatNumberForMoney(stock.price)}</td>
                   <td className={isPositive ? "text-red-md" : "text-blue-md"}>
+                    <span>{stock.changeRate > 0 && "+"}</span>
                     {stock.changeRate.toFixed(2)}%
                   </td>
                   <td className="truncate">
