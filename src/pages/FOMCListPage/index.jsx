@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCaretUp, FaCaretDown, FaChevronDown } from "react-icons/fa";
+import { TbArrowBigDownFilled, TbArrowBigUpFilled } from "react-icons/tb";
 import { MdHorizontalRule, MdOutlineCancel } from "react-icons/md";
 import CustomDateInput from "../../components/CustomDatePicker";
 import PaginationBtn from "../../components/PaginationBtn";
@@ -281,9 +282,9 @@ export default function FOMCListPage() {
               {/* 세 번째 컬럼: policyBias 아이콘 */}
               <div className="flex items-center justify-end w-1/6 mr-4">
                 {data.policyBias === "Raise" ? (
-                  <FaCaretUp className="text-red-md text-2xl" />
+                  <TbArrowBigUpFilled className="text-red-md text-xl" />
                 ) : data.policyBias === "Lower" ? (
-                  <FaCaretDown className="text-blue-md text-2xl" />
+                  <TbArrowBigDownFilled className="text-blue-md text-xl" />
                 ) : (
                   <MdHorizontalRule className="w-4" />
                 )}
