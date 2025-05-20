@@ -4,7 +4,13 @@ import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
 export default function IndicatorChartCard({ indicator, data }) {
   const { name = indicator } = economicIndicatorMap[indicator] || {};
 
-  const categories = data.map((item) => item.month);
+  const categories = data.map((item) => {
+    const date = new Date(item.month);
+    const year = String(date.getFullYear()).slice(2);
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    return `${year}.${month}`;
+  });
+
   const expectedSeries = data.map((item) => item.expected);
   const actualSeries = data.map((item) => item.actual);
 
@@ -27,7 +33,7 @@ export default function IndicatorChartCard({ indicator, data }) {
     },
     yaxis: {
       labels: {
-        formatter: (val) => `${val}%`,
+        formatter: (val) => `${val.toFixed(1)}%`,
       },
     },
     tooltip: {

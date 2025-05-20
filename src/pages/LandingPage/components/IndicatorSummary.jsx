@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useIndicator } from "../../../context/IndicatorContext";
 import { economicIndicatorMap } from "../../../data/IntroduceOfIndicators";
-import StockMiniChart from "../../../components/StockMiniChart";
-import { eventApi } from "../../../api/eventApi";
+import IndicatorChartCard from "../components/IndicatorChartCard";
 import { indicatorToIndustryMap } from "../dummies/indicatorToIndustryMap";
 import axios from "axios";
 
@@ -10,7 +9,7 @@ export default function IndicatorSummary() {
   const { focusedIndicator } = useIndicator();
   const [data, setData] = useState(null);
   const [ranking, setRanking] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [forecastData, setForecastData] = useState([]);
 
   const meta = focusedIndicator && economicIndicatorMap[focusedIndicator];
 
@@ -27,7 +26,6 @@ export default function IndicatorSummary() {
           expected: latestRes.data.next,
           actual: latestRes.data.prev,
           unit: latestRes.data.unit || "%",
-          industries: ["기술", "소비재"],
         };
         setData(summary);
 
@@ -46,32 +44,29 @@ export default function IndicatorSummary() {
   }, [focusedIndicator]);
 
   useEffect(() => {
-    const tryGetCurrEvents = async () => {
+    if (!focusedIndicator) return;
+
+    const fetchForecast = async () => {
       try {
-        const items = (await eventApi.getEventChart(focusedIndicator)).data;
-        console.log(items);
-        const chartData = (items || []).map((item) => ({
-          x: item.date,
-          y: item.value,
+        const res = await axios.get(
+          `/api/indicators/${focusedIndicator}/forecast`
+        );
+        const result = res.data[0];
+
+        const parsed = (result?.value || []).map((item) => ({
+          month: item.date,
+          actual: item.actual,
+          expected: item.expected,
         }));
 
-        const parsed = {
-          name: focusedIndicator,
-          date: chartData[Math.floor(chartData.length / 2)]?.x || null,
-          chartData,
-          unit: "%",
-          prevData: null,
-          currData: null,
-        };
-
-        setEvents([parsed]);
+        setForecastData(parsed);
       } catch (err) {
-        console.error("이벤트 차트 데이터 로딩 실패:", err);
-        setEvents([]);
+        console.error("지표 차트 데이터 로딩 실패:", err);
+        setForecastData([]);
       }
     };
 
-    if (focusedIndicator) tryGetCurrEvents();
+    fetchForecast();
   }, [focusedIndicator]);
 
   useEffect(() => {
@@ -96,8 +91,6 @@ export default function IndicatorSummary() {
 
   if (!focusedIndicator || !meta || !data) return null;
 
-  const matchedEvent = events.find((e) => e.name === focusedIndicator);
-
   return (
     <div
       id="indicator-summary-section"
@@ -107,7 +100,6 @@ export default function IndicatorSummary() {
         {meta.name} ({focusedIndicator.replace(/_/g, " ")})
       </div>
       <p className="text-lg">{meta.description}</p>
-
       <div className="flex flex-col lg:flex-row gap-8 items-stretch">
         <div className="flex-1 flex flex-col gap-6 h-full">
           <div className="text-black">
@@ -175,13 +167,8 @@ export default function IndicatorSummary() {
         </ul>
       </div>
 
-      {matchedEvent?.chartData?.length > 0 && (
-        <StockMiniChart
-          chartData={matchedEvent.chartData}
-          eventDate={matchedEvent.date}
-          width={745}
-          height={155}
-        />
+      {forecastData.length > 0 && (
+        <IndicatorChartCard indicator={focusedIndicator} data={forecastData} />
       )}
     </div>
   );
