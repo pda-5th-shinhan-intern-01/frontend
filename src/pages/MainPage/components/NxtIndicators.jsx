@@ -100,7 +100,9 @@ export default function NxtIndicators({ ticker }) {
                   "YYYY년 MM월 DD일 HH:mm:ss"
                 )}
               </p>
-              <h4 className="text-2xl font-semibold">{event.indicatorCode}</h4>
+              <h4 className="text-2xl font-semibold">
+                {event.indicatorCode.replace(/_/g, " ")}
+              </h4>
             </div>
             {/* 이전치 -> 예상치 */}
             <div className="flex justify-between items-center">
