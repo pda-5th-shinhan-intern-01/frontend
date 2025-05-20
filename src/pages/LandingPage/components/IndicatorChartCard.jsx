@@ -21,7 +21,6 @@ export default function IndicatorChartCard({ indicator, data }) {
     },
     plotOptions: {
       bar: {
-        horizontal: false,
         columnWidth: "75%",
         endingShape: "rounded",
       },

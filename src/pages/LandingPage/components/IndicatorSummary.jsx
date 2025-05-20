@@ -59,7 +59,7 @@ export default function IndicatorSummary() {
           expected: item.expected,
         }));
 
-        setForecastData(parsed);
+        setForecastData(parsed.reverse());
       } catch (err) {
         console.error("지표 차트 데이터 로딩 실패:", err);
         setForecastData([]);
