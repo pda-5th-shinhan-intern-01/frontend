@@ -44,6 +44,7 @@ export default function IndicatorDetailTable({ weeklyData }) {
                   const isMappable = mappableIndicators.includes(code);
                   const indicatorName =
                     economicIndicatorMap[code]?.name || event.name;
+                  console.log(event);
 
                   return (
                     <tr
@@ -79,9 +80,30 @@ export default function IndicatorDetailTable({ weeklyData }) {
                       >
                         <span>{indicatorName}</span>
                       </td>
-                      <td className="p-2">{event.expected}</td>
-                      <td className="p-2">{event.actual}</td>
-                      <td className="p-2">{event.previous}</td>
+                      <td className="p-2">
+                        {event.expectedValue}
+                        {event.expectedValue
+                          ? event.unit != ""
+                            ? event.unit
+                            : "%"
+                          : ""}
+                      </td>
+                      <td className="p-2">
+                        {event.actualValue}
+                        {event.actualValue
+                          ? event.unit != ""
+                            ? event.unit
+                            : "%"
+                          : ""}
+                      </td>
+                      <td className="p-2">
+                        {event.prevValue}
+                        {event.prevValue
+                          ? event.unit != ""
+                            ? event.unit
+                            : "%"
+                          : ""}
+                      </td>
                     </tr>
                   );
                 })}
