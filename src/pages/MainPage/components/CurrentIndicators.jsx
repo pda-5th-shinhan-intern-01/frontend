@@ -91,7 +91,9 @@ export default function CurrentIndicators({ ticker }) {
                 <p className="text-sm flex gap-1 justify-end text-gray-md">
                   {event.date}
                 </p>
-                <h4 className="text-2xl font-semibold">{event.name}</h4>
+                <h4 className="text-2xl font-semibold">
+                  {event.name.replace(/_/g, " ")}
+                </h4>
               </div>
               <div>
                 <p className="flex items-center text-sm gap-2">

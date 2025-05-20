@@ -82,8 +82,11 @@ export default function IndicatorDetailTable({ weeklyData }) {
                       </td>
                       <td className="p-2">
                         {event.expectedValue}
+
                         {event.expectedValue
-                          ? event.unit != ""
+                          ? event.name == "비농업부문 신규 고용자수"
+                            ? "K"
+                            : event.unit != ""
                             ? event.unit
                             : "%"
                           : ""}
@@ -91,7 +94,9 @@ export default function IndicatorDetailTable({ weeklyData }) {
                       <td className="p-2">
                         {event.actualValue}
                         {event.actualValue
-                          ? event.unit != ""
+                          ? event.name == "비농업부문 신규 고용자수"
+                            ? "K"
+                            : event.unit != ""
                             ? event.unit
                             : "%"
                           : ""}
@@ -99,7 +104,9 @@ export default function IndicatorDetailTable({ weeklyData }) {
                       <td className="p-2">
                         {event.prevValue}
                         {event.prevValue
-                          ? event.unit != ""
+                          ? event.name == "비농업부문 신규 고용자수"
+                            ? "K"
+                            : event.unit != ""
                             ? event.unit
                             : "%"
                           : ""}
