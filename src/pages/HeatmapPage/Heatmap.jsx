@@ -12,7 +12,6 @@ export default function Heatmap({ returnWindow }) {
       .getHeatmapData(`${returnWindowLabel[returnWindow]}`)
       .then((res) => {
         setMatrix(res.data.matrix);
-        console.log("r", res.data);
       });
   }, [returnWindow]);
 
