@@ -40,10 +40,6 @@ export default function FOMCListPage() {
     fomcApi.getFomcList().then((res) => {
       setFomcList(res.data);
       setFomcIdList(res.data.map((item) => item.id));
-      console.log(
-        "fomc",
-        res.data.map((item) => item.id)
-      );
     });
   }, []);
 
