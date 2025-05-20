@@ -130,7 +130,7 @@ export default function CurrentIndicators({ ticker }) {
                 {event.chartData[event.chartData.length - 1].y >
                 event.chartData[0].y ? (
                   <div className="flex gap-1 text-2xl items-center justify-center text-red-md">
-                    <FaArrowTrendUp />$
+                    <FaArrowTrendUp />$<span>+</span>
                     {formatNumberForMoney(
                       event.chartData[event.chartData.length - 1].y -
                         event.chartData[0].y
