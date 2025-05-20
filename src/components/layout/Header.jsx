@@ -66,6 +66,8 @@ export default function Header({ isOrange }) {
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
+                  if (!searchInput.trim()) return;
+
                   if (isModalOpen && searchResult[selectedIndex]) {
                     window.location.href = `/main/sectors/${searchResult[selectedIndex].ticker}`;
                   } else {
@@ -89,7 +91,11 @@ export default function Header({ isOrange }) {
                   results={searchResult}
                   isLoading={isLoading}
                   selectedIndex={selectedIndex}
-                  onClose={() => setIsModalOpen(false)}
+                  onClose={() => {
+                    setIsModalOpen(false);
+                    setSearchResult([]);
+                    setSelectedIndex(-1);
+                  }}
                 />
               </div>
             )}
