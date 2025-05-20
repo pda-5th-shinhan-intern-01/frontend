@@ -100,7 +100,9 @@ export default function NxtIndicators({ ticker }) {
                   "YYYY년 MM월 DD일 HH:mm:ss"
                 )}
               </p>
-              <h4 className="text-2xl font-semibold">{event.indicatorCode}</h4>
+              <h4 className="text-2xl font-semibold">
+                {event.indicatorCode.replace(/_/g, " ")}
+              </h4>
             </div>
             {/* 이전치 -> 예상치 */}
             <div className="flex justify-between items-center">
@@ -124,7 +126,9 @@ export default function NxtIndicators({ ticker }) {
                         : "text-blue-md"
                     }`}
                   >
-                    ({formatNumberForMoney(event.delta)}
+                    (
+                    <span>{formatNumberForMoney(event.delta) > 0 && "+"} </span>
+                    {formatNumberForMoney(event.delta)}
                     {event.unit})
                   </span>
                 </h2>
@@ -165,6 +169,9 @@ export default function NxtIndicators({ ticker }) {
                       : "text-blue-md"
                   }`}
                 >
+                  <span>
+                    {formatNumberForMoney(event.performance) > 0 && "+"}
+                  </span>
                   {formatNumberForMoney(event.performance)}
                 </span>
               </h2>
