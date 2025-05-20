@@ -94,11 +94,11 @@ export default function CurrentIndicators({ ticker }) {
                 <h4 className="text-2xl font-semibold">{event.name}</h4>
               </div>
               <div>
-                <p className="flex items-center text-sm">
+                <p className="flex items-center text-sm gap-2">
                   예상치 <FaArrowRight className="text-xs" /> 발표치
                 </p>
                 <h2 className="flex items-end text-xl  font-semibold">
-                  <span className="flex items-center text-sm">
+                  <span className="flex items-center text-sm gap-1 mr-1">
                     {formatNumberForMoney(event.prevData)}
                     {event.unit} <FaArrowRight className="text-xs" />
                   </span>
@@ -113,6 +113,8 @@ export default function CurrentIndicators({ ticker }) {
                         : "text-blue-md"
                     }`}
                   >
+                    {formatNumberForMoney(event.currData - event.prevData) >
+                      0 && "+"}
                     {formatNumberForMoney(event.currData - event.prevData)}
                     {event.unit}
                   </span>

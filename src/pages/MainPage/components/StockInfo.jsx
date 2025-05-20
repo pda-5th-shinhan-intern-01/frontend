@@ -56,7 +56,11 @@ export default function StockInfo({ ticker }) {
             }`}
           >
             {/* <p>{formatNumberForMoney(stock.change_amt)}원</p> */}
-            <p>({stock.changeRate}%)</p>
+
+            <p>
+              (<span>{stock.changeRate > 0 && "+"}</span>
+              {stock.changeRate}%)
+            </p>
           </div>
         </div>
       </div>
