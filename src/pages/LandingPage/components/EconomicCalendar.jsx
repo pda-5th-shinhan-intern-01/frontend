@@ -22,7 +22,6 @@ export default function EconomicCalendar() {
       .get("/api/indicators/calendar")
       .then((res) => {
         setCalendarData(res.data || []);
-        console.log(res.data);
       })
       .catch((err) => {
         console.error("경제 캘린더 로딩 실패:", err);
