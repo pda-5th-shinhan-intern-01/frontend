@@ -126,7 +126,9 @@ export default function NxtIndicators({ ticker }) {
                         : "text-blue-md"
                     }`}
                   >
-                    ({formatNumberForMoney(event.delta)}
+                    (
+                    <span>{formatNumberForMoney(event.delta) > 0 && "+"} </span>
+                    {formatNumberForMoney(event.delta)}
                     {event.unit})
                   </span>
                 </h2>
@@ -167,6 +169,9 @@ export default function NxtIndicators({ ticker }) {
                       : "text-blue-md"
                   }`}
                 >
+                  <span>
+                    {formatNumberForMoney(event.performance) > 0 && "+"}
+                  </span>
                   {formatNumberForMoney(event.performance)}
                 </span>
               </h2>
