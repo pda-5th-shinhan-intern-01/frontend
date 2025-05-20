@@ -15,7 +15,6 @@ export default function EventSummaryCards() {
     axios
       .get("/api/indicators")
       .then((res) => {
-        console.log(res.data);
         const now = new Date();
 
         const sorted = res.data.sort(
@@ -53,7 +52,6 @@ export default function EventSummaryCards() {
           };
         });
 
-        console.log(res.data);
         setEvents(mapped);
       })
       .catch((err) => {
@@ -64,7 +62,6 @@ export default function EventSummaryCards() {
   }, []);
 
   const handleClick = (eventKey) => {
-    console.log(eventKey);
     const currentY = window.scrollY;
     if (focusedIndicator === eventKey) {
       setFocusedIndicator(null);
