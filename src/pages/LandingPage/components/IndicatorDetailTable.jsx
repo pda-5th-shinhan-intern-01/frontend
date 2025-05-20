@@ -44,7 +44,6 @@ export default function IndicatorDetailTable({ weeklyData }) {
                   const isMappable = mappableIndicators.includes(code);
                   const indicatorName =
                     economicIndicatorMap[code]?.name || event.name;
-                  console.log(event);
 
                   return (
                     <tr
