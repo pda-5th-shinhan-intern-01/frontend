@@ -112,7 +112,7 @@ export default function StockChart({ ticker }) {
     const maxVolume = Math.max(...volumeY);
 
     const initialMin = new Date("2025-01-01").getTime();
-    const initialMax = new Date("2025-04-01").getTime();
+    const initialMax = new Date().getTime();
 
     setState({
       series: [{ data: seriesData }],
