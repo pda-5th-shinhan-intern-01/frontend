@@ -12,6 +12,7 @@ export default function Heatmap({ returnWindow }) {
       .getHeatmapData(`${returnWindowLabel[returnWindow]}`)
       .then((res) => {
         setMatrix(res.data.matrix);
+        console.log("r", res.data);
       });
   }, [returnWindow]);
 
@@ -34,7 +35,7 @@ export default function Heatmap({ returnWindow }) {
     "CORE_PCE",
     "CORE_PPI",
     "GDP",
-    "INDUSTRIAL_PRODUCTION",
+    //"INDUSTRIAL_PRODUCTION",
     "NFP",
     "RETAIL_SALES",
     "UNEMPLOYMENT",
